@@ -10,9 +10,12 @@
 ## Sistema de información
 
 Somos una panadería y deseamos crear una base de datos para su negocio.
-Nos interesa sabe los datos de nuestros clientes: nombre, dirección, teléfono, que compras ha hecho y en que fecha.
-En las compras se debe detallar nombre, la cantidad, el precio unitario de cada producto y si el dependiente a aplicado algún descuento.
-De nuestros productos nos interesa saber el tipo de producto (dulce, salado, etc), si viene ya preparado por un proveedor, o si lo hace uno de nuestros panaderos. Además, si los hacemos nosotros que ingredientes utiliza y que proveedor nos los suministra.
-También nos interesa saber que dependiente atiende a cada cliente y que compras gestiona.
-Tenemos un servicio a domicilio, también hay que guardar las compras que distribuyen los repartidores (fecha y cliente), el vehiculo que utiliza.
-De todos nuestro empleados hay que guardar su nombre completo, salario, y DNI.
+Necesitamos guardar información de nuestros clientes: nombre completo, dirección, número de télefono, que compras ha realido y en que fecha.  
+
+De los productos queremos saber el tipo (dulce, salado, etc), si es suminitrado por un proveedor o elaborado por nuestros panaderos. Si son propios, además, los ingredientes utilizados y que proveedor los suministra.
+
+En cada ticket de compra tiene que venir el nombre del producto que se ha comprado, la cantidad, el precio, la fecha, si se le aplicó algún descuento y que dependiente le atendió. Para realizar las posteriores facturas también necestimos saber de que cliente es cada ticket.
+
+Además, de nuestros servicio a domicilio queremos llevar un control de las entregas donde quede registrado en que fecha y hora un repartidor ha entregado un pedido a un cliente.
+
+De todos nuestros empleados debemos guardar su DNI, nombre, salario y su puesto de trabajo.

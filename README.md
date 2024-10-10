@@ -11,7 +11,7 @@
 
 Somos una panadería y deseamos crear una base de datos para nuestro negocio.
 
-Necesitamos guardar información de nuestros clientes: nombre completo, dirección, números de teléfono, que compras ha realizado y en que fecha.
+Necesitamos guardar información de nuestros clientes: nombre completo, dirección, números de teléfono, qué compras ha realizado y en qué fecha.
 
 De los productos queremos saber el tipo (dulce, salado, etc.), si es suministrado por un proveedor o elaborado por nuestros panaderos. Si son propios, además, los ingredientes utilizados y qué proveedor los suministra.
 

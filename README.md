@@ -20,3 +20,5 @@ En cada ticket de compra tiene que venir el nombre del producto que se ha compra
 Además, de nuestros servicios a domicilio queremos llevar un control de las entregas donde quede registrado en qué fecha y hora un repartidor ha entregado un pedido a un cliente.
 
 De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su puesto de trabajo y si son supervisados por un encargado y cuál es.
+
+![Modelo ER Panadería](https://github.com/user-attachments/assets/49241afa-3f62-49af-9556-da05e5bf822f)

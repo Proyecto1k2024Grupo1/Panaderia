@@ -2,7 +2,7 @@
 # Grupo 1
 
 ## Integrantes:
-* Jessica
+* Jessica Brotons Maciá (https://github.com/LaJessyMiau)
 * Doaa
 * Silvia Cachón Leiva (https://github.com/39Luka)
 * Vanesa Sekeresh (https://github.com/Timia117)
@@ -23,4 +23,5 @@ De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su pu
 
 ## Modelo Entidad-Relación
 
-![Modelo ER Panadería](https://github.com/user-attachments/assets/49241afa-3f62-49af-9556-da05e5bf822f)
+
+![Modelo ER Panadería Actualizado](https://github.com/user-attachments/assets/0d594cc3-9119-453a-9438-af149405fd22)

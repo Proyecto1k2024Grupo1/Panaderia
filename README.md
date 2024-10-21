@@ -3,7 +3,7 @@
 
 ## Integrantes:
 * Jessica Brotons Maciá (https://github.com/LaJessyMiau)
-* Doaa
+* Doaa  Chaoui Ragaoui 
 * Silvia Cachón Leiva (https://github.com/39Luka)
 * Vanesa Sekeresh (https://github.com/Timia117)
 

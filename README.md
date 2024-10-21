@@ -5,7 +5,7 @@
 * Jessica
 * Doaa
 * Silvia
-* Vanesa
+* Vanesa Sekeresh (https://github.com/Timia117)
 
 ## Sistema de información
 

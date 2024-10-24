@@ -25,3 +25,8 @@ De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su pu
 
 
 ![Modelo ER Panadería Actualizado](https://github.com/user-attachments/assets/0d594cc3-9119-453a-9438-af149405fd22)
+
+
+
+## Justificaciones
+El atributo fecha va en compra y no en la relación porque una compra tiene la fecha del momento en que se realizó y no depende del cliente, ya que esa compra no se vende en diferentes fecchas. En cuanto a los productos, tenemos dos tipos: los suministrados y los que hace la panadería. Como tienen relaciones diferentes hemos creado una generalización para distinguirlos, la cual, es disjunta porque un producto propio no puede ser ajeno y viceversa. Además, hemos generado una entidad débil llamada línea de ticket porque un ticket de una compra tiene varias líneas donde se especifica cada uno de los productos que se ha comprado. La cantidad de un producto se incluye en la relación porque la cantidad hace referencia a la entidad de producto y también a la linea de ticket, ya que tenemos cierta cantidad del producto en una línea en especifico.

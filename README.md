@@ -42,4 +42,6 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 
 
 ![BD](https://github.com/user-attachments/assets/3da2cc9a-39a0-4c1e-a8fa-22f992e2dd53)
+![ESQUEMA RELACIONAL PANADERIA](https://github.com/user-attachments/assets/7469af97-0db1-4901-baa0-c8126155a1a4)
+
 

@@ -37,3 +37,9 @@ Hemos generado una entidad débil llamada línea de ticket porque un ticket de u
 Lo mismo ocurre entre producto propio e ingrediente, ya que un producto propio contiene cierta cantidad de un ingrediente; entre compra y dependiente, ya que una compra la vende un dependiente en una fecha y con un descuento determinado; entre repartidor y compra, ya que un repartidor reparte una compra en una fecha y hora concreta.
 
 En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizado la cardinalidad ninguno o una a ninguno o muchos, porque un empleado no está obligado a ser encargado ni está obligado a tener encargado.
+
+
+
+
+![BD](https://github.com/user-attachments/assets/3da2cc9a-39a0-4c1e-a8fa-22f992e2dd53)
+

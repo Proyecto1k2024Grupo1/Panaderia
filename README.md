@@ -47,24 +47,64 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 ## Modelo Relacional
 
 **PRODUCTO** (<ins>codigo</ins>, nombre, tipo, precio)<br>
-PK ->(codigo)<br>
+PK ->(codigo)<br><br>
 **CLIENTE** (<ins>idCliente</ins>, direccion, nombre, apellido1, apellido2)<br>
-PK ->(idCliente)<br>
+PK ->(idCliente)<br><br>
 **TELEFONO** (<ins>numTelefono</ins>, idCliente*)<br>
 PK ->(numTelefono)<br>
 FK ->(idCliente) -> CLIENTE<br>
-VNN ->(idCliente)<br>
+VNN ->(idCliente)<br><br>
 **EMPLEADO** (<ins>dni</ins>, salario, fnac, nombre, encargado*)<br>
 PK ->(dni)<br>
-FK ->(encargado) -> EMPLEADO<br>
+FK ->(encargado) -> EMPLEADO<br><br>
 **PANADERO**(<ins>dni*</ins>)
 PK ->(dni)<br>
-FK ->(dni) -> EMPLEADO<br>
-**DEPENDIENTE**(<ins>dni*</ins>, horario)<br>
+FK ->(dni) -> EMPLEADO<br><br>
+**DEPENDIENTE** (<ins>dni*</ins>, horario)<br>
 PK ->(dni)<br>
-FK ->(dni) -> EMPLEADO<br>
-
-
+FK ->(dni) -> EMPLEADO<br><br>
+**REPARTIDOR** (<ins>dni*</ins>, matricula)<br>
+PK ->(dni)<br>
+FK ->(dni) -> EMPLEADO<br><br>
+**COMPRA** (<ins>numCompra</ins>, fecha, idCliente*, dniDependiente, descuentoDependiente, fechaDependiente, dniRepartidor*, fechaRepartidor, horaRepartidor)<br>
+PK ->(numCompra)<br>
+FK ->(idCliente) -> CLIENTE<br>
+   ->(dniDependiente) -> DEPENDIENTE<br>
+   ->(dniRepartidor) -> REPARTIDOR<br>
+VNN ->(idCliente)<br>
+    ->(dniDependiente)<br>
+    ->(dniRepartidor)<br><br>
+**LINEA_DE_TICKET** (<ins>numCompra*</ins>, <ins>numLinea</ins>, codProducto*, cantidad)<br>
+PK ->(numCompra, numLinea)<br>
+FK ->(numCompra) -> COMPRA<br>
+   ->(codProducto) -> PRODUCTO<br>
+VNN ->(codProducto)<br><br>
+**AJENO** (<ins>codigo*</ins>)<br>
+PK ->(codigo)<br>
+FK ->(codigo) -> PRODUCTO<br><br>
+**PROPIO** (<ins>codigo*</ins>)<br>
+PK ->(codigo)<br>
+FK ->(codigo) -> PRODUCTO<br><br>
+**HACER** (<ins>codProdPropio*</ins>, <ins>dniPanadero*</ins>)<br>
+PK ->(codProdPropio, dniPanadero)<br>
+FK ->(codProdPropio) -> PROPIO<br>
+   ->(dniPanadero) -> PANADERO<br><br>
+**PROVEEDOR** (<ins>codProveedor</ins>, nombre)<br>
+PK ->(codProveedor)<br><br>
+**INGREDIENTE**(<ins>codIngrediente</ins>, nombre, descripción)<br>
+PK ->(codIngrediente)<br><br>
+**SUMINISTRAR** (<ins>codProdAjeno*</ins>, <ins>codProveedor*</ins>)<br>
+PK ->(codProdAjeno, codProveedor)<br>
+FK ->(codProdAjeno) ->  AJENO<br>
+   ->(codProveedor) -> PROVEEDOR<br><br>
+**VENDER** (<ins>codProveedor*</ins>, <ins>codIngrediente*</ins>)<br>
+PK ->(codProveedor, codIngrediente)<br>
+FK ->(codProveedor) -> PROVEEDOR<br>
+   ->(codIngrediente) -> INGREDIENTE<br><br>
+**CONTENER** (<ins>codIngrediente*</ins>, <ins>codProdPropio*</ins>, cantidad)<br>
+PK ->(codIngrediente, codProdPropio)<br>
+FK ->(codIngrediente) -> INGREDIENTE<br>
+   ->(codProdPropio) -> PROPIO<br><br>
 
 ## Esquema Relacional
 ![ESQUEMA RELACIONAL PANADERIA](https://github.com/user-attachments/assets/7469af97-0db1-4901-baa0-c8126155a1a4)

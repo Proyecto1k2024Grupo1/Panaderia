@@ -46,7 +46,7 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 
 #Modelo Relacional
 
-Producto(<span style="text-decoration: underline;">codigo</span>, nombre, apellido1, apellido2)
+Producto(<ins>codigo</ins>, nombre, apellido1, apellido2)
 
 PK ->(codigo)
 

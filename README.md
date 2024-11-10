@@ -45,7 +45,9 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 ![Orden BD](https://github.com/user-attachments/assets/cab0af55-6317-405e-86fd-b44f1031bb18)
 
 #Modelo Relacional
-Producto(<u>codigo</u>, nombre, apellido1, apellido2)
+
+Producto(<span style="text-decoration: underline;">codigo</span>, nombre, apellido1, apellido2)
+
 PK ->(codigo)
 
 #Esquema Relacional

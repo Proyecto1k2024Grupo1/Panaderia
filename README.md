@@ -46,113 +46,98 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 
 ## Modelo Relacional
 
-**PRODUCTO** (<ins>codigo</ins>, nombre, tipo, precio)  
-PK ->(codigo)  
+### **PRODUCTO**
+- Atributos: codigo, nombre, tipo, precio
+- **PK** → (codigo)
 
----
+### **CLIENTE**
+- Atributos: idCliente, direccion, nombre, apellido1, apellido2
+- **PK** → (idCliente)
 
-**CLIENTE** (<ins>idCliente</ins>, direccion, nombre, apellido1, apellido2)  
-PK ->(idCliente)  
+### **TELEFONO**
+- Atributos: numTelefono, idCliente
+- **PK** → (numTelefono)
+- **FK** → (idCliente) → CLIENTE
+- **VNN** → (idCliente)
 
----
+### **EMPLEADO**
+- Atributos: dni, salario, fnac, nombre, encargado
+- **PK** → (dni)
+- **FK** → (encargado) → EMPLEADO
 
-**TELEFONO** (<ins>numTelefono</ins>, idCliente*)  
-PK ->(numTelefono)  
-FK ->(idCliente) -> CLIENTE  
-VNN ->(idCliente)  
+### **PANADERO**
+- Atributos: dni
+- **PK** → (dni)
+- **FK** → (dni) → EMPLEADO
 
----
+### **DEPENDIENTE**
+- Atributos: dni, horario
+- **PK** → (dni)
+- **FK** → (dni) → EMPLEADO
 
-**EMPLEADO** (<ins>dni</ins>, salario, fnac, nombre, encargado*)  
-PK ->(dni)  
-FK ->(encargado) -> EMPLEADO  
+### **REPARTIDOR**
+- Atributos: dni, matricula
+- **PK** → (dni)
+- **FK** → (dni) → EMPLEADO
 
----
+### **COMPRA**
+- Atributos: numCompra, fecha, idCliente, dniDependiente, descuentoDependiente, fechaDependiente, dniRepartidor, fechaRepartidor, horaRepartidor
+- **PK** → (numCompra)
+- **FK** → (idCliente) → CLIENTE
+- **FK** → (dniDependiente) → DEPENDIENTE
+- **FK** → (dniRepartidor) → REPARTIDOR
+- **VNN** → (idCliente)
+- **VNN** → (dniDependiente)
+- **VNN** → (dniRepartidor)
 
-**PANADERO**(<ins>dni*</ins>)  
-PK ->(dni)  
-FK ->(dni) -> EMPLEADO  
+### **LINEA_DE_TICKET**
+- Atributos: numCompra, numLinea, codProducto, cantidad
+- **PK** → (numCompra, numLinea)
+- **FK** → (numCompra) → COMPRA
+- **FK** → (codProducto) → PRODUCTO
+- **VNN** → (codProducto)
 
----
+### **AJENO**
+- Atributos: codigo
+- **PK** → (codigo)
+- **FK** → (codigo) → PRODUCTO
 
-**DEPENDIENTE** (<ins>dni*</ins>, horario)  
-PK ->(dni)  
-FK ->(dni) -> EMPLEADO  
+### **PROPIO**
+- Atributos: codigo
+- **PK** → (codigo)
+- **FK** → (codigo) → PRODUCTO
 
----
+### **HACER**
+- Atributos: codProdPropio, dniPanadero
+- **PK** → (codProdPropio, dniPanadero)
+- **FK** → (codProdPropio) → PROPIO
+- **FK** → (dniPanadero) → PANADERO
 
-**REPARTIDOR** (<ins>dni*</ins>, matricula)  
-PK ->(dni)  
-FK ->(dni) -> EMPLEADO  
+### **PROVEEDOR**
+- Atributos: codProveedor, nombre
+- **PK** → (codProveedor)
 
----
+### **INGREDIENTE**
+- Atributos: codIngrediente, nombre, descripción
+- **PK** → (codIngrediente)
 
-**COMPRA** (<ins>numCompra</ins>, fecha, idCliente*, dniDependiente, descuentoDependiente, fechaDependiente, dniRepartidor*, fechaRepartidor, horaRepartidor)  
-PK ->(numCompra)  
-FK ->(idCliente) -> CLIENTE  
-   ->(dniDependiente) -> DEPENDIENTE  
-   ->(dniRepartidor) -> REPARTIDOR  
-VNN ->(idCliente)  
-    ->(dniDependiente)  
-    ->(dniRepartidor)  
+### **SUMINISTRAR**
+- Atributos: codProdAjeno, codProveedor
+- **PK** → (codProdAjeno, codProveedor)
+- **FK** → (codProdAjeno) → AJENO
+- **FK** → (codProveedor) → PROVEEDOR
 
----
+### **VENDER**
+- Atributos: codProveedor, codIngrediente
+- **PK** → (codProveedor, codIngrediente)
+- **FK** → (codProveedor) → PROVEEDOR
+- **FK** → (codIngrediente) → INGREDIENTE
 
-**LINEA_DE_TICKET** (<ins>numCompra*</ins>, <ins>numLinea</ins>, codProducto*, cantidad)  
-PK ->(numCompra, numLinea)  
-FK ->(numCompra) -> COMPRA  
-   ->(codProducto) -> PRODUCTO  
-VNN ->(codProducto)  
-
----
-
-**AJENO** (<ins>codigo*</ins>)  
-PK ->(codigo)  
-FK ->(codigo) -> PRODUCTO  
-
----
-
-**PROPIO** (<ins>codigo*</ins>)  
-PK ->(codigo)  
-FK ->(codigo) -> PRODUCTO  
-
----
-
-**HACER** (<ins>codProdPropio*</ins>, <ins>dniPanadero*</ins>)  
-PK ->(codProdPropio, dniPanadero)  
-FK ->(codProdPropio) -> PROPIO  
-   ->(dniPanadero) -> PANADERO  
-
----
-
-**PROVEEDOR** (<ins>codProveedor</ins>, nombre)  
-PK ->(codProveedor)  
-
----
-
-**INGREDIENTE**(<ins>codIngrediente</ins>, nombre, descripción)  
-PK ->(codIngrediente)  
-
----
-
-**SUMINISTRAR** (<ins>codProdAjeno*</ins>, <ins>codProveedor*</ins>)  
-PK ->(codProdAjeno, codProveedor)  
-FK ->(codProdAjeno) -> AJENO  
-   ->(codProveedor) -> PROVEEDOR  
-
----
-
-**VENDER** (<ins>codProveedor*</ins>, <ins>codIngrediente*</ins>)  
-PK ->(codProveedor, codIngrediente)  
-FK ->(codProveedor) -> PROVEEDOR  
-   ->(codIngrediente) -> INGREDIENTE  
-
----
-
-**CONTENER** (<ins>codIngrediente*</ins>, <ins>codProdPropio*</ins>, cantidad)  
-PK ->(codIngrediente, codProdPropio)  
-FK ->(codIngrediente) -> INGREDIENTE  
-   ->(codProdPropio) -> PROPIO  
+### **CONTENER**
+- Atributos: codIngrediente, codProdPropio, cantidad
+- **PK** → (codIngrediente, codProdPropio)
+- **FK** → (codIngrediente) → INGREDIENTE
+- **FK** → (codProdPropio) → PROPIO
 
 
 ## Esquema Relacional

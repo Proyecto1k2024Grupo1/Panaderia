@@ -156,7 +156,7 @@ FK ->(codIngrediente) -> INGREDIENTE
 
 
 ## Esquema Relacional
-![ESQUEMA RELACIONAL PANADERIA](https://github.com/user-attachments/assets/7469af97-0db1-4901-baa0-c8126155a1a4)
+![ESQUEMA RELACIONAL PANADERÍA](https://github.com/user-attachments/assets/fc26f1f9-7ef3-478e-8a56-4db942970b73)
 
 ## Diccionario de datos
 ### 1. PRODUCTO

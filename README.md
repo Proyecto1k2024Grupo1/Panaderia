@@ -46,8 +46,25 @@ En la relación reflexiva de ser empleado en la entidad empleado, hemos utilizad
 
 ## Modelo Relacional
 
-**Producto** (<ins>codigo</ins>, nombre, apellido1, apellido2)<br>
-PK ->(codigo)
+**PRODUCTO** (<ins>codigo</ins>, nombre, tipo, precio)<br>
+PK ->(codigo)<br>
+**CLIENTE** (<ins>idCliente</ins>, direccion, nombre, apellido1, apellido2)<br>
+PK ->(idCliente)<br>
+**TELEFONO** (<ins>numTelefono</ins>, idCliente*)<br>
+PK ->(numTelefono)<br>
+FK ->(idCliente) -> CLIENTE<br>
+VNN ->(idCliente)<br>
+**EMPLEADO** (<ins>dni</ins>, salario, fnac, nombre, encargado*)<br>
+PK ->(dni)<br>
+FK ->(encargado) -> EMPLEADO<br>
+**PANADERO**(<ins>dni*</ins>)
+PK ->(dni)<br>
+FK ->(dni) -> EMPLEADO<br>
+**DEPENDIENTE**(<ins>dni*</ins>, horario)<br>
+PK ->(dni)<br>
+FK ->(dni) -> EMPLEADO<br>
+
+
 
 ## Esquema Relacional
 ![ESQUEMA RELACIONAL PANADERIA](https://github.com/user-attachments/assets/7469af97-0db1-4901-baa0-c8126155a1a4)

@@ -386,6 +386,7 @@ FK ->(codIngrediente) -> INGREDIENTE
 
 
 # DDL (Data Definition Language)
+
 create table PRODUCTO(
     codigo int NOT NULL auto_increment,
     nombre varchar(128),
@@ -434,7 +435,7 @@ create table PANADERO(
 
 create table DEPENDIENTE(
     dni varchar(32),
-    horario(64),
+    horario varchar(64),
     constraint PK_DEPENDIENTE primary key (dni),
     constraint FK_DEPENDIENTE_EMPLEADO foreign key (dni) references EMPLEADO(dni)
     ON DELETE CASCADE
@@ -459,7 +460,7 @@ create table COMPRA(
     fechaDependiente date,
     dniRepartidor varchar(32) NOT NULL,
     fechaRepartidor date,
-    horaRepartidor time
+    horaRepartidor time,
     constraint PK_COMPRA primary key (numCompra),
     constraint FK_COMPRA_CLIENTE foreign key (idCliente) references CLIENTE(idCliente)
     ON DELETE NO ACTION
@@ -541,7 +542,7 @@ create table SUMINISTRAR(
 
 create table VENDER(
     codProveedor int,
-    codIngrediente int
+    codIngrediente int,
     constraint PK_VENDER primary key (codProveedor, codIngrediente),
     constraint FK_VENDER_PROVEEDOR foreign key (codProveedor) references PROVEEDOR(codProveedor)
     ON DELETE NO ACTION
@@ -549,7 +550,6 @@ create table VENDER(
     constraint FK_VENDER_INGREDIENTE foreign key (codIngrediente) references INGREDIENTE(codIngrediente)
     ON DELETE NO ACTION
     ON UPDATE CASCADE
-
 );
 
 create table CONTENER(
@@ -564,4 +564,4 @@ create table CONTENER(
     ON DELETE NO ACTION
     ON UPDATE CASCADE
 );
-
+ 

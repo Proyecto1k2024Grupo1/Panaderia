@@ -297,21 +297,21 @@ FK ->(codIngrediente) -> INGREDIENTE
 - **Clave primaria en EMPLEADO**: `dni`
 - **Clave primaria en PANADERO**: `dni`
 - **Clave ajena en PANADERO**: `dni` referencia a `dni` en la tabla EMPLEADO, indica que un panadero es un empleado.
-  - **Restricción de borrado**: rechazar
+  - **Restricción de borrado**: propagar
   - **Restricción de modificación**: propagar
 
 ### EMPLEADO y DEPENDIENTE
 - **Clave primaria en EMPLEADO**: `dni`
 - **Clave primaria en DEPENDIENTE**: `dni`
 - **Clave ajena en DEPENDIENTE**: `dni` referencia a `dni` en la tabla EMPLEADO, indica que un dependiente es un empleado.
-  - **Restricción de borrado**: rechazar
+  - **Restricción de borrado**: propagar
   - **Restricción de modificación**: propagar
 
 ### EMPLEADO y REPARTIDOR
 - **Clave primaria en EMPLEADO**: `dni`
 - **Clave primaria en REPARTIDOR**: `dni`
 - **Clave ajena en REPARTIDOR**: `dni` referencia a `dni` en la tabla EMPLEADO, indica que un repartidor es un empleado.
-  - **Restricción de borrado**: rechazar
+  - **Restricción de borrado**: propagar
   - **Restricción de modificación**: propagar
 
 ### COMPRA
@@ -338,14 +338,14 @@ FK ->(codIngrediente) -> INGREDIENTE
 - **Clave primaria en PRODUCTO**: `codigo`
 - **Clave primaria en AJENO**: `codigo`
 - **Clave ajena en AJENO**: `codigo` referencia a `codigo` en la tabla PRODUCTO, indica que un producto ajeno es un producto.
-  - **Restricción de borrado**: rechazar
+  - **Restricción de borrado**: propagar
   - **Restricción de modificación**: propagar
 
 ### PROPIO
 - **Clave primaria en PRODUCTO**: `codigo`
 - **Clave primaria en PROPIO**: `codigo`
 - **Clave ajena en PROPIO**: `codigo` referencia a `codigo` en la tabla PRODUCTO, indica que un producto propio es un producto.
-  - **Restricción de borrado**: rechazar
+  - **Restricción de borrado**: propagar
   - **Restricción de modificación**: propagar
 
 ### HACER

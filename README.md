@@ -57,7 +57,7 @@ PK ->(idCliente)
 ---
 
 **TELEFONO** (<ins>numTelefono</ins>, idCliente*)  
-PK ->(numTelefono)  
+PK ->(numTelefono, idCliente)  
 FK ->(idCliente) -> CLIENTE  
 VNN ->(idCliente)  
 

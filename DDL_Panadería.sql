@@ -71,7 +71,7 @@ create table COMPRA(
     fechaDependiente date,
     dniRepartidor varchar(32) NOT NULL,
     fechaRepartidor date,
-    horaRepartidor time
+    horaRepartidor time,
     constraint PK_COMPRA primary key (numCompra),
     constraint FK_COMPRA_CLIENTE foreign key (idCliente) references CLIENTE(idCliente)
     ON DELETE NO ACTION
@@ -153,7 +153,7 @@ create table SUMINISTRAR(
 
 create table VENDER(
     codProveedor int,
-    codIngrediente int
+    codIngrediente int,
     constraint PK_VENDER primary key (codProveedor, codIngrediente),
     constraint FK_VENDER_PROVEEDOR foreign key (codProveedor) references PROVEEDOR(codProveedor)
     ON DELETE NO ACTION

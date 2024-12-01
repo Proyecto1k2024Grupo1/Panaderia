@@ -18,7 +18,7 @@ create table CLIENTE(
 create table TELEFONO(
     numTelefono char(8),
     idCliente int NOT NULL,
-    constraint PK_TELEFONO primary key (numTelefono),
+    constraint PK_TELEFONO primary key (numTelefono, idCliente),
     constraint FK_TELEFONO_CLIENTE foreign key (idCliente) references CLIENTE(idCliente)
     ON DELETE CASCADE
     ON UPDATE CASCADE

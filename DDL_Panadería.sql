@@ -46,7 +46,7 @@ create table PANADERO(
 
 create table DEPENDIENTE(
     dni varchar(32),
-    horario(64),
+    horario varchar(64),
     constraint PK_DEPENDIENTE primary key (dni),
     constraint FK_DEPENDIENTE_EMPLEADO foreign key (dni) references EMPLEADO(dni)
     ON DELETE CASCADE

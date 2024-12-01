@@ -396,7 +396,7 @@ INSERT INTO INGREDIENTE (nombre, descripcion) VALUES
 ('Polvo de hornear', 'Polvo de hornear para repostería'), 
 ('Bicarbonato de sodio', 'Bicarbonato de sodio para repostería'), 
 ('Aceite de oliva', 'Aceite de oliva virgen extra'), 
-('Azúcar de coco', 'Azúcar de coco natural').
+('Azúcar de coco', 'Azúcar de coco natural');
 
 INSERT INTO SUMINISTRAR (codProdAjeno, codProveedor) VALUES 
 (1, 1), (3, 1), (5, 2), (7, 2), (9, 3), 

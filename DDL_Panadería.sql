@@ -7,7 +7,7 @@ create table PRODUCTO(
 );
 
 create table CLIENTE(
-    idCliente int,
+    idCliente int auto_increment,
     direccion varchar(256),
     nombre varchar(128),
     apellido1 varchar(128),
@@ -63,7 +63,7 @@ create table REPARTIDOR(
 );
 
 create table COMPRA(
-    numCompra int,
+    numCompra int auto_increment,
     fecha date,
     idCliente int NOT NULL,
     dniDependiente varchar(32) NOT NULL,
@@ -127,13 +127,13 @@ create table HACER(
 );
 
 create table PROVEEDOR(
-    codProveedor int,
+    codProveedor int auto_increment,
     nombre varchar(128),
     constraint PK_PROVEEDOR primary key (codProveedor)
 );
 
 create table INGREDIENTE(
-    codIngrediente int,
+    codIngrediente int auto_increment,
     nombre varchar(128),
     descripcion text,
     constraint PK_INGREDIENTE primary key (codIngrediente)

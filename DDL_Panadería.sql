@@ -342,3 +342,33 @@ create table TICKET(
     -- Definición de la clave primaria (compuesta por numCompra y numLinea)
     constraint PK_TICKET primary key (numCompra, numLinea)
 );
+
+-- Crear tabla VENDER
+create table VENDER(
+    codProveedor int, 
+    codIngrediente int, 
+    constraint PK_VENDER primary key (codProveedor, codIngrediente),
+    constraint FK_VENDER_PROVEEDOR foreign key (codProveedor) references PROVEEDOR(codProveedor)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+
+    constraint FK_VENDER_INGREDIENTE foreign key (codIngrediente) references INGREDIENTE(codIngrediente)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+);
+
+-- Crear tabla CONTENER
+create table CONTENER(
+    codIngrediente int, 
+    codProdPropio int, 
+    cantidad int,
+    constraint PK_CONTENER primary key (codIngrediente, codProdPropio),
+    constraint FK_CONTENER_INGREDIENTE foreign key (codIngrediente) references INGREDIENTE(codIngrediente)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+    
+    constraint FK_CONTENER_PROPIO foreign key (codProdPropio) references PROPIO(codigo)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+);
+

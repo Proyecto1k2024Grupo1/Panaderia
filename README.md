@@ -6,7 +6,7 @@
 * Silvia Cachón Leiva (https://github.com/39Luka)
 * Vanesa Sekeresh (https://github.com/Timia117)
 
-## ![Sistema de información](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/SistemaDeInform%C3%A1cion.md)
+## [Sistema de información](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/SistemaDeInform%C3%A1cion.md)
 
 
 ## Modelo Entidad-Relación

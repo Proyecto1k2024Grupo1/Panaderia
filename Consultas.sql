@@ -47,7 +47,6 @@ SELECT
 FROM 
     PRODUCTO p;
 
-
 -- Suma total de todas las compras en marzo
 SELECT 
     SUM(tl.cantidad * p.precio) AS Total_Ingresos_Marzo
@@ -67,7 +66,6 @@ JOIN REPARTIDOR r ON c.dniRepartidor = r.dni
 JOIN EMPLEADO e ON r.dni = e.dni
 WHERE HOUR(c.horaRepartidor) BETWEEN 11 AND 12;
 
-
 -- Gasto por compra en abril, mostrando nombre del cliente, gasto por compra, dirección y fecha, ordenado por importe
 SELECT 
     c.nombre,
@@ -86,4 +84,3 @@ WHERE
     MONTH(t.fecha) = 4  -- Filtra las compras realizadas en abril
 ORDER BY 
     Gasto DESC; 
-

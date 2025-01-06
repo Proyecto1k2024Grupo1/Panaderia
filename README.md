@@ -9,10 +9,7 @@
 ## [Sistema de información](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/SistemaDeInform%C3%A1cion.md)
 
 
-## Modelo Entidad-Relación
-
-
-![Modelo ER Panadería Actualizado](https://github.com/user-attachments/assets/0d594cc3-9119-453a-9438-af149405fd22)
+## [Modelo Entidad-Relación](https://github.com/user-attachments/assets/0d594cc3-9119-453a-9438-af149405fd22)
 
 
 

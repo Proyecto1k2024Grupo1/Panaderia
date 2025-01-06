@@ -57,7 +57,7 @@ JOIN
 JOIN 
     COMPRA t ON tl.numCompra = t.numCompra
 WHERE 
-    MONTH(t.fecha) = 3;  -- Filtra las compras de marzo
+    MONTH(t.fecha) = 3;  
 
 -- Obtener los repartidores que han realizado entregas entre las 11:00 y las 12:00 horas según las compras.
 SELECT DISTINCT c.dniRepartidor, e.nombre

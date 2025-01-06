@@ -298,50 +298,6 @@ create table SUMINISTRAR(
     ON UPDATE CASCADE
 );
 
--- Crear tabla UTILIZA
-create table UTILIZA(
-    -- Código del ingrediente
-    codIngrediente int, 
-    
-    -- Código del producto propio
-    codProdPropio int, 
-    
-    -- Definición de la clave primaria (compuesta por codIngrediente y codProdPropio)
-    constraint PK_UTILIZA primary key (codIngrediente, codProdPropio),
-    
-    -- Claves foráneas que hacen referencia a INGREDIENTE y PROPIO
-    constraint FK_UTILIZA_INGREDIENTE foreign key (codIngrediente) references INGREDIENTE(codIngrediente)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE,
-    
-    constraint FK_UTILIZA_PROPIO foreign key (codProdPropio) references PROPIO(codigo)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE
-);
-
--- Crear tabla TICKET
-create table TICKET(
-    -- Número de compra (referencia a la tabla COMPRA)
-    numCompra int, 
-    
-    -- Número de línea
-    numLinea int, 
-    
-    -- Nombre del producto
-    nombreProducto varchar(128), 
-    
-    -- Cantidad del producto
-    cantidad int, 
-    
-    -- Precio del producto
-    precio decimal(10,2), 
-    
-    -- Descuento aplicado en la compra
-    descuento decimal(10,2), 
-    
-    -- Definición de la clave primaria (compuesta por numCompra y numLinea)
-    constraint PK_TICKET primary key (numCompra, numLinea)
-);
 
 -- Crear tabla VENDER
 create table VENDER(

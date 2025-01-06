@@ -1,4 +1,4 @@
---VANESA
+--Vanesa  Sekeresh
 --Lista el codigo y el tipo de productos.
 select codigo, tipo from PRODUCTO;
 

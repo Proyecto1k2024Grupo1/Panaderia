@@ -22,9 +22,4 @@
 
 ## [Relaciones y Restricciones de la Base de Datos](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/RelacionesYRestriciones.md)
 
-
-# DDL, DML y Script de vaciado de tablas
-
-En este proyecto, trabajamos juntas para crear las tablas y la base de datos. Jessica, Vanesa y Silvia participamos activamente en todas las tareas. Nos basamos en el modelo EER y relacional, así como en el diccionario de datos que habíamos elaborado previamente. Primero, nos encargamos de escribir el DDL (lenguaje de definición de datos), es decir, la estructura de las tablas, y luego definimos las restricciones de clave primaria y foránea. A medida que escribíamos, nos ayudábamos mutuamente, revisábamos errores y ajustábamos los detalles. También creamos los scripts de inserción de datos (DML) y los scripts de borrado de datos. Cada una de nosotras aportó en diferentes partes del proceso, pero lo hicimos de manera colaborativa, asegurándonos de que todo fuera coherente y funcional.
-
-
+## [DDL, DML y Script de vaciado de tablas](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/ddlDmlScript.md)

@@ -1,6 +1,6 @@
 -- Vanesa  Sekeresh
---Lista el codigo y el tipo de productos.
-select codigo, tipo from PRODUCTO;
+--Lista el codigo, nombre y el tipo de productos.
+select codigo, nombre, tipo from PRODUCTO;
 
 --Lista los teléfonos y el id de los clientes que han realizado una compra el 01/01/2024.
 select distinct t.numTelefono, c.idCliente from TELEFONO t 

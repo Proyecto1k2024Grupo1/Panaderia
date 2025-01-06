@@ -47,19 +47,6 @@ SELECT
 FROM 
     PRODUCTO p;
 
--- Lista del total de compras calculado mediante las líneas de ticket con el nombre del cliente
-SELECT 
-    c.nombre,
-    t.numCompra, 
-    tl.cantidad * p.precio AS Total_Compra
-FROM 
-    COMPRA t
-JOIN 
-    CLIENTE c ON t.idCliente = c.idCliente
-JOIN 
-    LINEA_DE_TICKET tl ON t.numCompra = tl.numCompra
-JOIN 
-    PRODUCTO p ON tl.codProducto = p.codigo;
 
 -- Suma total de todas las compras en marzo
 SELECT 

@@ -1,4 +1,4 @@
---Vanesa  Sekeresh
+-- Vanesa  Sekeresh
 --Lista el codigo y el tipo de productos.
 select codigo, tipo from PRODUCTO;
 
@@ -13,7 +13,7 @@ select e.nombre, r.dni
 from REPARTIDOR r
 join EMPLEADO e ON r.dni = e.dni;
 
---JESSICA
+-- Jessica Brotons Maciá
 -- Lista el empleado más joven junto con su fecha de nacimiento.
 SELECT nombre, fnac
 FROM EMPLEADO
@@ -38,7 +38,7 @@ WHERE NOT EXISTS (
 )
 ORDER BY p1.precio;
 
---SILVIA
+-- Silvia Cachón Leiva
 -- Lista de productos con su precio y precio sin IVA
 SELECT 
     p.nombre, 

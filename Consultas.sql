@@ -81,6 +81,6 @@ JOIN
 JOIN 
     PRODUCTO p ON tl.codProducto = p.codigo
 WHERE 
-    MONTH(t.fecha) = 4  -- Filtra las compras realizadas en abril
+    MONTH(t.fecha) = 4  
 ORDER BY 
     Gasto DESC; 

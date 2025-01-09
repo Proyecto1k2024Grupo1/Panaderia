@@ -28,15 +28,13 @@ WHERE t.numTelefono LIKE '1111%'
 ORDER BY c.nombre;
 
 -- Lista los productos cuyo precio no es compartido por ningún otro producto.
-SELECT p1.nombre, p1.precio
+SELECT DISTINCT p1.nombre, p1.precio
 FROM PRODUCTO p1
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM PRODUCTO p2
-    WHERE p1.precio = p2.precio
-      AND p1.codigo != p2.codigo
-)
-ORDER BY p1.precio;
+LEFT JOIN PRODUCTO p2 
+    ON p1.precio = p2.precio 
+    AND p1.codigo != p2.codigo
+WHERE p2.codigo IS NULL
+ORDER BY p1.precio;;
 
 -- Silvia Cachón Leiva
 -- Lista de productos con su precio y precio sin IVA

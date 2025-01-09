@@ -27,14 +27,12 @@ JOIN TELEFONO t ON c.idCliente = t.idCliente
 WHERE t.numTelefono LIKE '1111%'
 ORDER BY c.nombre;
 
--- Lista los productos cuyo precio no es compartido por ningún otro producto.
-SELECT DISTINCT p1.nombre, p1.precio
-FROM PRODUCTO p1
-LEFT JOIN PRODUCTO p2 
-    ON p1.precio = p2.precio 
-    AND p1.codigo != p2.codigo
-WHERE p2.codigo IS NULL
-ORDER BY p1.precio;;
+-- Lista los productos de tipo "dulce" que su precio sea entre 0,5€ y 2€
+SELECT nombre, precio
+FROM PRODUCTO
+WHERE tipo = 'dulce'
+  AND precio BETWEEN 0.5 AND 2
+ORDER BY precio;
 
 -- Silvia Cachón Leiva
 -- Lista de productos con su precio y precio sin IVA

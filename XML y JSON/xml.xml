@@ -1,0 +1,81 @@
+<Productos>
+
+    <Producto>
+        <Nombre>Baguette</Nombre>
+        <Precio>1.2</Precio>
+        <PrecioSinIVA>0.991736</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Croissant</Nombre>
+        <Precio>1.5</Precio>
+        <PrecioSinIVA>1.239669</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Pan de centeno</Nombre>
+        <Precio>2.5</Precio>
+        <PrecioSinIVA>2.066116</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Magdalena</Nombre>
+        <Precio>1</Precio>
+        <PrecioSinIVA>0.826446</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Empanada</Nombre>
+        <Precio>2.8</Precio>
+        <PrecioSinIVA>2.31405</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Tarta de manzana</Nombre>
+        <Precio>15</Precio>
+        <PrecioSinIVA>12.396694</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Pan integral</Nombre>
+        <Precio>3</Precio>
+        <PrecioSinIVA>2.479339</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Bizcocho</Nombre>
+        <Precio>2</Precio>
+        <PrecioSinIVA>1.652893</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Galleta de avena</Nombre>
+        <Precio>1.2</Precio>
+        <PrecioSinIVA>0.991736</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Chapata</Nombre>
+        <Precio>1.8</Precio>
+        <PrecioSinIVA>1.487603</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Rosca</Nombre>
+        <Precio>1.5</Precio>
+        <PrecioSinIVA>1.239669</PrecioSinIVA>
+    </Producto>
+
+    <Producto>
+        <Nombre>Donut</Nombre>
+        <Precio>1</Precio>
+        <PrecioSinIVA>0.826446</PrecioSinIVA>
+    </Producto>
+    
+    <Producto>
+        <Nombre>Pan de molde</Nombre>
+        <Precio>2</Precio>
+        <PrecioSinIVA>1.652893</PrecioSinIVA>
+    </Producto>
+
+</Productos>

@@ -1,0 +1,95 @@
+{
+    "Productos": [
+        {
+            "Producto": {
+                "Nombre": "Baguette",
+                "Precio": 1.2,
+                "PrecioSinIVA": 0.991736
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Croissant",
+                "Precio": 1.5,
+                "PrecioSinIVA": 1.239669
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Pan de centeno",
+                "Precio": 2.5,
+                "PrecioSinIVA": 2.066116
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Magdalena",
+                "Precio": 1,
+                "PrecioSinIVA": 0.826446
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Empanada",
+                "Precio": 2.8,
+                "PrecioSinIVA": 2.31405
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Tarta de manzana",
+                "Precio": 15,
+                "PrecioSinIVA": 12.396694
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Pan integral",
+                "Precio": 3,
+                "PrecioSinIVA": 2.479339
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Bizcocho",
+                "Precio": 2,
+                "PrecioSinIVA": 1.652893
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Galleta de avena",
+                "Precio": 1.2,
+                "PrecioSinIVA": 0.991736
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Chapata",
+                "Precio": 1.8,
+                "PrecioSinIVA": 1.487603
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Rosca",
+                "Precio": 1.5,
+                "PrecioSinIVA": 1.239669
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Donut",
+                "Precio": 1,
+                "PrecioSinIVA": 0.826446
+            }
+        },
+        {
+            "Producto": {
+                "Nombre": "Pan de molde",
+                "Precio": 2,
+                "PrecioSinIVA": 1.652893
+            }
+        }
+    ]
+}

@@ -14,7 +14,8 @@
 ![imagen](https://github.com/user-attachments/assets/107bb2d7-f5b3-4966-b7bf-b64b32367e15)
 
 6.
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/b0e443e7-a25a-4fb0-a416-b1656a503d28" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/3024712f-908c-4718-9ac3-9032941cb6ec" />
+
 
 
 7.

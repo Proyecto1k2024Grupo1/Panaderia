@@ -23,7 +23,7 @@ LIMIT 1;
 -- Lista los clientes los cuales su número de teléfono empiece por "1111".
 SELECT c.nombre, c.apellido1, c.apellido2, t.numTelefono
 FROM CLIENTE c
-INNER JOIN TELEFONO t ON c.idCliente = t.idCliente
+JOIN TELEFONO t ON c.idCliente = t.idCliente
 WHERE t.numTelefono LIKE '1111%'
 ORDER BY c.nombre;
 

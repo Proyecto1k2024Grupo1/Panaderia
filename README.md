@@ -1,6 +1,5 @@
 # Proyecto Intermodular
 # Grupo 1
-css: style.css
 ## Integrantes:
 * Jessica Brotons Maciá (https://github.com/LaJessyMiau)
 * Silvia Cachón Leiva (https://github.com/39Luka)

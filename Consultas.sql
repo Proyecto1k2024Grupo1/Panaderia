@@ -27,7 +27,7 @@ JOIN TELEFONO t ON c.idCliente = t.idCliente
 WHERE t.numTelefono LIKE '1111%'
 ORDER BY c.nombre;
 
--- Lista los productos de tipo "dulce" que su precio sea entre 0,5€ y 2€
+-- Lista los productos de tipo "dulce" que su precio sea entre 0,5€ y 2€.
 SELECT nombre, precio
 FROM PRODUCTO
 WHERE tipo = 'dulce'

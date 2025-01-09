@@ -14,7 +14,8 @@
 ![imagen](https://github.com/user-attachments/assets/107bb2d7-f5b3-4966-b7bf-b64b32367e15)
 
 6.
-![imagen](https://github.com/user-attachments/assets/f4ba20e2-e7cf-4d67-b248-f5bf7c18e177)
+<img width="139" alt="image" src="https://github.com/user-attachments/assets/b0e443e7-a25a-4fb0-a416-b1656a503d28" />
+
 
 7.
 ![imagen](https://github.com/user-attachments/assets/6d4162d3-c7a2-4ff6-bbe6-ab2c41183422)

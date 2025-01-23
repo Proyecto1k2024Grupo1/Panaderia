@@ -1,19 +1,18 @@
 import java.time.LocalDate;
 
-public class Repartidor extends Empleado{
-    public Repartidor(String dni, double salario, LocalDate fnac, String nombre, String encargado) {
+public class Panadero extends Empleado{
+    public Panadero(String dni, double salario, LocalDate fnac, String nombre, String encargado) {
         super(dni, salario, fnac, nombre, encargado);
     }
-
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Repartidor>\n");
+        xml.append("<Panadero>\n");
         xml.append("\t<Dni>").append(getDni()).append("</Dni>\n");
         xml.append("\t<Salario>").append(getSalario()).append("</Salario>\n");
         xml.append("\t<Fnac>").append(getFnac()).append("</Fnac>\n");
         xml.append("\t<Nombre>").append(getNombre()).append("</Nombre>\n");
         xml.append("\t<Encargado>").append(getEncargado()).append("</Encargado>\n");
-        xml.append("</Repartidor>");
+        xml.append("</Panadero>");
         return xml.toString();
     }
 

@@ -1,32 +1,42 @@
 public class Proveedor {
-
-    private int idProveedor;
+    private int codProveedor;
     private String nombre;
-    private String direccion;
-    private String telefono;
 
-    public Proveedor() {
+    public Proveedor(int codProveedor, String nombre) {
+        this.codProveedor = codProveedor;
+        this.nombre = nombre;
     }
 
+    public int getCodProveedor() {
+        return codProveedor;
+    }
+
+    public void setCodProveedor(int codProveedor) {
+        this.codProveedor = codProveedor;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     public String toXML() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<Proveedor>\n");
-        sb.append("<idProveedor>").append(idProveedor).append("</idProveedor>\n");
-        sb.append("<nombre>").append(nombre).append("</nombre>\n");
-        sb.append("<direccion>").append(direccion).append("</direccion>\n");
-        sb.append("<telefono>").append(telefono).append("</telefono>\n");
-        sb.append("</Proveedor>");
-        return sb.toString();
+        StringBuilder xml = new StringBuilder();
+        xml.append("<Proveedor>\n");
+        xml.append("\t<CodProveedor>").append(getCodProveedor()).append("</CodProveedor>\n");
+        xml.append("\t<Nombre>").append(getNombre()).append("</Nombre>\n");
+        xml.append("</Proveedor>");
+        return xml.toString();
     }
 
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\"idProveedor\": ").append(idProveedor).append(",\n");
-        sb.append("\"nombre\": \"").append(nombre).append("\",\n");
-        sb.append("\"direccion\": \"").append(direccion).append("\",\n");
-        sb.append("\"telefono\": \"").append(telefono).append("\"\n");
-        sb.append("}");
-        return sb.toString();
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("{\n");
+        json.append("\t\"codProveedor\": ").append(getCodProveedor()).append(",\n");
+        json.append("\t\"nombre\": \"").append(getNombre()).append("\"\n");
+        json.append("}");
+        return json.toString();
     }
 }

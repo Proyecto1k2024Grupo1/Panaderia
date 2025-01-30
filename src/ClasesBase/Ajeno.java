@@ -1,16 +1,18 @@
-public class Ajeno extends Producto{
+package ClasesBase;
+
+public class Ajeno extends Producto {
 
     public Ajeno(int codigo, String nombre, Producto.tipo tipo, double precio) {
         super(codigo, nombre, tipo, precio);
     }
     public String toXML() {
         StringBuilder xmlBuilder = new StringBuilder();
-        xmlBuilder.append("<Ajeno>\n");
+        xmlBuilder.append("<BAse.Ajeno>\n");
         xmlBuilder.append("    <codigo>").append(getCodigo()).append("</codigo>\n");
         xmlBuilder.append("    <nombre>").append(getNombre()).append("</nombre>\n");
         xmlBuilder.append("    <tipo>").append(getTipo()).append("</tipo>\n");
         xmlBuilder.append("    <precio>").append(getPrecio()).append("</precio>\n");
-        xmlBuilder.append("</Ajeno>");
+        xmlBuilder.append("</BAse.Ajeno>");
         return xmlBuilder.toString();
     }
 

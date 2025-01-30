@@ -1,3 +1,5 @@
+package ClasesBase;
+
 import java.time.LocalDate;
 
 public class Panadero extends Empleado{
@@ -6,13 +8,13 @@ public class Panadero extends Empleado{
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Panadero>\n");
+        xml.append("<BAse.Panadero>\n");
         xml.append("\t<Dni>").append(getDni()).append("</Dni>\n");
         xml.append("\t<Salario>").append(getSalario()).append("</Salario>\n");
         xml.append("\t<Fnac>").append(getFnac()).append("</Fnac>\n");
         xml.append("\t<Nombre>").append(getNombre()).append("</Nombre>\n");
         xml.append("\t<Encargado>").append(getEncargado()).append("</Encargado>\n");
-        xml.append("</Panadero>");
+        xml.append("</BAse.Panadero>");
         return xml.toString();
     }
 

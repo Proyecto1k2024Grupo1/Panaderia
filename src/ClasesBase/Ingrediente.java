@@ -1,3 +1,5 @@
+package ClasesBase;
+
 public class Ingrediente {
     private int codIngrediente;
     private String nombre;
@@ -34,11 +36,11 @@ public class Ingrediente {
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Ingrediente>\n");
+        xml.append("<BAse.Ingrediente>\n");
         xml.append("\t<CodIngrediente>").append(codIngrediente).append("</CodIngrediente>\n");
         xml.append("\t<Nombre>").append(nombre).append("</Nombre>\n");
         xml.append("\t<Descripcion>").append(descripcion).append("</Descripcion>\n");
-        xml.append("</Ingrediente>");
+        xml.append("</BAse.Ingrediente>");
         return xml.toString();
     }
 

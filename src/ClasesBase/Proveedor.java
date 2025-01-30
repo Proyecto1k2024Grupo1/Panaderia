@@ -1,3 +1,5 @@
+package ClasesBase;
+
 public class Proveedor {
     private int codProveedor;
     private String nombre;
@@ -24,10 +26,10 @@ public class Proveedor {
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Proveedor>\n");
+        xml.append("<BAse.Proveedor>\n");
         xml.append("\t<CodProveedor>").append(getCodProveedor()).append("</CodProveedor>\n");
         xml.append("\t<Nombre>").append(getNombre()).append("</Nombre>\n");
-        xml.append("</Proveedor>");
+        xml.append("</BAse.Proveedor>");
         return xml.toString();
     }
 

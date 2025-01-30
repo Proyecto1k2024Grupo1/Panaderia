@@ -1,3 +1,5 @@
+package ClasesBase;
+
 public class Linea_De_Ticket {
     private int numCompra;
     private int numLinea;

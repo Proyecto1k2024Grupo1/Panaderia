@@ -1,15 +1,17 @@
+package ClasesBase;
+
 public class Propio extends Producto{
     public Propio(int codigo, String nombre, Producto.tipo tipo, double precio) {
         super(codigo, nombre, tipo, precio);
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Propio>\n");
+        xml.append("<BAse.Propio>\n");
         xml.append("\t<Codigo>").append(getCodigo()).append("</Codigo>\n");
         xml.append("\t<Nombre>").append(getNombre()).append("</Nombre>\n");
         xml.append("\t<Tipo>").append(getTipo()).append("</Tipo>\n");
         xml.append("\t<Precio>").append(getPrecio()).append("</Precio>\n");
-        xml.append("</Propio>");
+        xml.append("</BAse.Propio>");
         return xml.toString();
     }
 

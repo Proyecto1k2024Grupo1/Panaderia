@@ -1,3 +1,5 @@
+package ClasesBase;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -97,7 +99,7 @@ public class Compra {
     }
     public String toXML() {
         StringBuilder xmlBuilder = new StringBuilder();
-        xmlBuilder.append("<Compra>\n");
+        xmlBuilder.append("<BAse.Compra>\n");
         xmlBuilder.append("    <numCompra>").append(getNumCompra()).append("</numCompra>\n");
         xmlBuilder.append("    <fecha>").append(getFecha()).append("</fecha>\n");
         xmlBuilder.append("    <idCliente>").append(getIdCliente()).append("</idCliente>\n");
@@ -107,7 +109,7 @@ public class Compra {
         xmlBuilder.append("    <dniRepartidor>").append(getDniRepartidor()).append("</dniRepartidor>\n");
         xmlBuilder.append("    <fechaRepartidor>").append(getFechaRepartidor()).append("</fechaRepartidor>\n");
         xmlBuilder.append("    <horaRepartidor>").append(getHoraRepartidor()).append("</horaRepartidor>\n");
-        xmlBuilder.append("</Compra>");
+        xmlBuilder.append("</BAse.Compra>");
         return xmlBuilder.toString();
     }
 

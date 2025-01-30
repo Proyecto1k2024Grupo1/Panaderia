@@ -1,3 +1,5 @@
+package ClasesBase;
+
 public class Telefono {
     private String numTelefono;
     private int idCliente;
@@ -24,10 +26,10 @@ public class Telefono {
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Telefono>\n");
+        xml.append("<BAse.Telefono>\n");
         xml.append("\t<NumTelefono>").append(getNumTelefono()).append("</NumTelefono>\n");
         xml.append("\t<IdCliente>").append(getIdCliente()).append("</IdCliente>\n");
-        xml.append("</Telefono>");
+        xml.append("</BAse.Telefono>");
         return xml.toString();
     }
 

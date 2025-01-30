@@ -1,3 +1,5 @@
+package ClasesBase;
+
 import java.time.LocalDate;
 
 public class Empleado {
@@ -56,13 +58,13 @@ public class Empleado {
     }
     public String toXML() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<Empleado>\n");
+        xml.append("<BAse.Empleado>\n");
         xml.append("\t<Dni>").append(dni).append("</Dni>\n");
         xml.append("\t<Salario>").append(salario).append("</Salario>\n");
         xml.append("\t<Fnac>").append(fnac.toString()).append("</Fnac>\n");
         xml.append("\t<Nombre>").append(nombre).append("</Nombre>\n");
         xml.append("\t<Encargado>").append(encargado).append("</Encargado>\n");
-        xml.append("</Empleado>");
+        xml.append("</BAse.Empleado>");
         return xml.toString();
     }
 

@@ -129,9 +129,9 @@ INSERT INTO AJENO (codigo) VALUES
 INSERT INTO PROPIO (codigo) VALUES 
 (8),(9),(10),(11),(12),(13);
 
-INSERT INTO HACER (codProdPropio, dniPanadero) VALUES 
-(8, '12345678A'), (9, '89012345H'), (10, '12345678A'),
-(11, '89012345H'), (12, '89012345H'), (13, '90123456I');
+INSERT INTO HACER (codProdPropio, dniPanadero, cantidad) VALUES 
+(8, '12345678A', 5), (9, '89012345H', 7), (10, '12345678A', 2),
+(11, '89012345H', 7), (12, '89012345H', 8), (13, '90123456I', 20);
 
 INSERT INTO PROVEEDOR (nombre) VALUES 
 ('Panadería del Sol'), ('Pastelería La Dulce Vida'), 

@@ -7,8 +7,7 @@
 
 ## [Sistema de información](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/SistemaDeInform%C3%A1cion.md)
 
-## [Modelo Entidad-Relación](![BD Modelo](https://github.com/user-attachments/assets/9a0b608c-e33a-42a5-8615-64a29e07e7f4)
-
+## [Modelo Entidad-Relación](![BD Modelo](https://github.com/user-attachments/assets/41f229b8-6af0-40b4-b532-dc6a3444694b)
 
 ## [Justificaciones](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/Justificaciones.md)
 

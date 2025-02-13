@@ -72,7 +72,7 @@ FK ->(codigo) -> PRODUCTO
 
 ---
 
-**HACER** (<ins>codProdPropio*</ins>, <ins>dniPanadero*</ins>)  
+**HACER** (<ins>codProdPropio*</ins>, <ins>dniPanadero*</ins>, cantidad)  
 PK ->(codProdPropio, dniPanadero)  
 FK ->(codProdPropio) -> PROPIO  
    ->(dniPanadero) -> PANADERO  

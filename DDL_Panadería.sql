@@ -149,7 +149,7 @@ create table COMPRA(
     fechaDependiente date, 
     
     -- DNI del repartidor que entregó el pedido
-    dniRepartidor varchar(32) NOT NULL, 
+    dniRepartidor varchar(32), 
     
     -- Fecha en que el repartidor entregó la compra
     fechaRepartidor date, 

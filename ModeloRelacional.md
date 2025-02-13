@@ -48,7 +48,6 @@ FK ->(idCliente) -> CLIENTE
    ->(dniRepartidor) -> REPARTIDOR  
 VNN ->(idCliente)  
     ->(dniDependiente)  
-    ->(dniRepartidor)  
 
 ---
 

@@ -236,6 +236,9 @@ create table HACER(
     
     -- DNI del panadero
     dniPanadero varchar(32), 
+
+    --Cantidad de producto que hace
+    cantidad int,
     
     -- Definición de la clave primaria (compuesta por codProdPropio y dniPanadero)
     constraint PK_HACER primary key (codProdPropio, dniPanadero),

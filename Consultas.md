@@ -1,4 +1,4 @@
--- Vanesa  Sekeresh
+### Vanesa  Sekeresh
 
 --Lista el codigo, nombre y el tipo de productos.
 ```sql
@@ -25,7 +25,7 @@ join EMPLEADO e ON r.dni = e.dni;
 ![imagen](https://github.com/user-attachments/assets/7d6e1013-1cb4-463c-bbc9-891618e749f0)
 
 
--- Jessica Brotons Maciá
+### Jessica Brotons Maciá
 
 -- Lista el empleado más joven junto con su fecha de nacimiento.
 ```sql
@@ -58,7 +58,7 @@ ORDER BY precio;
 ![imagen](https://github.com/user-attachments/assets/28889623-d979-4649-aa83-a1dbf146041a)
 
 
--- Silvia Cachón Leiva
+### Silvia Cachón Leiva
 
 -- Lista de productos con su precio y precio sin IVA.
 ```sql

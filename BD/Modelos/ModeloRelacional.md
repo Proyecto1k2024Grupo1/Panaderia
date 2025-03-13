@@ -106,3 +106,7 @@ FK ->(codProveedor) -> PROVEEDOR
 PK ->(codIngrediente, codProdPropio)  
 FK ->(codIngrediente) -> INGREDIENTE  
    ->(codProdPropio) -> PROPIO  
+
+## Esquema relacional
+![imagen](https://github.com/user-attachments/assets/bb64a409-1c55-4af1-bc5f-1ea05e241fa6)
+

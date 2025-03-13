@@ -1,3 +1,7 @@
+## [Conversión del modelo ER a Diagrama de Clases](<img width="834" alt="Conversión del modelo ER a Diagrama de Clasespng" src="https://github.com/user-attachments/assets/6561e0c4-9b70-4b09-b868-a0a4ad14a910" />)
+
+
+
 {
 	"_type": "Project",
 	"_id": "AAAAAAFF+h6SjaM2Hec=",

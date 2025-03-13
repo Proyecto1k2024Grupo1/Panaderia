@@ -6,5 +6,6 @@
 
 
 ## [Base de datos](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/SistemaDeInform%C3%A1cion.md)
+## [Lenguajes de marcas](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/XML%20y%20JSON/Intro.md)
 
 

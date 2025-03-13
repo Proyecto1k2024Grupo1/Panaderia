@@ -11,3 +11,6 @@ En cada ticket de compra tiene que venir el nombre del producto que se ha compra
 Además, de nuestros servicios a domicilio queremos llevar un control de las entregas donde quede registrado en qué fecha y hora un repartidor ha entregado un pedido a un cliente.
 
 De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su puesto de trabajo y si son supervisados por un encargado y cuál es.
+
+## [Modelo entidad-relación](https://github.com/user-attachments/assets/41f229b8-6af0-40b4-b532-dc6a3444694b)
+## [Modelo relacional](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/ModeloRelacional.md)

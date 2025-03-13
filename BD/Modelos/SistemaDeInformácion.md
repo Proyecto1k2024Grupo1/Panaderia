@@ -12,5 +12,5 @@ Además, de nuestros servicios a domicilio queremos llevar un control de las ent
 
 De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su puesto de trabajo y si son supervisados por un encargado y cuál es.
 
-## [Modelo entidad-relación](https://github.com/user-attachments/assets/41f229b8-6af0-40b4-b532-dc6a3444694b)
+## [Modelo entidad-relación](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/ModelosEntidadRelacion-Justificaciones.md)
 ## [Modelo relacional](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/ModeloRelacional.md)

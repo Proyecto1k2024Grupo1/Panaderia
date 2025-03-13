@@ -16,3 +16,4 @@ De todos nuestros empleados debemos guardar su DNI, nombre, edad, salario, su pu
 ## [Modelo relacional](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/ModeloRelacional.md)
 ## [Relaciones y restricciones](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/RelacionesYRestriciones.md)
 ## [Diccionario de Datos](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/DiccionarioDeDatos.md)
+## [DDL, DML, DQL](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Estructura/ddlDmlScript.md)

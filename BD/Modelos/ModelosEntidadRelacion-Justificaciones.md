@@ -1,3 +1,8 @@
+## Modelo entidad-relación
+![imagen](https://github.com/user-attachments/assets/42ee941e-3059-42c0-aed4-fe7354d6a85f)
+
+
+
 ## Justificaciones
 El atributo fecha va en compra y no en la relación, porque una compra tiene la fecha del momento en que se realizó y no depende del cliente, ya que esa compra no se vende en diferentes fechas.
 

@@ -237,7 +237,7 @@ create table HACER(
     -- DNI del panadero
     dniPanadero varchar(32), 
 
-    --Cantidad de producto que hace
+    -- Cantidad de producto que hace
     cantidad int,
     
     -- Definición de la clave primaria (compuesta por codProdPropio y dniPanadero)

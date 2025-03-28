@@ -4,7 +4,13 @@
 * Silvia Cachón Leiva (https://github.com/39Luka)
 * Vanesa Sekeresh (https://github.com/Timia117)
 
+# Reparto de tablas para DAO
 
+J: Ajeno, Propio, Dependiente
+S: Cliente, Proeveedor, Repartidor
+V: Producto, Panadero, Ingrediente
+
+Conjunto: Compra, Linea de ticket
 ## [Base de datos](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/BD/Modelos/SistemaDeInform%C3%A1cion.md)
 ## [Lenguajes de marcas](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/XML%20y%20JSON/Intro.md)
 

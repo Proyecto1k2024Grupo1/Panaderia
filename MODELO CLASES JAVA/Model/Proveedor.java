@@ -1,36 +1,14 @@
-/**
- * 
- */
-public class Proveedor {
+import java.util.ArrayList;
+import java.util.List;
 
-    /**
-     * Default constructor
-     */
-    public Proveedor() {
+class Proveedor {
+    int codProveedor;
+    String nombre;
+    List<Producto> productosAjenos = new ArrayList<>();
+
+    void registrarSuministro(Ajeno ajeno) {
     }
 
-    /**
-     * 
-     */
-    private int codProveedor;
-
-    /**
-     * 
-     */
-    private String nombre;
-
-    /**
-     * @param ajeno
-     */
-    public void registrarSuministro(Ajeno ajeno) {
-        // TODO implement here
+    void registrarVenta(Ingrediente ingrediente) {
     }
-
-    /**
-     * @param ingrediente
-     */
-    public void registrarVenta(Ingrediente ingrediente) {
-        // TODO implement here
-    }
-
 }

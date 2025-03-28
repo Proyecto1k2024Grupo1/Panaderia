@@ -1,62 +1,21 @@
 import java.time.LocalDate;
 
-/**
- * 
- */
-public class Empleado {
+class Empleado {
+    String dni;
+    double salario;
+    LocalDate fnac;
+    String nombre;
+    Empleado encargado;
 
-    /**
-     * Default constructor
-     */
-    public Empleado() {
+    int calcularEdad() {
+        return LocalDate.now().getYear() - fnac.getYear();
     }
 
-    /**
-     * 
-     */
-    private String dni;
-
-    /**
-     * 
-     */
-    private double salario;
-
-    /**
-     * 
-     */
-    private LocalDate fnac;
-
-    /**
-     * 
-     */
-    private String nombre;
-
-    /**
-     * 
-     */
-    private String encargado;
-
-    /**
-     * @return
-     */
-    public int calcularEdad() {
-        // TODO implement here
-        return 0;
+    void asignarEncargado(Empleado encargado) {
+        this.encargado = encargado;
     }
 
-    /**
-     * @param encargado
-     */
-    public void asignarEncargado(String encargado) {
-        // TODO implement here
+    String mostrarInfo() {
+        return nombre + ", " + dni;
     }
-
-    /**
-     * @return
-     */
-    public String mostrarInfo() {
-        // TODO implement here
-        return "";
-    }
-
 }

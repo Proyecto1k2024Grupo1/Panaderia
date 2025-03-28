@@ -1,63 +1,21 @@
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.*;
-import java.util.*;
+class Cliente {
+    int idCliente;
+    String direccion;
+    String nombre;
+    String apellido1;
+    String apellido2;
+    List<String> telefonos = new ArrayList<>();
 
-/**
- * 
- */
-public class Cliente {
-
-    /**
-     * Default constructor
-     */
-    public Cliente() {
+    void registrarCompra(Compra compra) {
     }
 
-    /**
-     * 
-     */
-    private int idCliente;
-
-    /**
-     * 
-     */
-    private String direccion;
-
-    /**
-     * 
-     */
-    private String nombre;
-
-    /**
-     * 
-     */
-    private String apellido1;
-
-    /**
-     * 
-     */
-    private String apellido2;
-
-    /**
-     * @param compra
-     */
-    public void registrarCompra(Compra compra) {
-        // TODO implement here
+    void actualizarDireccion(String nuevaDireccion) {
     }
 
-    /**
-     * @param nuevaDireccion
-     */
-    public void actualizarDireccion(String nuevaDireccion) {
-        // TODO implement here
+    String obtenerNombreCompleto() {
+        return nombre + " " + apellido1 + " " + apellido2;
     }
-
-    /**
-     * @return
-     */
-    public String obtenerNombreCompleto() {
-        // TODO implement here
-        return "";
-    }
-
 }

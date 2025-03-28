@@ -1,29 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.*;
-import java.util.*;
+class Ajeno extends Producto {
+    List<Proveedor> proveedor = new ArrayList<>();
 
-/**
- * 
- */
-public class Ajeno extends Producto {
-
-    /**
-     * Default constructor
-     */
-    public Ajeno() {
+    String mostrarInfo() {
+        return nombre;
     }
-
-    /**
-     * 
-     */
-    private int codigo;
-
-    /**
-     * @return
-     */
-    public String mostrarInfo() {
-        // TODO implement here
-        return "";
-    }
-
 }

@@ -1,28 +1,6 @@
 import java.time.LocalDate;
 
-/**
- * 
- */
-public class Repartidor extends Empleado {
-
-    /**
-     * Default constructor
-     */
-    public Repartidor() {
+class Repartidor extends Empleado {
+    void realizarEntrega(Compra compra, LocalDate fecha, String hora) {
     }
-
-    /**
-     * 
-     */
-    private String dni;
-
-    /**
-     * @param compra 
-     * @param fecha 
-     * @param hora
-     */
-    public void realizarEntrega(Compra compra, LocalDate fecha, String hora) {
-        // TODO implement here
-    }
-
 }

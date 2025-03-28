@@ -1,39 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.*;
-import java.util.*;
+class Ingrediente {
+    int codIngrediente;
+    String nombre;
+    String descripcion;
+    List<Proveedor> proveedor = new ArrayList<>();
 
-/**
- * 
- */
-public class Ingrediente {
-
-    /**
-     * Default constructor
-     */
-    public Ingrediente() {
+    String mostrarInfo() {
+        return nombre;
     }
-
-    /**
-     * 
-     */
-    private int codIngrediente;
-
-    /**
-     * 
-     */
-    private String nombre;
-
-    /**
-     * 
-     */
-    private String descripcion;
-
-    /**
-     * @return
-     */
-    public String mostrarInfo() {
-        // TODO implement here
-        return "";
-    }
-
 }

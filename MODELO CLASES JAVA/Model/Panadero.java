@@ -1,28 +1,4 @@
-
-import java.io.*;
-import java.util.*;
-
-/**
- * 
- */
-public class Panadero extends Empleado {
-
-    /**
-     * Default constructor
-     */
-    public Panadero() {
+class Panadero extends Empleado {
+    void prepararProducto(Propio producto) {
     }
-
-    /**
-     * 
-     */
-    private String dni;
-
-    /**
-     * @param producto
-     */
-    public void prepararProducto(Propio producto) {
-        // TODO implement here
-    }
-
 }

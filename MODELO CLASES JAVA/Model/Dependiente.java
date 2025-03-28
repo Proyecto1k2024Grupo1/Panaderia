@@ -1,36 +1,7 @@
-
-import java.io.*;
-import java.util.*;
-
-/**
- * 
- */
-public class Dependiente extends Empleado {
-
-    /**
-     * Default constructor
-     */
-    public Dependiente() {
+class Dependiente extends Empleado {
+    void atenderCliente(Cliente cliente) {
     }
 
-    /**
-     * 
-     */
-    private String dni;
-
-    /**
-     * @param cliente
-     */
-    public void atenderCliente(Cliente cliente) {
-        // TODO implement here
+    void aplicarDescuento(Compra compra, double descuento) {
     }
-
-    /**
-     * @param compra 
-     * @param descuento
-     */
-    public void aplicarDescuento(Compra compra, Double descuento) {
-        // TODO implement here
-    }
-
 }

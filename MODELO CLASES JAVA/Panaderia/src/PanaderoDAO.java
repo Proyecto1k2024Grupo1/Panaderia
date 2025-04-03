@@ -1,11 +1,8 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanaderoDAO {
+public class PanaderoDAO extends EmpleadoDAO{
     private static PanaderoDAO instance;
     private Connection connection;
 
@@ -28,9 +25,20 @@ public class PanaderoDAO {
     }
 
     public void insertPanadero(Panadero panadero) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
+        connection.setAutoCommit(false);
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
+        ) {
             statement.setString(1, panadero.getDni());
             statement.executeUpdate();
+
+            statement2.setString(1, panadero.getDni());
+            statement2.setDouble(2, panadero.getSalario());
+            statement2.setDate(3, Date.valueOf(panadero.getFnac()));
+            statement2.setString(4, panadero.getNombre());
+            statement2.setString(5, panadero.getEncargado().getDni());
+
+            connection.commit();
         }
     }
 
@@ -45,21 +53,6 @@ public class PanaderoDAO {
         return personas;
     }
 
-
-    public void updatePanadero(Panadero panadero) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-            statement.setString(1, panadero.getDni());
-            statement.executeUpdate();
-        }
-    }
-
-    public void deletePanaderoByDni(String dni) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-            statement.setString(1, dni);
-            statement.executeUpdate();
-        }
-    }
-
     private Panadero resultSetToPanadero(ResultSet resultSet) throws SQLException {
         return new Panadero(
                 resultSet.getString("dni"),
@@ -67,8 +60,50 @@ public class PanaderoDAO {
                 resultSet.getDate("fnac").toLocalDate(),
                 resultSet.getString("nombre")
         );
-
     }
+
+    public void updatePanadero(Panadero panadero) throws SQLException {
+        connection.setAutoCommit(false);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+            PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)
+        ) {
+            statement.setString(1, panadero.getDni());
+            statement.executeUpdate();
+
+
+            statement2.setDouble(1, panadero.getSalario());
+            statement2.setDate(2, Date.valueOf(panadero.getFnac()));
+            statement.setString(3, panadero.getNombre());
+            statement.setString(4, panadero.getEncargado().getDni());
+            statement.setString(5, panadero.getDni());
+            statement.executeUpdate();
+
+            connection.commit();
+
+        }
+    }
+
+    public void deletePanaderoByDni(String dni) throws SQLException {
+        connection.setAutoCommit(false);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+             PreparedStatement statement2 = connection.prepareStatement(DELETE_QUERY_SUPER)
+        ) {
+            statement.setString(1, dni);
+            statement.executeUpdate();
+
+
+            statement2.setString(1, dni);
+            statement.executeUpdate();
+
+            connection.commit();
+
+        }
+    }
+
+
+
+}
+
 
 
 

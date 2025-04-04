@@ -1,4 +1,4 @@
-package Producto;
+package DAO;
 
 public abstract class ProductoDAO {
     protected static final String INSERT_QUERY_SUPER = "INSERT INTO PRODUCTO (nombre, tipo, precio) VALUES (?, ?, ?)";

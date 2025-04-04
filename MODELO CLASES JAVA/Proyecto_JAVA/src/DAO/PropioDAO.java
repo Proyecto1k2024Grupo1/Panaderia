@@ -1,8 +1,7 @@
-package Propio;
+package DAO;
 
-import Clases.Propio;
-import Producto.ProductoDAO;
-import db.DBConnection;
+
+import Model.Propio;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

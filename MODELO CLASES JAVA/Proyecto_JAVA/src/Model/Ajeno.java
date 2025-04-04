@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-class Ajeno extends Producto {
+public class Ajeno extends Producto {
     List<Proveedor> proveedor = new ArrayList<>();
 
     public Ajeno(int codigo, String nombre, String tipo, double precio) {

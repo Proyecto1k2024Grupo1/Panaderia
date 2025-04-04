@@ -1,9 +1,8 @@
-package Ajeno;
+package DAO;
 
 
-import Clases.Ajeno;
+import Model.Ajeno;
 import Producto.ProductoDAO;
-import db.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

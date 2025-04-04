@@ -1,9 +1,12 @@
-package DAO;
+package Dependiente;
+
+import Clases.Dependiente;
+import Empleado.EmpleadoDAO;
+import db.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import Model.Dependiente;
 
 public class DependienteDAO extends EmpleadoDAO {
     private static DependienteDAO instance;
@@ -33,10 +36,10 @@ public class DependienteDAO extends EmpleadoDAO {
         connection.setAutoCommit(false);
 
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
-             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
+            PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
         ) {
             statement.setString(1, dependiente.getDni());
-            statement.setString(1, dependiente.getHorario());
+            statement.setString(2, dependiente.getHorario());
             statement.executeUpdate();
 
             statement2.setString(1, dependiente.getDni());
@@ -44,6 +47,7 @@ public class DependienteDAO extends EmpleadoDAO {
             statement2.setDate(3, Date.valueOf(dependiente.getFnac()));
             statement2.setString(4, dependiente.getNombre());
             statement2.setString(5, dependiente.getEncargado().getDni());
+            statement2.executeUpdate();
 
             connection.commit();
         }
@@ -89,7 +93,7 @@ public class DependienteDAO extends EmpleadoDAO {
     public void updateDependiente(Dependiente dependiente) throws SQLException {
         connection.setAutoCommit(false);
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_SUPER);
-             PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY)
+            PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY)
         ) {
             statement.setDouble(1, dependiente.getSalario());
             statement.setDate(2, Date.valueOf(dependiente.getFnac()));
@@ -101,6 +105,7 @@ public class DependienteDAO extends EmpleadoDAO {
 
             statement2.setString(1,dependiente.getHorario());
             statement2.setString(2, dependiente.getDni());
+            statement2.executeUpdate();
 
             connection.commit();
         }
@@ -114,13 +119,13 @@ public class DependienteDAO extends EmpleadoDAO {
     public void deleteDependienteByDni(String dni) throws SQLException {
         connection.setAutoCommit(false);
         try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
-             PreparedStatement statement2 = connection.prepareStatement(DELETE_QUERY_SUPER)
+            PreparedStatement statement2 = connection.prepareStatement(DELETE_QUERY_SUPER)
         ) {
             statement.setString(1, dni);
             statement.executeUpdate();
 
             statement2.setString(1, dni);
-            statement.executeUpdate();
+            statement2.executeUpdate();
 
             connection.commit();
         }

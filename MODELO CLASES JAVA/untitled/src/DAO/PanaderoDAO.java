@@ -38,7 +38,7 @@ public class PanaderoDAO extends EmpleadoDAO{
             statement2.setString(4, panadero.getNombre());
             statement2.setString(5, panadero.getEncargado().getDni());
             statement2.executeUpdate();
-            
+
             connection.commit();
         }
     }
@@ -74,9 +74,9 @@ public class PanaderoDAO extends EmpleadoDAO{
 
             statement2.setDouble(1, panadero.getSalario());
             statement2.setDate(2, Date.valueOf(panadero.getFnac()));
-            statement.setString(3, panadero.getNombre());
-            statement.setString(4, panadero.getEncargado().getDni());
-            statement.setString(5, panadero.getDni());
+            statement2.setString(3, panadero.getNombre());
+            statement2.setString(4, panadero.getEncargado().getDni());
+            statement2.setString(5, panadero.getDni());
             statement2.executeUpdate();
 
             connection.commit();
@@ -100,7 +100,6 @@ public class PanaderoDAO extends EmpleadoDAO{
 
         }
     }
-
-
-
 }
+
+

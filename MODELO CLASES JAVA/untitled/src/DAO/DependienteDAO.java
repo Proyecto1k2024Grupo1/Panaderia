@@ -39,7 +39,7 @@ public class DependienteDAO extends EmpleadoDAO {
             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
         ) {
             statement.setString(1, dependiente.getDni());
-            statement.setString(1, dependiente.getHorario());
+            statement.setString(2, dependiente.getHorario());
             statement.executeUpdate();
 
             statement2.setString(1, dependiente.getDni());
@@ -47,6 +47,7 @@ public class DependienteDAO extends EmpleadoDAO {
             statement2.setDate(3, Date.valueOf(dependiente.getFnac()));
             statement2.setString(4, dependiente.getNombre());
             statement2.setString(5, dependiente.getEncargado().getDni());
+            statement2.executeUpdate();
 
             connection.commit();
         }
@@ -104,6 +105,7 @@ public class DependienteDAO extends EmpleadoDAO {
 
             statement2.setString(1,dependiente.getHorario());
             statement2.setString(2, dependiente.getDni());
+            statement2.executeUpdate();
 
             connection.commit();
         }
@@ -123,7 +125,7 @@ public class DependienteDAO extends EmpleadoDAO {
             statement.executeUpdate();
 
             statement2.setString(1, dni);
-            statement.executeUpdate();
+            statement2.executeUpdate();
 
             connection.commit();
         }

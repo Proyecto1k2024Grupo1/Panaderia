@@ -1,8 +1,7 @@
-package Dependiente;
+package DAO;
 
-import Clases.Dependiente;
-import Empleado.EmpleadoDAO;
-import db.DBConnection;
+
+import Model.Dependiente;
 
 import java.sql.*;
 import java.util.ArrayList;

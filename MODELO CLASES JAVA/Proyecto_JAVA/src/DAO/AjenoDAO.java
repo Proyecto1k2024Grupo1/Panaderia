@@ -2,7 +2,6 @@ package DAO;
 
 
 import Model.Ajeno;
-import Producto.ProductoDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

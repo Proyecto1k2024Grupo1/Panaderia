@@ -1,5 +1,9 @@
 package DAO;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
+
 import Model.Proveedor;
 
 import java.sql.Connection;

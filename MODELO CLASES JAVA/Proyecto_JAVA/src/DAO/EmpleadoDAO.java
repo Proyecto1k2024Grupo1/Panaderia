@@ -1,5 +1,9 @@
 package DAO;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
+
 import java.sql.Connection;
 
 public abstract class EmpleadoDAO {

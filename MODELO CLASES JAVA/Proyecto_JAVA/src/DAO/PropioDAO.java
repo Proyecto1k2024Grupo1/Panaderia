@@ -1,5 +1,8 @@
 package DAO;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
 
 import Model.Propio;
 

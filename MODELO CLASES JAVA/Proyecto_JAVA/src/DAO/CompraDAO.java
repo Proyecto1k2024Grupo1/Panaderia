@@ -1,5 +1,9 @@
 package DAO;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
+
 import Model.Cliente;
 import Model.Compra;
 import Model.Dependiente;

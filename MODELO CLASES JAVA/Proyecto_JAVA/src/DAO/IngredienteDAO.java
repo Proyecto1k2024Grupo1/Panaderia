@@ -1,6 +1,10 @@
 package DAO;
 import Model.Ingrediente;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

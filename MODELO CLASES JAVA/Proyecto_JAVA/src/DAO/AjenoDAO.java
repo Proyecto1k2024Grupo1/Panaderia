@@ -1,5 +1,12 @@
 package DAO;
 
+import Model.Ajeno;
+
+import java.sql.PreparedStatement;
+
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
 
 import Model.Ajeno;
 

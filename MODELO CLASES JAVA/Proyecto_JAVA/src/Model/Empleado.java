@@ -30,6 +30,10 @@ public abstract class Empleado {
         this.nombre = nombre;
     }
 
+    public Empleado() {
+
+    }
+
     int calcularEdad() {
         return LocalDate.now().getYear() - fnac.getYear();
     }

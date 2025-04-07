@@ -1,6 +1,6 @@
 package Model;
 
-class Producto {
+public class Producto {
     int codigo;
     String nombre;
     String tipo;

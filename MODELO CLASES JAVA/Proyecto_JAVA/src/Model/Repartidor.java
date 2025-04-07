@@ -5,6 +5,13 @@ import java.time.LocalDate;
 public class Repartidor extends Empleado {
     String matricula;
 
+    public Repartidor() {
+        super();
+    }
+
+    public Repartidor(String dniSupervisor) {
+    }
+
     void realizarEntrega(Compra compra, LocalDate fecha, String hora) {
     }
 

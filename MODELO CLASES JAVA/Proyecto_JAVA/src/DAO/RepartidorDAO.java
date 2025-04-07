@@ -68,13 +68,27 @@ public class RepartidorDAO extends EmpleadoDAO{
     }
 
     private Repartidor resultSetToRepartidor(ResultSet resultSet) throws SQLException {
-        return new Repartidor(
-                resultSet.getString("dni"),
-                resultSet.getDouble("salario"),
-                resultSet.getDate("fnac").toLocalDate(),
-                resultSet.getString("nombre"),
-                resultSet.getString("matricula")
-        );
+            // Obtener el dni del supervisor (si existe)
+            String dniSupervisor = resultSet.getString("dni_supervisor");
+
+            // Crear un objeto Repartidor
+            Repartidor repartidor = new Repartidor(
+                    resultSet.getString("dni"),
+                    resultSet.getDouble("salario"),
+                    resultSet.getDate("fnac").toLocalDate(),
+                    resultSet.getString("nombre"),
+                    resultSet.getString("horario")
+            );
+
+            // Si el dniSupervisor no es null, asignamos el supervisor al repartidor
+            if (dniSupervisor != null) {
+                // Si el Repartidor tiene un campo para el supervisor, puedes buscarlo o asignarlo.
+                repartidor.setEncargado(new Repartidor(dniSupervisor));  // Ajusta esto según la lógica de tu clase
+            }
+
+            return repartidor;
+
+
     }
 
     public void updateRepartidor(Repartidor repartidor) throws SQLException {

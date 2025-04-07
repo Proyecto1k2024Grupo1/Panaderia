@@ -17,6 +17,12 @@ public class Compra {
     LocalTime horaRepartidor;
     List<LineaDeTicket> lineas = new ArrayList<>();
 
+    int numLineasActuales = 0;
+
+    public Compra() {
+
+    }
+
     void registrarLinea(LineaDeTicket linea) {
         lineas.add(linea);
     }
@@ -112,5 +118,13 @@ public class Compra {
 
     public void setLineas(List<LineaDeTicket> lineas) {
         this.lineas = lineas;
+    }
+
+    public int getNumLineasActuales() {
+        return numLineasActuales;
+    }
+
+    public void setNumLineasActuales(int numLineasActuales) {
+        this.numLineasActuales = numLineasActuales;
     }
 }

@@ -75,13 +75,28 @@ public class DependienteDAO extends EmpleadoDAO {
      * @throws SQLException Por si ocurre un error en la conversión.
      */
     private Dependiente resultSetToDependiente(ResultSet resultSet) throws SQLException {
-        return new Dependiente(
-                resultSet.getString("dni"),
-                resultSet.getDouble("salario"),
-                resultSet.getDate("fnac").toLocalDate(),
-                resultSet.getString("nombre"),
-                resultSet.getString("horario")
-        );
+
+            // Obtener el dni del supervisor (si existe)
+            String dniSupervisor = resultSet.getString("encargado");
+
+            // Crear un objeto Dependiente
+            Dependiente dependiente = new Dependiente(
+                    resultSet.getString("dni"),
+                    resultSet.getDouble("salario"),
+                    resultSet.getDate("fnac").toLocalDate(),
+                    resultSet.getString("nombre"),
+                    resultSet.getString("horario")
+            );
+
+            // Si el dniSupervisor no es null, asignamos el supervisor al dependiente
+            if (dniSupervisor != null) {
+                // Si el Dependiente tiene un campo para el supervisor, puedes buscarlo o asignarlo.
+                dependiente.setEncargado(new Dependiente(dniSupervisor));  // Ajusta esto según la lógica de tu clase
+            }
+
+            return dependiente;
+
+
     }
 
     /**

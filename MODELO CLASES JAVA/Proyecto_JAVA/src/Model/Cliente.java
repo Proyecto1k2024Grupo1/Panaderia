@@ -11,6 +11,10 @@ public class Cliente {
     String apellido2;
     List<String> telefonos = new ArrayList<>();
 
+    public Cliente() {
+
+    }
+
     void registrarCompra(Compra compra) {
     }
 

@@ -11,6 +11,16 @@ public class Dependiente extends Empleado {
         this.horario = horario;
     }
 
+    public Dependiente() {
+
+    }
+
+    public Dependiente(String dni, double salario, LocalDate fnac, String nombre, String encargado, Dependiente dependiente) {
+    }
+
+    public Dependiente(String dni) {
+    }
+
     public String getHorario() {
         return horario;
     }

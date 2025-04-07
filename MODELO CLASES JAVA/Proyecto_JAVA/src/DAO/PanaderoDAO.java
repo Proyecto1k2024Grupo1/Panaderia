@@ -59,13 +59,27 @@ public class PanaderoDAO extends EmpleadoDAO{
     }
 
     private Panadero resultSetToPanadero(ResultSet resultSet) throws SQLException {
-        return new Panadero(
+        // Obtener el dni del supervisor (si existe)
+        String dniSupervisor = resultSet.getString("dni_supervisor");
+
+        // Crear un objeto Panadero
+        Panadero panadero = new Panadero(
                 resultSet.getString("dni"),
                 resultSet.getDouble("salario"),
                 resultSet.getDate("fnac").toLocalDate(),
-                resultSet.getString("nombre")
+                resultSet.getString("nombre"),
+                resultSet.getString("horario")
         );
+
+        // Si el dniSupervisor no es null, asignamos el supervisor al panadero
+        if (dniSupervisor != null) {
+            // Si el Panadero tiene un campo para el supervisor, puedes buscarlo o asignarlo.
+            panadero.setEncargado(new Panadero(dniSupervisor));  // Ajusta esto según la lógica de tu clase
+        }
+
+        return panadero;
     }
+
 
     public void updatePanadero(Panadero panadero) throws SQLException {
         connection.setAutoCommit(false);

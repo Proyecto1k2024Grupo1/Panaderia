@@ -94,8 +94,8 @@ public class AjenoDAO extends ProductoDAO {
 
     /**
      * Actualiza los datos de un producto propio en la base de datos.
-     *
-     * @param ajeno@throws SQLException Si ocurre un error en la base de datos.
+     * @param ajeno
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
     public void updateAjeno(Ajeno ajeno) throws SQLException {
         connection.setAutoCommit(false);

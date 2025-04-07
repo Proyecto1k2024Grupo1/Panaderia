@@ -14,6 +14,7 @@ public class ClienteDAO {
     private static ClienteDAO instance;
     private Connection connection;
 
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO CLIENTE (direccion, nombre, apellido1, apellido2 ) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM CLIENTE";
     private static final String UPDATE_QUERY = "UPDATE CLIENTE SET direccion = ?, nombre = ?, apellido1 = ?, apellido2 = ? where idCliente = ? ";

@@ -11,12 +11,10 @@ public class RepartidorDAO extends EmpleadoDAO{
 
     private static RepartidorDAO instance;
 
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO REPARTIDOR (dni, matricula) VALUES (?, ?)";
-
     private static final String SELECT_ALL_QUERY = "SELECT * FROM REPARTIDOR r JOIN EMPLEADO e on e.dni = r.dni";
-
     private static final String DELETE_QUERY = "DELETE FROM REPARTIDOR WHERE dni = ?";
-
     private static final String UPDATE_QUERY = "UPDATE REPARTIDOR SET matricula = ? WHERE dni = ?";
 
     private RepartidorDAO() {

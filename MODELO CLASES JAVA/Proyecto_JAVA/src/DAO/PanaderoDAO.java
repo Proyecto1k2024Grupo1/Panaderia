@@ -10,6 +10,7 @@ public class PanaderoDAO extends EmpleadoDAO{
     private static PanaderoDAO instance;
     private Connection connection;
 
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO PANADERO (dni) VALUES (?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM PANADERO";
     static final String UPDATE_QUERY = "UPDATE PANADERO SET dni = ? WHERE dni = ?";

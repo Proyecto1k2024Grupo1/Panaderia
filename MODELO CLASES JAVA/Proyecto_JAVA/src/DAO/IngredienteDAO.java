@@ -12,6 +12,7 @@ public class IngredienteDAO {
     private static IngredienteDAO instance;
     private Connection connection;
 
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO INGREDIENTE (nombre, descripcion) VALUES (?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM INGREDIENTE";
     static final String UPDATE_QUERY = "UPDATE INGREDIENTE SET nombre = ?, descripcion = ? WHERE codIngrediente = ?";

@@ -15,6 +15,7 @@ public class ProveedorDAO {
         private static ProveedorDAO instance;
         private Connection connection;
 
+        //Consultas SQL predefinidas
         private static final String INSERT_QUERY = "INSERT INTO PROVEEDOR (nombre) VALUES (?)";
         private static final String SELECT_ALL_QUERY = "SELECT * FROM PROVEEDOR";
         private static final String UPDATE_QUERY = "UPDATE PROVEEDOR SET nombre = ? where codProveedor = ? ";

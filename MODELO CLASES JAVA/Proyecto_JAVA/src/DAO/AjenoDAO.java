@@ -2,6 +2,14 @@ package DAO;
 
 import Model.Ajeno;
 
+import java.sql.PreparedStatement;
+
+/**
+ * @author Vanesa, Silvia, Jessica
+ */
+
+import Model.Ajeno;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,178 +17,133 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase DAO para la gestión de productos del tipo "Ajeno" en la base de datos.
- * Esta clase extiende de ProductoDAO, lo que permite gestionar también la parte común de los productos.
- *
- * @author Vanesa
- * @author Silvia
- * @author Jessica
- * @version 1.0
- * @since 2025-04-10
- */
 public class AjenoDAO extends ProductoDAO {
-    // Instancia única para implementar el patrón Singleton
     private static AjenoDAO instance;
 
-    // Conexión con la base de datos
     private Connection connection;
 
-    // Sentencias SQL para operaciones básicas
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO AJENO (codigo) VALUES (?)";
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM AJENO JOIN PRODUCTO ON AJENO.codigo = PRODUCTO.codigo";
-    private static final String UPDATE_QUERY = "UPDATE AJENO SET codigo = ? WHERE codigo = ?";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM AJENO";
+    private static final String UPDATE_QUERY = "UPDATE AJENO SET codigo = ?";
     private static final String DELETE_QUERY = "DELETE FROM AJENO WHERE codigo = ?";
 
+
+
+
     /**
-     * Constructor privado que inicializa la conexión.
-     * Se usa solo dentro del patrón Singleton.
+     * Método estático para obtener la única instancia de AjenoDAO.
+     * @return instancia única de AjenoDAO.
      */
-    private AjenoDAO() {
+    private AjenoDAO(){
         this.connection = DBConnection.getConnection();
     }
 
     /**
-     * Devuelve la única instancia de la clase AjenoDAO.
-     * Si no existe, la crea.
-     *
-     * @return instancia única de AjenoDAO.
-     */
-    public static AjenoDAO getInstance() {
-        if (instance == null) {
-            instance = new AjenoDAO();
-        }
-        return instance;
-    }
-
-    /**
-     * Inserta un nuevo producto Ajeno en la base de datos.
-     * Primero inserta los datos comunes en la tabla PRODUCTO (superclase),
-     * luego inserta el código en la tabla AJENO (subclase).
-     *
-     * @param ajeno Objeto Ajeno a insertar.
-     * @throws SQLException si ocurre un error durante la operación.
+     * Inserta un nuevo producto Ajeno en la base de datos
+     * @param ajeno Objeto ajeno a insertar.
+     * @throws SQLException Si ocurre un error en la base de datos
      */
     public void insertAjeno(Ajeno ajeno) throws SQLException {
-        connection.setAutoCommit(false); // Se inicia la transacción
+        connection.setAutoCommit(false);
 
-        try (
-                PreparedStatement statementSuper = connection.prepareStatement(INSERT_QUERY_SUPER, PreparedStatement.RETURN_GENERATED_KEYS);
-                PreparedStatement statementAjeno = connection.prepareStatement(INSERT_QUERY)
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
         ) {
-            // Insertar en tabla PRODUCTO
-            statementSuper.setString(1, ajeno.getNombre());
-            statementSuper.setString(2, ajeno.getTipo());
-            statementSuper.setDouble(3, ajeno.getPrecio());
-            statementSuper.executeUpdate();
+            statement2.setString(1, ajeno.getNombre());
+            statement2.setString(2, ajeno.getTipo());
+            statement2.setDouble(3, ajeno.getPrecio());
+            statement2.executeUpdate();
 
-            // Obtener el código generado automáticamente
-            ResultSet keys = statementSuper.getGeneratedKeys();
-            if (keys.next()) {
-                int codigoGenerado = keys.getInt(1);
+            ResultSet resultSet2 = statement2.getGeneratedKeys();
 
-                // Insertar en tabla AJENO con el código
-                statementAjeno.setInt(1, codigoGenerado);
-                statementAjeno.executeUpdate();
 
-                connection.commit(); // Confirmar transacción
-            } else {
-                connection.rollback(); // Deshacer cambios si no hay clave generada
-                throw new SQLException("No se pudo obtener la clave generada para el producto ajeno.");
-            }
+            statement.setInt(1, resultSet2.getInt(1)); //Aquí insertamos el código que se genera en la clase padre.
+            statement.executeUpdate();
+
+
+
+            connection.commit();
         }
     }
 
     /**
-     * Recupera todos los productos de tipo Ajeno de la base de datos.
-     *
+     * Obtiene todos los productos ajenos almacenados en la base de datos.
      * @return Lista de objetos Ajeno.
-     * @throws SQLException si ocurre un error durante la consulta.
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
     public List<Ajeno> getAllAjeno() throws SQLException {
         List<Ajeno> ajenos = new ArrayList<>();
-
         try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             ResultSet resultSet = statement.executeQuery();
-
-            // Se transforma cada fila en un objeto Ajeno
             while (resultSet.next()) {
                 ajenos.add(resultSetToAjeno(resultSet));
             }
         }
-
         return ajenos;
     }
 
     /**
-     * Convierte un resultado de la base de datos (ResultSet) en un objeto Ajeno.
+     * Convierte un ResultSet en un objeto Ajeno.
      *
-     * @param rs ResultSet obtenido de la base de datos.
-     * @return Objeto Ajeno con los datos.
-     * @throws SQLException si ocurre un error al acceder a los datos.
+     * @param resultSet Resultado de la consulta SQL.
+     * @return Objeto Ajeno con los datos del ResultSet.
+     * @throws SQLException Por si ocurre un error en la conversión.
      */
-    private Ajeno resultSetToAjeno(ResultSet rs) throws SQLException {
+    private Ajeno resultSetToAjeno(ResultSet resultSet) throws SQLException {
         return new Ajeno(
-                rs.getInt("codigo"),
-                rs.getString("nombre"),
-                rs.getString("tipo"),
-                rs.getDouble("precio")
+                resultSet.getInt("codigo"),
+                resultSet.getString("nombre"),
+                resultSet.getString("tipo"),
+                resultSet.getDouble("precio")
         );
     }
 
     /**
-     * Actualiza los datos de un producto ajeno.
-     * Se actualiza tanto en la tabla PRODUCTO como en la tabla AJENO.
-     *
-     * @param ajeno Objeto Ajeno con los nuevos datos.
-     * @throws SQLException si ocurre un error durante la actualización.
+     * Actualiza los datos de un producto propio en la base de datos.
+     * @param ajeno
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
     public void updateAjeno(Ajeno ajeno) throws SQLException {
         connection.setAutoCommit(false);
 
-        try (
-                PreparedStatement statementSuper = connection.prepareStatement(UPDATE_QUERY_SUPER);
-                PreparedStatement statementAjeno = connection.prepareStatement(UPDATE_QUERY)
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+             PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)
         ) {
-            // Actualizar tabla PRODUCTO
-            statementSuper.setString(1, ajeno.getNombre());
-            statementSuper.setString(2, ajeno.getTipo());
-            statementSuper.setDouble(3, ajeno.getPrecio());
-            statementSuper.setInt(4, ajeno.getCodigo());
-            statementSuper.executeUpdate();
+            statement2.setInt(1, ajeno.getCodigo());
+            statement2.setString(2, ajeno.getNombre());
+            statement2.setString(3, ajeno.getTipo());
+            statement2.setDouble(4, ajeno.getPrecio());
+            statement2.executeUpdate();
 
-            // Actualizar tabla AJENO (aunque solo se guarda el código)
-            statementAjeno.setInt(1, ajeno.getCodigo());
-            statementAjeno.setInt(2, ajeno.getCodigo());
-            statementAjeno.executeUpdate();
+            statement.setInt(1,  ajeno.getCodigo());
+            statement.executeUpdate();
 
             connection.commit();
+
         }
     }
 
     /**
-     * Elimina un producto ajeno de la base de datos por su código.
-     * Elimina primero de la tabla AJENO, luego de PRODUCTO.
-     *
-     * @param codigo Código del producto ajeno a eliminar.
-     * @throws SQLException si ocurre un error durante la eliminación.
+     * Elimina un objeto Propio de la base de datos por su código.
+     * @param codigo Identificador único del producto propio a eliminar.
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
-    public void deleteAjenoByCodigo(int codigo) throws SQLException {
+    public void deletePropioByCodigo(int codigo) throws SQLException {
         connection.setAutoCommit(false);
 
-        try (
-                PreparedStatement statementAjeno = connection.prepareStatement(DELETE_QUERY);
-                PreparedStatement statementSuper = connection.prepareStatement(DELETE_QUERY_SUPER)
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+             PreparedStatement statement2 = connection.prepareStatement(DELETE_QUERY_SUPER)
         ) {
-            // Eliminar de tabla AJENO
-            statementAjeno.setInt(1, codigo);
-            statementAjeno.executeUpdate();
+            statement.setInt(1, codigo);
+            statement.executeUpdate();
 
-            // Eliminar de tabla PRODUCTO
-            statementSuper.setInt(1, codigo);
-            statementSuper.executeUpdate();
+            statement2.setInt(1, codigo);
+            statement2.executeUpdate();
 
             connection.commit();
         }
     }
+
+
 }

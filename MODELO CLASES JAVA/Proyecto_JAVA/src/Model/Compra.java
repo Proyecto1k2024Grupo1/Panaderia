@@ -5,40 +5,72 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa una compra realizada por un cliente, incluyendo detalles como las líneas de productos,
+ * el dependiente que la procesó, el repartidor que la entregó y cualquier descuento aplicado.
+ */
 public class Compra {
-    int numCompra;
-    LocalDate fecha;
-    Cliente cliente;
-    Dependiente dependiente;
-    double descuentoDependiente;
-    LocalDate fechaDependiente;
-    Repartidor repartidor;
-    LocalDate fechaRepartidor;
-    LocalTime horaRepartidor;
-    List<LineaDeTicket> lineas = new ArrayList<>();
 
-    int numLineasActuales = 0;
+    // Atributos de la clase Compra
+    private int numCompra;                  // Número de la compra
+    private LocalDate fecha;                 // Fecha de la compra
+    private Cliente cliente;                 // Cliente que realiza la compra
+    private Dependiente dependiente;         // Dependiente que atendió la compra
+    private double descuentoDependiente;     // Descuento otorgado por el dependiente
+    private LocalDate fechaDependiente;      // Fecha en la que el dependiente aplicó el descuento
+    private Repartidor repartidor;           // Repartidor que entregará la compra
+    private LocalDate fechaRepartidor;       // Fecha de la entrega por parte del repartidor
+    private LocalTime horaRepartidor;        // Hora en que el repartidor hará la entrega
+    private List<LineaDeTicket> lineas;      // Lista de líneas de productos de la compra
 
+    private int numLineasActuales = 0;       // Número de líneas de productos actuales
+
+    /**
+     * Constructor vacío para la clase Compra.
+     * Se usa principalmente para crear instancias sin parámetros o para pruebas.
+     */
     public Compra() {
 
     }
 
+    /**
+     * Registra una nueva línea de ticket en la compra.
+     *
+     * @param linea Objeto de tipo LineaDeTicket que representa la línea de la compra.
+     */
     void registrarLinea(LineaDeTicket linea) {
-        lineas.add(linea);
+        lineas.add(linea); // Añade la línea a la lista de líneas de la compra
     }
 
+    /**
+     * Calcula el total de la compra sumando el precio de las líneas de ticket.
+     * Este método debe ser implementado en función de la lógica de precios.
+     *
+     * @return El total de la compra.
+     */
     double calcularTotal() {
-        return 0;
+        return 0;  // Este método debe ser implementado según el cálculo real.
     }
 
+    /**
+     * Asocia un cliente a la compra.
+     *
+     * @param cliente Cliente que realiza la compra.
+     */
     void asociarCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-
+    /**
+     * Constructor para crear una nueva compra especificando el número de compra.
+     *
+     * @param numCompra Número único de la compra.
+     */
     public Compra(int numCompra) {
         this.numCompra = numCompra;
     }
+
+    // Métodos getters y setters
 
     public int getNumCompra() {
         return numCompra;

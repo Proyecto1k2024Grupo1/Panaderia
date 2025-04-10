@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class DBConnection {
     // URL de conexión a la base de datos MySQL
     private static final String URL = "jdbc:mysql://localhost:3306/mi_db";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root123456";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "JessicaSilviaVanesa";
 
     private static Connection connection;
 

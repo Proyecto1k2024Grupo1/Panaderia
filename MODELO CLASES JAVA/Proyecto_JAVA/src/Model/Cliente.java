@@ -12,7 +12,24 @@ public class Cliente {
     List<String> telefonos = new ArrayList<>();
 
     public Cliente() {
+    }
 
+    public Cliente(int idCliente, String direccion, String nombre, String apellido1, String apellido2) {
+        this.idCliente = idCliente;
+        this.direccion = direccion;
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;
+        this.telefonos = new ArrayList<>();
+    }
+
+    public Cliente(int idCliente, String direccion, String nombre, String apellido1, String apellido2, List<String> telefonos) {
+        this.idCliente = idCliente;
+        this.direccion = direccion;
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;
+        this.telefonos = telefonos;
     }
 
     void registrarCompra(Compra compra) {
@@ -71,13 +88,5 @@ public class Cliente {
 
     public void setTelefonos(List<String> telefonos) {
         this.telefonos = telefonos;
-    }
-
-    public Cliente(int idCliente, String direccion, String nombre, String apellido1, String apellido2) {
-        this.idCliente = idCliente;
-        this.direccion = direccion;
-        this.nombre = nombre;
-        this.apellido1 = apellido1;
-        this.apellido2 = apellido2;
     }
 }

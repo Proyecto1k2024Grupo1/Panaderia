@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
     // URL de conexión a la base de datos MySQL
-    private static final String URL = "jdbc:mysql://localhost:3306/mi_db";
+    private static final String URL = "panaderia.cnou80g8ic24.us-east-1.rds.amazonaws.com";
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "JessicaSilviaVanesa";
 

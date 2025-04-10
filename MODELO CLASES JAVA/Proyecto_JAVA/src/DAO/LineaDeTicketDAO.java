@@ -1,9 +1,5 @@
 package DAO;
 
-/**
- * @author Vanesa, Silvia, Jessica
- */
-
 import Model.LineaDeTicket;
 import Model.Producto;
 
@@ -14,32 +10,55 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase DAO para gestionar las operaciones CRUD de las líneas de ticket en la base de datos.
+ * Implementa métodos para insertar, actualizar, eliminar y obtener líneas de ticket.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
+ */
 public class LineaDeTicketDAO {
-
 
     private static LineaDeTicketDAO instance;
     private Connection connection;
 
     // Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO LINEA_DE_TICKET (numCompra, numLinea, codProducto, cantidad) VALUES (?, ?, ?, ?)";
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM LINEA_DE_TICKET";
+    private static final String SELECT_ALL_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET";  // Mejor especificar columnas
     private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET codProducto = ?, cantidad = ? WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
 
     /**
-     * Método estático para obtener la única instancia de LineaDeTicketDAO.
-     *
-     * @return instancia única de LineaDeTicketDAO.
+     * Constructor privado para evitar la instanciación externa de esta clase.
+     * Establece la conexión con la base de datos a través de la clase DBConnection.
      */
     private LineaDeTicketDAO() {
         this.connection = DBConnection.getConnection();
     }
 
     /**
-     * Inserta una nueva línea de ticket en la base de datos
+     * Método estático para obtener la única instancia de LineaDeTicketDAO.
+     * Este método sigue el patrón Singleton, asegurando que solo haya una instancia de esta clase.
      *
-     * @param linea De Ticket a insertar.
-     * @throws SQLException Si ocurre un error en la base de datos
+     * @return La instancia única de LineaDeTicketDAO.
+     */
+    public static synchronized LineaDeTicketDAO getInstance() {
+        if (instance == null) {
+            instance = new LineaDeTicketDAO();
+        }
+        return instance;
+    }
+
+    /**
+     * Inserta una nueva línea de ticket en la base de datos.
+     * Este método ejecuta una transacción que se confirma si la inserción es exitosa,
+     * y se revierte en caso de error.
+     *
+     * @param linea La línea de ticket a insertar.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
      */
     public void insertLineaDeTicket(LineaDeTicket linea) throws SQLException {
         connection.setAutoCommit(false);
@@ -52,14 +71,20 @@ public class LineaDeTicketDAO {
 
             statement.executeUpdate();
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();  // Hacer rollback en caso de error
+            throw e;  // Re-lanzar la excepción para manejarla en la capa superior
+        } finally {
+            connection.setAutoCommit(true);  // Restaurar auto-commit
         }
     }
 
     /**
      * Obtiene todas las líneas de ticket almacenadas en la base de datos.
+     * Este método ejecuta una consulta SELECT que obtiene todas las líneas de ticket.
      *
-     * @return Lista de objetos LineaDeTicket.
-     * @throws SQLException Si ocurre un error en la base de datos.
+     * @return Una lista de objetos LineaDeTicket representando todas las líneas de ticket en la base de datos.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
      */
     public List<LineaDeTicket> getAllLineasDeTicket() throws SQLException {
         List<LineaDeTicket> lineas = new ArrayList<>();
@@ -73,11 +98,12 @@ public class LineaDeTicketDAO {
     }
 
     /**
-     * Convierte un ResultSet en un objeto LineaDeTicket.
+     * Convierte un objeto ResultSet en una instancia de LineaDeTicket.
+     * Este método mapea cada columna del ResultSet a los atributos del objeto LineaDeTicket.
      *
-     * @param resultSet Resultado de la consulta SQL.
-     * @return Objeto LineaDeTicket con los datos del ResultSet.
-     * @throws SQLException Por si ocurre un error en la conversión.
+     * @param resultSet El ResultSet obtenido de la consulta SQL.
+     * @return Una instancia de LineaDeTicket con los datos del ResultSet.
+     * @throws SQLException Si ocurre un error al obtener los datos del ResultSet.
      */
     private LineaDeTicket resultSetToLineaDeTicket(ResultSet resultSet) throws SQLException {
         return new LineaDeTicket(
@@ -90,9 +116,11 @@ public class LineaDeTicketDAO {
 
     /**
      * Actualiza los datos de una línea de ticket en la base de datos.
+     * Este método ejecuta una transacción para actualizar la línea de ticket. Si ocurre un error,
+     * la transacción se revierte.
      *
-     * @param linea Línea de Ticket a actualizar.
-     * @throws SQLException Si ocurre un error en la base de datos.
+     * @param linea La línea de ticket con los nuevos datos a actualizar.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
      */
     public void updateLineaDeTicket(LineaDeTicket linea) throws SQLException {
         connection.setAutoCommit(false);
@@ -105,15 +133,22 @@ public class LineaDeTicketDAO {
 
             statement.executeUpdate();
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();  // Hacer rollback en caso de error
+            throw e;  // Re-lanzar la excepción para manejo posterior
+        } finally {
+            connection.setAutoCommit(true);  // Restaurar auto-commit
         }
     }
 
     /**
-     * Elimina una línea de ticket de la base de datos por su numCompra y numLinea.
+     * Elimina una línea de ticket de la base de datos mediante los identificadores numCompra y numLinea.
+     * Este método ejecuta una transacción para eliminar la línea de ticket. Si ocurre un error,
+     * la transacción se revierte.
      *
-     * @param numCompra Identificador único de la compra.
-     * @param numLinea  Identificador único de la línea dentro de la compra.
-     * @throws SQLException Si ocurre un error en la base de datos.
+     * @param numCompra El identificador único de la compra a la que pertenece la línea de ticket.
+     * @param numLinea El identificador único de la línea dentro de la compra.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
      */
     public void deleteLineaDeTicket(int numCompra, int numLinea) throws SQLException {
         connection.setAutoCommit(false);
@@ -124,8 +159,11 @@ public class LineaDeTicketDAO {
 
             statement.executeUpdate();
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();  // Hacer rollback en caso de error
+            throw e;  // Re-lanzar la excepción para manejo posterior
+        } finally {
+            connection.setAutoCommit(true);  // Restaurar auto-commit
         }
     }
-
-
 }

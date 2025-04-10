@@ -1,62 +1,90 @@
 package DAO;
 
 /**
- * @author Vanesa, Silvia, Jessica
+ * Esta clase maneja las operaciones de acceso a la base de datos relacionadas con los dependientes,
+ * hereda de EmpleadoDAO para aprovechar la funcionalidad común con los empleados.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 
 import Model.Dependiente;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DependienteDAO extends EmpleadoDAO {
     private static DependienteDAO instance;
-
     private Connection connection;
 
-    //Consultas SQL predefinidas
+    // Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO DEPENDIENTE (dni, horario) VALUES (?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM DEPENDIENTE d JOIN EMPLEADO e ON e.dni = d.dni";
     private static final String DELETE_QUERY = "DELETE FROM DEPENDIENTE WHERE dni = ?";
+    private static final String DELETE_QUERY_SUPER = "DELETE FROM EMPLEADO WHERE dni = ?";
+    private static final String INSERT_QUERY_SUPER = "INSERT INTO EMPLEADO (dni, salario, fnac, nombre, encargado) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE DEPENDIENTE SET horario = ? WHERE dni = ?";
+    private static final String UPDATE_QUERY_SUPER = "UPDATE EMPLEADO SET salario = ?, fnac = ?, nombre = ?, encargado = ? WHERE dni = ?";
 
     /**
-     * Método estático para obtener la única instancia de DependienteDAO.
-     * @return instancia única de DependienteDAO.
+     * Constructor privado para evitar instanciación directa y asegurar el patrón Singleton.
      */
-    private DependienteDAO(){
+    private DependienteDAO() {
         this.connection = DBConnection.getConnection();
     }
 
     /**
-     * Inserta un nuevo dependiente en la base de datos
-     * @param dependiente dependiente a insertar.
-     * @throws SQLException Si ocurre un error en la base de datos
+     * Método estático para obtener la única instancia de DependienteDAO.
+     * Utiliza el patrón Singleton para asegurar que sólo existe una instancia.
+     *
+     * @return instancia única de DependienteDAO.
+     */
+    public static DependienteDAO getInstance() {
+        if (instance == null) {
+            instance = new DependienteDAO();
+        }
+        return instance;
+    }
+
+    /**
+     * Inserta un nuevo dependiente en la base de datos, tanto en la tabla EMPLEADO como en DEPENDIENTE.
+     * Si ocurre un error, realiza un rollback para mantener la base de datos consistente.
+     *
+     * @param dependiente El objeto dependiente que se va a insertar.
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
     public void insertDependiente(Dependiente dependiente) throws SQLException {
         connection.setAutoCommit(false);
-
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
-            PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)
+        try (
+                PreparedStatement statementSuper = connection.prepareStatement(INSERT_QUERY_SUPER);
+                PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)
         ) {
+            // Primero insertar en EMPLEADO
+            statementSuper.setString(1, dependiente.getDni());
+            statementSuper.setDouble(2, dependiente.getSalario());
+            statementSuper.setDate(3, Date.valueOf(dependiente.getFnac()));
+            statementSuper.setString(4, dependiente.getNombre());
+            statementSuper.setString(5, dependiente.getEncargado() != null ? dependiente.getEncargado().getDni() : null);
+            statementSuper.executeUpdate();
+
+            // Luego insertar en DEPENDIENTE
             statement.setString(1, dependiente.getDni());
             statement.setString(2, dependiente.getHorario());
             statement.executeUpdate();
 
-            statement2.setString(1, dependiente.getDni());
-            statement2.setDouble(2, dependiente.getSalario());
-            statement2.setDate(3, Date.valueOf(dependiente.getFnac()));
-            statement2.setString(4, dependiente.getNombre());
-            statement2.setString(5, dependiente.getEncargado().getDni());
-            statement2.executeUpdate();
-
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
         }
     }
 
     /**
      * Obtiene todos los dependientes almacenados en la base de datos.
+     *
      * @return Lista de objetos dependientes.
      * @throws SQLException Si ocurre un error en la base de datos.
      */
@@ -72,81 +100,87 @@ public class DependienteDAO extends EmpleadoDAO {
     }
 
     /**
-     * Convierte un ResultSet en un objeto dependiente.
-     * @param resultSet Resultado de la consulta SQL.
-     * @return Objeto Dependiente con los datos del ResultSet.
-     * @throws SQLException Por si ocurre un error en la conversión.
+     * Convierte un objeto ResultSet en un objeto Dependiente.
+     * Este método es usado para mapear los resultados de la consulta a objetos en Java.
+     *
+     * @param resultSet El ResultSet obtenido de la consulta SQL.
+     * @return Un objeto Dependiente con los datos mapeados.
+     * @throws SQLException Si ocurre un error durante la conversión.
      */
     private Dependiente resultSetToDependiente(ResultSet resultSet) throws SQLException {
+        String dniSupervisor = resultSet.getString("encargado");
 
-            // Obtener el dni del supervisor (si existe)
-            String dniSupervisor = resultSet.getString("encargado");
+        // Crear un objeto Dependiente con los datos obtenidos del ResultSet
+        Dependiente dependiente = new Dependiente(
+                resultSet.getString("dni"),
+                resultSet.getDouble("salario"),
+                resultSet.getDate("fnac").toLocalDate(),
+                resultSet.getString("nombre"),
+                resultSet.getString("horario")
+        );
 
-            // Crear un objeto Dependiente
-            Dependiente dependiente = new Dependiente(
-                    resultSet.getString("dni"),
-                    resultSet.getDouble("salario"),
-                    resultSet.getDate("fnac").toLocalDate(),
-                    resultSet.getString("nombre"),
-                    resultSet.getString("horario")
-            );
+        // Si existe un supervisor, asignarlo al dependiente
+        if (dniSupervisor != null) {
+            dependiente.setEncargado(new Dependiente(dniSupervisor));
+        }
 
-            // Si el dniSupervisor no es null, asignamos el supervisor al dependiente
-            if (dniSupervisor != null) {
-                // Si el Dependiente tiene un campo para el supervisor, puedes buscarlo o asignarlo.
-                dependiente.setEncargado(new Dependiente(dniSupervisor));  // Ajusta esto según la lógica de tu clase
-            }
-
-            return dependiente;
-
-
+        return dependiente;
     }
 
     /**
-     * Actualiza los datos de un dependiente en la base de datos.
-     * @param dependiente dependiente con los datos actualizados.
+     * Actualiza los datos de un dependiente en la base de datos, tanto en la tabla EMPLEADO como en DEPENDIENTE.
+     * Si ocurre un error, realiza un rollback para mantener la base de datos consistente.
+     *
+     * @param dependiente El objeto dependiente con los datos actualizados.
      * @throws SQLException Si ocurre un error en la base de datos.
      */
     public void updateDependiente(Dependiente dependiente) throws SQLException {
         connection.setAutoCommit(false);
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_SUPER);
-            PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY)
+        try (
+                PreparedStatement statementSuper = connection.prepareStatement(UPDATE_QUERY_SUPER);
+                PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)
         ) {
-            statement.setDouble(1, dependiente.getSalario());
-            statement.setDate(2, Date.valueOf(dependiente.getFnac()));
-            statement.setString(3, dependiente.getNombre());
-            statement.setString(4, dependiente.getEncargado().getDni());
-            statement.setString(5, dependiente.getDni());
+            statementSuper.setDouble(1, dependiente.getSalario());
+            statementSuper.setDate(2, Date.valueOf(dependiente.getFnac()));
+            statementSuper.setString(3, dependiente.getNombre());
+            statementSuper.setString(4, dependiente.getEncargado() != null ? dependiente.getEncargado().getDni() : null);
+            statementSuper.setString(5, dependiente.getDni());
+            statementSuper.executeUpdate();
+
+            statement.setString(1, dependiente.getHorario());
+            statement.setString(2, dependiente.getDni());
             statement.executeUpdate();
 
-
-            statement2.setString(1,dependiente.getHorario());
-            statement2.setString(2, dependiente.getDni());
-            statement2.executeUpdate();
-
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
         }
     }
 
     /**
-     * Elimina un dependiente de la base de datos por su DNI.
-     * @param dni Identificador único del dependiente a eliminar.
+     * Elimina un dependiente de la base de datos por su DNI, tanto de la tabla DEPENDIENTE como de EMPLEADO.
+     * Si ocurre un error, realiza un rollback para mantener la base de datos consistente.
+     *
+     * @param dni El DNI del dependiente a eliminar.
      * @throws SQLException Si ocurre un error en la base de datos.
      */
     public void deleteDependienteByDni(String dni) throws SQLException {
         connection.setAutoCommit(false);
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
-            PreparedStatement statement2 = connection.prepareStatement(DELETE_QUERY_SUPER)
+        try (
+                PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+                PreparedStatement statementSuper = connection.prepareStatement(DELETE_QUERY_SUPER)
         ) {
             statement.setString(1, dni);
             statement.executeUpdate();
 
-            statement2.setString(1, dni);
-            statement2.executeUpdate();
+            statementSuper.setString(1, dni);
+            statementSuper.executeUpdate();
 
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
         }
     }
-
-
 }

@@ -1,7 +1,14 @@
 package DAO;
 
 /**
- * @author Vanesa, Silvia, Jessica
+ * Clase DAO para gestionar las operaciones relacionadas con las compras en la base de datos.
+ * Proporciona métodos para insertar, actualizar, eliminar y recuperar información de compras.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 
 import Model.Cliente;
@@ -28,6 +35,11 @@ public class CompraDAO {
         this.connection = DBConnection.getConnection();
     }
 
+    /**
+     * Obtiene la instancia singleton de CompraDAO.
+     *
+     * @return instancia única de CompraDAO
+     */
     public static CompraDAO getInstance() {
         if (instance == null) {
             instance = new CompraDAO();
@@ -36,19 +48,33 @@ public class CompraDAO {
     }
 
     /**
-     * Inserta una nueva compra en la base de datos.
+     * Inserta una nueva compra en la base de datos y devuelve el número de compra generado.
+     *
+     * @param compra objeto Compra a insertar
+     * @return número de compra generado
+     * @throws SQLException si ocurre un error durante la operación
      */
-    public void insertCompra(Compra compra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
+    public int insertCompra(Compra compra) throws SQLException {
+        int numCompra = -1;
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, compra.getCliente().getIdCliente());
             statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                numCompra = rs.getInt(1);
+            }
         }
+        return numCompra;
     }
 
     /**
-     * Obtiene todas las compras de la base de datos.
+     * Recupera todas las compras almacenadas en la base de datos.
+     *
+     * @return lista de objetos Compra
+     * @throws SQLException si ocurre un error durante la operación
      */
-    public List<Compra> getAllCompra() throws SQLException {
+    public List<Compra> getAllCompras() throws SQLException {
         List<Compra> compras = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             ResultSet resultSet = statement.executeQuery();
@@ -60,7 +86,11 @@ public class CompraDAO {
     }
 
     /**
-     * Actualiza el cliente de una compra.
+     * Actualiza el cliente asociado a una compra específica.
+     *
+     * @param numCompra número de la compra a actualizar
+     * @param idCliente nuevo ID del cliente
+     * @throws SQLException si ocurre un error durante la operación
      */
     public void updateCompraCliente(int numCompra, int idCliente) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
@@ -71,7 +101,12 @@ public class CompraDAO {
     }
 
     /**
-     * Asigna datos del dependiente a una compra.
+     * Asigna un dependiente, el descuento aplicado y la fecha al registro de una compra.
+     *
+     * @param numCompra número de la compra
+     * @param dni DNI del dependiente
+     * @param descuento descuento aplicado por el dependiente
+     * @throws SQLException si ocurre un error durante la operación
      */
     public void updateCompraDependiente(int numCompra, String dni, double descuento) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_DEPENDIENTE)) {
@@ -83,7 +118,11 @@ public class CompraDAO {
     }
 
     /**
-     * Asigna datos del repartidor a una compra.
+     * Asigna un repartidor a una compra y registra la fecha y hora de entrega.
+     *
+     * @param numCompra número de la compra
+     * @param dniRepartidor DNI del repartidor
+     * @throws SQLException si ocurre un error durante la operación
      */
     public void updateCompraRepartidor(int numCompra, String dniRepartidor) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_REPARTIDOR)) {
@@ -94,7 +133,10 @@ public class CompraDAO {
     }
 
     /**
-     * Elimina una compra por su número.
+     * Elimina una compra de la base de datos utilizando su número de compra.
+     *
+     * @param numCompra número de la compra a eliminar
+     * @throws SQLException si ocurre un error durante la operación
      */
     public void deleteCompraByNum(int numCompra) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
@@ -104,29 +146,37 @@ public class CompraDAO {
     }
 
     /**
-     * Convierte un ResultSet en un objeto Compra.
-     * (Este método debería ampliarse según los atributos de Compra).
+     * Convierte un ResultSet en un objeto Compra. Este método también maneja valores nulos en campos opcionales.
+     *
+     * @param rs ResultSet con los datos de la compra
+     * @return objeto Compra construido a partir del ResultSet
+     * @throws SQLException si ocurre un error al leer el ResultSet
      */
     private Compra resultSetToCompra(ResultSet rs) throws SQLException {
         Compra compra = new Compra();
 
         compra.setNumCompra(rs.getInt("numCompra"));
-        compra.setFecha(rs.getDate("fecha").toLocalDate());
 
-        // Cliente con solo id
+        Date fechaCompra = rs.getDate("fecha");
+        if (fechaCompra != null) {
+            compra.setFecha(fechaCompra.toLocalDate());
+        }
+
         Cliente cliente = new Cliente();
         cliente.setIdCliente(rs.getInt("idCliente"));
         compra.setCliente(cliente);
 
-        // Dependiente con solo dni
         Dependiente dependiente = new Dependiente();
         dependiente.setDni(rs.getString("dniDependiente"));
         compra.setDependiente(dependiente);
 
         compra.setDescuentoDependiente(rs.getDouble("descuentoDependiente"));
-        compra.setFechaDependiente(rs.getDate("fechaDependiente").toLocalDate());
 
-        // Repartidor (puede ser null)
+        Date fechaDep = rs.getDate("fechaDependiente");
+        if (fechaDep != null) {
+            compra.setFechaDependiente(fechaDep.toLocalDate());
+        }
+
         String dniRepartidor = rs.getString("dniRepartidor");
         if (dniRepartidor != null) {
             Repartidor repartidor = new Repartidor();
@@ -134,10 +184,16 @@ public class CompraDAO {
             compra.setRepartidor(repartidor);
         }
 
-        compra.setFechaRepartidor(rs.getDate("fechaRepartidor").toLocalDate());
-        compra.setHoraRepartidor(rs.getTime("horaRepartidor").toLocalTime());
+        Date fechaRep = rs.getDate("fechaRepartidor");
+        if (fechaRep != null) {
+            compra.setFechaRepartidor(fechaRep.toLocalDate());
+        }
+
+        Time horaRep = rs.getTime("horaRepartidor");
+        if (horaRep != null) {
+            compra.setHoraRepartidor(horaRep.toLocalTime());
+        }
 
         return compra;
     }
-
 }

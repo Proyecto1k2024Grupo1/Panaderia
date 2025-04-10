@@ -20,6 +20,7 @@ import java.util.List;
 public class AjenoDAO extends ProductoDAO {
     private static AjenoDAO instance;
 
+    // Conexión a la base de datos
     private Connection connection;
 
     //Consultas SQL predefinidas

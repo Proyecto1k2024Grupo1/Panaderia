@@ -17,6 +17,7 @@ public class CompraDAO {
     private static CompraDAO instance;
     private Connection connection;
 
+    //Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO COMPRA (fecha, idCliente) VALUES (CURDATE(), ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM COMPRA";
     private static final String UPDATE_QUERY = "UPDATE COMPRA SET idCliente = ? WHERE numCompra = ?";
@@ -24,9 +25,14 @@ public class CompraDAO {
     private static final String UPDATE_QUERY_REPARTIDOR = "UPDATE COMPRA SET dniRepartidor = ?, fechaRepartidor = CURDATE(), horaRepartidor = CURTIME() WHERE numCompra = ?";
     private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
 
+    /**
+     * Constructor privado para evitar la creación de instancias externas.
+     * Obtiene la conexión a la base de datos.
+     */
     private CompraDAO() {
         this.connection = DBConnection.getConnection();
     }
+
 
     public static CompraDAO getInstance() {
         if (instance == null) {

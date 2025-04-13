@@ -67,7 +67,7 @@ public class LineaDeTicket {
     }
 
     public double getPrecio() {
-        return producto.getPrecio();  // Devuelve el precio del producto
+        return producto.getPrecio()*cantidad;  // Devuelve el precio del producto multiplicado por la cantidad
     }
 
     // Getters y setters

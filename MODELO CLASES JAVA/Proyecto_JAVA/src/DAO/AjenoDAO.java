@@ -27,8 +27,11 @@ public class AjenoDAO extends ProductoDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM AJENO";
     private static final String UPDATE_QUERY = "UPDATE AJENO SET codigo = ?";
     private static final String DELETE_QUERY = "DELETE FROM AJENO WHERE codigo = ?";
-
-
+    private static final String SELECT_BY_ID_QUERY =
+            "SELECT p.codigo, p.nombre, p.tipo, p.precio " +
+                    "FROM PRODUCTO p " +
+                    "JOIN AJENO a ON p.codigo = a.codigo " +
+                    "WHERE p.codigo = ?";
 
 
     /**
@@ -144,6 +147,24 @@ public class AjenoDAO extends ProductoDAO {
             connection.commit();
         }
     }
+    /**
+     * Consulta un producto ajeno en la base de datos a partir de su código.
+     * @param codigo El identificador único del producto.
+     * @return Un objeto Ajeno con los datos del producto, o null si no se encuentra.
+     * @throws SQLException Si ocurre un error al consultar los datos.
+     */
+    public Ajeno getAjenoByCodigo(int codigo) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+            statement.setInt(1, codigo);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSetToAjeno(resultSet);
+            } else {
+                return null;
+            }
+        }
+    }
+
 
 
 }

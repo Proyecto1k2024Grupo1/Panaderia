@@ -6,6 +6,11 @@ package Model;
  * la cantidad de productos y el número de línea dentro del ticket de compra.
  * Esta clase también permite calcular el subtotal de la línea, así como
  * gestionar la relación con la compra y el producto correspondiente.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class LineaDeTicket {
     private Compra compra;    // La compra a la que pertenece esta línea de ticket
@@ -19,25 +24,16 @@ public class LineaDeTicket {
      * a la línea de ticket, además de determinar el número de línea dentro
      * del ticket de compra.
      *
-     * @param numCompra Número de la compra.
-     * @param numLinea Número de línea en el ticket.
-     * @param codProducto Código del producto.
-     * @param cantidad Cantidad del producto.
+     * @param compra   La compra a la que pertenece esta línea de ticket.
+     * @param producto El producto comprado.
+     * @param cantidad La cantidad de productos comprados.
      */
-    public LineaDeTicket(int numCompra, int numLinea, int codProducto, int cantidad) {
-        // Aquí podrías inicializar la compra y el producto si tienes acceso a estos objetos
-    }
-
-    /**
-     * Añade un producto a la línea de ticket.
-     * Este método permite asociar un producto y su cantidad a la línea de ticket.
-     * Sin embargo, se debe implementar la lógica para el manejo de los productos.
-     *
-     * @param cantidad Cantidad de productos a añadir.
-     * @param producto Nombre del producto.
-     */
-    void anadirProducto(int cantidad, String producto) {
-        // Aquí puedes implementar la lógica para añadir un producto a la línea de ticket
+    public LineaDeTicket(Compra compra, Producto producto, int cantidad) {
+        this.compra = compra;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.numLinea = compra.getNumLineasActuales() + 1; // El número de línea es el número de líneas actuales + 1
+        compra.setNumLineasActuales(compra.getNumLineasActuales() + 1); // Incrementamos el número de líneas en la compra
     }
 
     /**
@@ -45,11 +41,10 @@ public class LineaDeTicket {
      * El subtotal se calcula multiplicando la cantidad de productos por el
      * precio unitario del producto.
      *
-     * @param producto Producto con el cual calcular el subtotal.
      * @return Subtotal calculado.
      */
-    double calcularSubtotal(Producto producto) {
-        return cantidad * producto.precio;  // Calcula el subtotal multiplicando cantidad por el precio
+    public double calcularSubtotal() {
+        return cantidad * producto.getPrecio();  // Calcula el subtotal multiplicando cantidad por el precio
     }
 
     /**
@@ -64,15 +59,39 @@ public class LineaDeTicket {
 
     /**
      * Devuelve el número de línea para esta línea de ticket.
-     * El número de línea se calcula en base al número de líneas actuales de la compra,
-     * incrementando en uno el valor de las líneas.
      *
      * @return Número de la línea.
      */
     public int getNumLinea() {
-        int lineas = compra.getNumLineasActuales();
-        lineas++;  // Incrementa el número de líneas
-        compra.setNumLineasActuales(lineas);  // Actualiza el número de líneas actuales en la compra
-        return lineas;  // Devuelve el número de línea incrementado
+        return numLinea;  // Devuelve el número de línea calculado
+    }
+
+    public double getPrecio() {
+        return producto.getPrecio();  // Devuelve el precio del producto
+    }
+
+    // Getters y setters
+    public Compra getCompra() {
+        return compra;
+    }
+
+    public void setCompra(Compra compra) {
+        this.compra = compra;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }

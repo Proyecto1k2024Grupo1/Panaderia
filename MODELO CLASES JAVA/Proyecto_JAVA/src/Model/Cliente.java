@@ -6,6 +6,11 @@ import java.util.List;
 /**
  * Representa un cliente con información personal como nombre, apellidos, dirección y teléfonos.
  * También permite registrar compras y actualizar la dirección del cliente.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Cliente {
 
@@ -85,7 +90,7 @@ public class Cliente {
      *
      * @return Nombre completo del cliente.
      */
-    String obtenerNombreCompleto() {
+    public String obtenerNombreCompleto() {
         return nombre + " " + apellido1 + " " + apellido2;
     }
 

@@ -27,6 +27,12 @@ public class PropioDAO extends ProductoDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM PROPIO";
     private static final String UPDATE_QUERY = "UPDATE PROPIO SET codigo = ? WHERE codigo = ?";
     private static final String DELETE_QUERY = "DELETE FROM PROPIO WHERE codigo = ?";
+    private static final String SELECT_BY_ID_QUERY =
+            "SELECT p.codigo, p.nombre, p.tipo, p.precio " +
+                    "FROM PRODUCTO p " +
+                    "JOIN PROPIO pr ON p.codigo = pr.codigo " +
+                    "WHERE p.codigo = ?";
+
 
     /**
      * Constructor privado para evitar instanciación directa.
@@ -170,6 +176,23 @@ public class PropioDAO extends ProductoDAO {
             throw e; // Vuelve a lanzar la excepción para que el controlador la maneje
         } finally {
             connection.setAutoCommit(true); // Restablece la auto-commit
+        }
+    }
+    /**
+     * Consulta un producto propio en la base de datos a partir de su código.
+     * @param codigo El identificador único del producto.
+     * @return Un objeto Propio con los datos del producto, o null si no se encuentra.
+     * @throws SQLException Si ocurre un error al consultar los datos.
+     */
+    public Propio getPropioByCodigo(int codigo) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+            statement.setInt(1, codigo);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSetToPropio(resultSet);
+            } else {
+                return null;
+            }
         }
     }
 }

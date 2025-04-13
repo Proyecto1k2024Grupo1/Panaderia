@@ -30,6 +30,7 @@ public class Producto {
         this.codigo = codProducto;
     }
 
+
     /**
      * Devuelve el código único del producto.
      *

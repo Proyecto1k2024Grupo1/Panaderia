@@ -36,7 +36,7 @@ public class LineaDeTicketDAO {
      * Constructor privado para evitar la instanciación externa de esta clase.
      * Establece la conexión con la base de datos a través de la clase DBConnection.
      */
-    private LineaDeTicketDAO() {
+    public LineaDeTicketDAO() {
         this.connection = DBConnection.getConnection();
     }
 

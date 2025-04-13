@@ -33,7 +33,7 @@ public class Compra {
      * Constructor de la clase Compra.
      * Inicializa la lista de líneas de la compra y el contador de líneas actuales.
      */
-    public Compra() {
+    public Compra(String dniCliente, String dniDependiente, String dniRepartidor) {
         lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
     }
@@ -42,6 +42,11 @@ public class Compra {
         lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
     }
+
+    public Compra() {
+
+    }
+
 
     /**
      * Registra una nueva línea en la compra.

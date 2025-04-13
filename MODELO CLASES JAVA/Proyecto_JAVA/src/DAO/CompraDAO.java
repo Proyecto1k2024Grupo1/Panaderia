@@ -12,17 +12,10 @@ import java.util.List;
 /**
  * Clase CompraDAO que maneja las operaciones de acceso a datos (DAO) para la entidad Compra.
  * Implementa el patrón Singleton para garantizar que solo haya una instancia de la clase.
- * @author Vanesa
- * @author Silvia
- * @author Jessica
  * @version 1.0
  * @date 10/04/2025
  */
 public class CompraDAO {
-    // Instancia única de CompraDAO (patrón Singleton)
-    private static CompraDAO instance;
-    private Connection connection;
-
     // Consultas SQL para insertar, seleccionar, actualizar y eliminar compras
     private static final String INSERT_QUERY = "INSERT INTO COMPRA (fecha, idCliente) VALUES (CURDATE(), ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM COMPRA";
@@ -31,11 +24,15 @@ public class CompraDAO {
     private static final String UPDATE_QUERY_REPARTIDOR = "UPDATE COMPRA SET dniRepartidor = ?, fechaRepartidor = CURDATE(), horaRepartidor = CURTIME() WHERE numCompra = ?";
     private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
 
+    // Instancia única de CompraDAO (patrón Singleton)
+    private static CompraDAO instance;
+    private Connection connection;
+
     /**
      * Constructor privado para evitar la creación directa de instancias.
      * Obtiene la conexión a la base de datos a través de DBConnection.
      */
-    private CompraDAO() {
+    public CompraDAO() {
         this.connection = DBConnection.getConnection(); // Obtiene la conexión a la base de datos
     }
 
@@ -56,12 +53,15 @@ public class CompraDAO {
      * Inserta una nueva compra en la base de datos.
      *
      * @param compra Objeto Compra que contiene la información de la compra a insertar.
+     * @return
      * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
      */
-    public void insertCompra(Compra compra) throws SQLException {
+    public int insertCompra(Compra compra) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
             statement.setInt(1, compra.getCliente().getIdCliente()); // Asocia la compra con el cliente correspondiente
             statement.executeUpdate(); // Ejecuta la inserción
+            ResultSet resultSet =  statement.getGeneratedKeys();
+            return resultSet.getInt(1);
         }
     }
 

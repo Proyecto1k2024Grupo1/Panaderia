@@ -41,6 +41,18 @@ public class AjenoDAO extends ProductoDAO {
     private AjenoDAO(){
         this.connection = DBConnection.getConnection();
     }
+    /**
+     * Devuelve la única instancia de AjenoDAO.
+     * Si no existe, la crea.
+     * @return instancia única de AjenoDAO.
+     */
+    public static AjenoDAO getInstance() {
+        if (instance == null) {
+            instance = new AjenoDAO();
+        }
+        return instance;
+    }
+
 
     /**
      * Inserta un nuevo producto Ajeno en la base de datos

@@ -30,6 +30,10 @@ public class Producto {
         this.codigo = codProducto;
     }
 
+    public Producto(String nombreProducto) {
+        this.nombre=nombreProducto;
+    }
+
 
     /**
      * Devuelve el código único del producto.

@@ -23,6 +23,8 @@ public class CompraDAO {
     private static final String UPDATE_QUERY_DEPENDIENTE = "UPDATE COMPRA SET dniDependiente = ?, descuentoDependiente = ?, fechaDependiente = CURDATE() WHERE numCompra = ?";
     private static final String UPDATE_QUERY_REPARTIDOR = "UPDATE COMPRA SET dniRepartidor = ?, fechaRepartidor = CURDATE(), horaRepartidor = CURTIME() WHERE numCompra = ?";
     private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
+    private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT * FROM COMPRA WHERE numCompra = ?";
+
 
     // Instancia única de CompraDAO (patrón Singleton)
     private static CompraDAO instance;
@@ -178,4 +180,24 @@ public class CompraDAO {
 
         return compra; // Devuelve el objeto Compra con todos los datos cargados
     }
+    /**
+     * Obtiene una compra específica por su número de compra.
+     *
+     * @param numCompra El número de la compra a obtener.
+     * @return Un objeto Compra correspondiente al número de compra proporcionado.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     */
+    public Compra obtenerCompraPorNumCompra(int numCompra) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_QUERY)) {
+            statement.setInt(1, numCompra); // Establece el número de compra
+            ResultSet resultSet = statement.executeQuery(); // Ejecuta la consulta para obtener la compra
+
+            if (resultSet.next()) {
+                return resultSetToCompra(resultSet); // Convierte el resultado en un objeto Compra
+            } else {
+                return null; // Si no se encuentra la compra, devuelve null
+            }
+        }
+    }
+
 }

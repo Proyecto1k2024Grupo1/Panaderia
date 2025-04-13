@@ -1,142 +1,177 @@
 package Menu;
 
 import DAO.CompraDAO;
+import DAO.LineaDeTicketDAO;
 import Model.Compra;
-import Model.Cliente;
-import Model.Dependiente;
-import Model.Repartidor;
+import Model.LineaDeTicket;
+import Model.Producto;
 
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuCompra {
 
-    private static Scanner scanner = new Scanner(System.in);
-    private static CompraDAO compraDAO = CompraDAO.getInstance();
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        boolean salir = false;
+        CompraDAO compraDAO = new CompraDAO();
+        LineaDeTicketDAO lineaDAO = new LineaDeTicketDAO();
         int opcion;
-        do {
-            System.out.println("\nMenú de Compras");
-            System.out.println("1. Insertar nueva compra");
-            System.out.println("2. Mostrar todas las compras");
-            System.out.println("3. Actualizar cliente de una compra");
-            System.out.println("4. Actualizar dependiente de una compra");
-            System.out.println("5. Actualizar repartidor de una compra");
-            System.out.println("6. Eliminar compra");
+        Compra compra = new Compra();
+
+        while (!salir) {
+            // Mostrar el menú
+            System.out.println("\n--- Menú ---");
+            System.out.println("1. Crear nueva compra");
+            System.out.println("2. Registrar línea en la compra");
+            System.out.println("3. Modificar línea de la compra");
+            System.out.println("4. Borrar línea de la compra");
+            System.out.println("5. Ver total de la compra");
+            System.out.println("6. Ver detalles de la compra");
             System.out.println("7. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Selecciona una opción: ");
             opcion = scanner.nextInt();
+            scanner.nextLine();  // Consumir el salto de línea
 
             switch (opcion) {
                 case 1:
-                    insertarCompra();
+                    // Crear una nueva compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompra = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    compra = new Compra(numCompra);
+                    compraDAO.insertCompra(compra);
+                    System.out.println("Compra creada con éxito.");
                     break;
+
                 case 2:
-                    mostrarCompras();
+                    // Registrar una línea en la compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompraLinea = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    Compra compraExistente = compraDAO.obtenerCompraPorNumCompra(numCompraLinea);
+                    if (compraExistente != null) {
+                        System.out.print("Ingresa el nombre del producto: ");
+                        String nombreProducto = scanner.nextLine();
+                        System.out.print("Ingresa la cantidad del producto: ");
+                        int cantidad = scanner.nextInt();
+                        scanner.nextLine();  // Consumir el salto de línea
+                        LineaDeTicket linea = new LineaDeTicket(compra, new Producto(nombreProducto), cantidad, compra.getNumLineasActuales()+1);
+                        lineaDAO.insertLineaDeTicket(linea);
+                        System.out.println("Línea registrada con éxito.");
+
+                    } else {
+                        System.out.println("Compra no encontrada.");
+                    }
                     break;
+
                 case 3:
-                    actualizarClienteCompra();
+                    // Modificar una línea en la compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompraModificar = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    Compra compraModificar = compraDAO.obtenerCompraPorNumCompra(numCompraModificar);
+                    if (compraModificar != null) {
+                        System.out.print("Ingresa el número de la línea que deseas modificar (1 a " + lineaDAO.getAllLineasDeTicket().size() + "): ");
+                        int lineaModificar = scanner.nextInt() - 1;  // Restamos 1 para usar el índice
+                        scanner.nextLine();  // Consumir el salto de línea
+                        if (lineaModificar >= 0 && lineaModificar < lineaDAO.getAllLineasDeTicket().size()) {
+                            LineaDeTicket linea = lineaDAO.getAllLineasDeTicket().get(lineaModificar);
+
+                            System.out.println("Línea actual: " + linea.getProducto().getNombre() + ", Cantidad: " + linea.getCantidad() + ", Precio: " + linea.getPrecio());
+                            System.out.print("Nuevo nombre del producto (deja en blanco para no cambiarlo): ");
+                            String nuevoNombre = scanner.nextLine();
+                            if (!nuevoNombre.isEmpty()) {
+                                linea.getProducto().setNombre(nuevoNombre);
+                            }
+
+
+
+                            System.out.print("Nueva cantidad (deja en blanco para no cambiarla): ");
+                            String cantidadInput = scanner.nextLine();
+                            if (!cantidadInput.isEmpty()) {
+                                int nuevaCantidad = Integer.parseInt(cantidadInput);
+                                linea.setCantidad(nuevaCantidad);
+                            }
+
+                            lineaDAO.updateLineaDeTicket(linea);
+                            System.out.println("Línea modificada con éxito.");
+                        } else {
+                            System.out.println("Número de línea inválido.");
+                        }
+                    } else {
+                        System.out.println("Compra no encontrada.");
+                    }
                     break;
+
                 case 4:
-                    actualizarDependienteCompra();
+                    // Borrar una línea en la compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompraBorrar = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    Compra compraBorrar = compraDAO.obtenerCompraPorNumCompra(numCompraBorrar);
+                    if (compraBorrar != null) {
+                        System.out.print("Ingresa el número de la línea que deseas borrar (1 a " + lineaDAO.getAllLineasDeTicket().size() + "): ");
+                        int lineaBorrar = scanner.nextInt() - 1;  // Restamos 1 para usar el índice
+                        scanner.nextLine();  // Consumir el salto de línea
+                        if (lineaBorrar >= 0 && lineaBorrar < lineaDAO.getAllLineasDeTicket().size()) {
+                            lineaDAO.deleteLineaDeTicket(numCompraBorrar,lineaBorrar);
+                            System.out.println("Línea borrada con éxito.");
+                        } else {
+                            System.out.println("Número de línea inválido.");
+                        }
+                    } else {
+                        System.out.println("Compra no encontrada.");
+                    }
                     break;
+
                 case 5:
-                    actualizarRepartidorCompra();
+                    // Ver total de la compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompraTotal = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    Compra compraTotal = compraDAO.obtenerCompraPorNumCompra(numCompraTotal);
+                    if (compraTotal != null) {
+                        double total = compraTotal.calcularTotal();
+                        System.out.println("El total de la compra es: " + total);
+                    } else {
+                        System.out.println("Compra no encontrada.");
+                    }
                     break;
+
                 case 6:
-                    eliminarCompra();
+                    // Ver detalles de la compra
+                    System.out.print("Ingresa el número de la compra: ");
+                    int numCompraDetalles = scanner.nextInt();
+                    scanner.nextLine();  // Consumir el salto de línea
+                    Compra compraDetalles = compraDAO.obtenerCompraPorNumCompra(numCompraDetalles);
+                    if (compraDetalles != null) {
+                        System.out.println("\nDetalles de la compra:");
+                        System.out.println("Número de compra: " + compraDetalles.getNumCompra());
+                        System.out.println("Fecha de la compra: " + compraDetalles.getFecha());
+                        System.out.println("Cliente: " + (compraDetalles.getCliente() != null ? compraDetalles.getCliente().getNombre() : "No asignado"));
+                        System.out.println("Dependiente: " + (compraDetalles.getDependiente() != null ? compraDetalles.getDependiente().getNombre() : "No asignado"));
+                        System.out.println("Repartidor: " + (compraDetalles.getRepartidor() != null ? compraDetalles.getRepartidor().getNombre() : "No asignado"));
+                        System.out.println("Líneas de la compra:");
+                        for (LineaDeTicket linea : lineaDAO.getAllLineasDeTicket()) {
+                            System.out.println("Producto: " + linea.getProducto().getNombre() + ", Cantidad: " + linea.getCantidad() + ", Precio: " + linea.getPrecio());
+                        }
+                    } else {
+                        System.out.println("Compra no encontrada.");
+                    }
                     break;
+
                 case 7:
+                    // Salir
+                    salir = true;
                     System.out.println("Saliendo...");
                     break;
+
                 default:
-                    System.out.println("Opción no válida. Intente nuevamente.");
+                    System.out.println("Opción no válida. Intenta de nuevo.");
             }
-        } while (opcion != 7);
-    }
-
-    private static void insertarCompra() {
-        System.out.println("Ingrese el ID del cliente:");
-        int idCliente = scanner.nextInt();
-        // Crear el objeto compra y asignar los detalles
-        Compra compra = new Compra();
-        Cliente cliente = new Cliente();
-        cliente.setIdCliente(idCliente);
-        compra.setCliente(cliente);
-
-        try {
-            compraDAO.insertCompra(compra);
-            System.out.println("Compra insertada correctamente.");
-        } catch (Exception e) {
-            System.out.println("Error al insertar la compra: " + e.getMessage());
         }
-    }
 
-    private static void mostrarCompras() {
-        try {
-            List<Compra> compras = compraDAO.getAllCompra();
-            for (Compra compra : compras) {
-                System.out.println("Compra ID: " + compra.getNumCompra() + ", Cliente ID: " + compra.getCliente().getIdCliente());
-            }
-        } catch (Exception e) {
-            System.out.println("Error al mostrar las compras: " + e.getMessage());
-        }
-    }
-
-    private static void actualizarClienteCompra() {
-        System.out.println("Ingrese el número de compra a actualizar:");
-        int numCompra = scanner.nextInt();
-        System.out.println("Ingrese el nuevo ID de cliente:");
-        int idCliente = scanner.nextInt();
-
-        try {
-            compraDAO.updateCompraCliente(numCompra, idCliente);
-            System.out.println("Cliente actualizado correctamente.");
-        } catch (Exception e) {
-            System.out.println("Error al actualizar el cliente: " + e.getMessage());
-        }
-    }
-
-    private static void actualizarDependienteCompra() {
-        System.out.println("Ingrese el número de compra a actualizar:");
-        int numCompra = scanner.nextInt();
-        System.out.println("Ingrese el DNI del dependiente:");
-        String dniDependiente = scanner.next();
-        System.out.println("Ingrese el descuento del dependiente:");
-        double descuento = scanner.nextDouble();
-
-        try {
-            compraDAO.updateCompraDependiente(numCompra, dniDependiente, descuento);
-            System.out.println("Dependiente actualizado correctamente.");
-        } catch (Exception e) {
-            System.out.println("Error al actualizar el dependiente: " + e.getMessage());
-        }
-    }
-
-    private static void actualizarRepartidorCompra() {
-        System.out.println("Ingrese el número de compra a actualizar:");
-        int numCompra = scanner.nextInt();
-        System.out.println("Ingrese el DNI del repartidor:");
-        String dniRepartidor = scanner.next();
-
-        try {
-            compraDAO.updateCompraRepartidor(numCompra, dniRepartidor);
-            System.out.println("Repartidor actualizado correctamente.");
-        } catch (Exception e) {
-            System.out.println("Error al actualizar el repartidor: " + e.getMessage());
-        }
-    }
-
-    private static void eliminarCompra() {
-        System.out.println("Ingrese el número de compra a eliminar:");
-        int numCompra = scanner.nextInt();
-
-        try {
-            compraDAO.deleteCompraByNum(numCompra);
-            System.out.println("Compra eliminada correctamente.");
-        } catch (Exception e) {
-            System.out.println("Error al eliminar la compra: " + e.getMessage());
-        }
+        scanner.close();
     }
 }

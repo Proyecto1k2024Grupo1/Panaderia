@@ -19,13 +19,12 @@ public class RepartidorDAO extends EmpleadoDAO {
 
     private static RepartidorDAO instance;
 
-    // Consultas SQL predefinidas
+    // Consultas SQL predefinidas como constantes
     private static final String INSERT_QUERY = "INSERT INTO REPARTIDOR (dni, matricula) VALUES (?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM REPARTIDOR r JOIN EMPLEADO e ON e.dni = r.dni";
     private static final String DELETE_QUERY = "DELETE FROM REPARTIDOR WHERE dni = ?";
     private static final String UPDATE_QUERY = "UPDATE REPARTIDOR SET matricula = ? WHERE dni = ?";
-    private static final String INSERT_QUERY_SUPER = "INSERT INTO EMPLEADO (dni, salario, fnac, nombre, dni_supervisor) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY_SUPER = "UPDATE EMPLEADO SET salario = ?, fnac = ?, nombre = ?, dni_supervisor = ? WHERE dni = ?";
+    private static final String SELECT_REPARTIDOR_BY_DNI = "SELECT * FROM REPARTIDOR r JOIN EMPLEADO e ON e.dni = r.dni WHERE r.dni = ?";
 
     /**
      * Constructor privado para evitar la creación de instancias fuera de la clase.
@@ -176,5 +175,26 @@ public class RepartidorDAO extends EmpleadoDAO {
             connection.rollback(); // Si ocurre un error, deshace los cambios realizados
             throw e; // Lanza la excepción para que se pueda manejar en otro lugar
         }
+    }
+
+    /**
+     * Obtiene un repartidor de la base de datos mediante su DNI.
+     * @param dni El DNI del repartidor a buscar.
+     * @return El repartidor correspondiente al DNI proporcionado, o null si no se encuentra.
+     * @throws SQLException Si ocurre un error al recuperar los datos.
+     */
+    public Repartidor getRepartidorByDni(String dni) throws SQLException {
+        Repartidor repartidor = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_REPARTIDOR_BY_DNI)) {
+            statement.setString(1, dni);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                repartidor = resultSetToRepartidor(resultSet);
+            }
+        }
+
+        return repartidor;
     }
 }

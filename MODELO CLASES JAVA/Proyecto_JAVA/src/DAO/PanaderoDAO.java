@@ -26,6 +26,7 @@ public class PanaderoDAO extends EmpleadoDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM PANADERO";
     static final String UPDATE_QUERY = "UPDATE PANADERO SET dni = ? WHERE dni = ?";
     private static final String DELETE_QUERY = "DELETE FROM PANADERO WHERE dni = ?";
+    private static final String SELECT_BY_DNI_QUERY = "SELECT * FROM PANADERO WHERE dni = ?";  // Consulta SQL final para obtener por DNI
 
     /**
      * Constructor privado para evitar la instanciación externa de esta clase.
@@ -96,6 +97,27 @@ public class PanaderoDAO extends EmpleadoDAO {
             }
         }
         return personas;
+    }
+
+    /**
+     * Obtiene un panadero por su DNI.
+     * Este método ejecuta una consulta SELECT utilizando el DNI para recuperar los datos del panadero
+     * y lo convierte en un objeto Panadero.
+     *
+     * @param dni El DNI del panadero a obtener.
+     * @return El objeto Panadero correspondiente al DNI proporcionado.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     */
+    public Panadero getPanaderoByDni(String dni) throws SQLException {
+        Panadero panadero = null;
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_DNI_QUERY)) {
+            statement.setString(1, dni);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                panadero = resultSetToPanadero(resultSet);
+            }
+        }
+        return panadero;
     }
 
     /**

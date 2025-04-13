@@ -24,10 +24,8 @@ public class DependienteDAO extends EmpleadoDAO {
     private static final String INSERT_QUERY = "INSERT INTO DEPENDIENTE (dni, horario) VALUES (?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM DEPENDIENTE d JOIN EMPLEADO e ON e.dni = d.dni";
     private static final String DELETE_QUERY = "DELETE FROM DEPENDIENTE WHERE dni = ?";
-    private static final String DELETE_QUERY_SUPER = "DELETE FROM EMPLEADO WHERE dni = ?";
-    private static final String INSERT_QUERY_SUPER = "INSERT INTO EMPLEADO (dni, salario, fnac, nombre, encargado) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE DEPENDIENTE SET horario = ? WHERE dni = ?";
-    private static final String UPDATE_QUERY_SUPER = "UPDATE EMPLEADO SET salario = ?, fnac = ?, nombre = ?, encargado = ? WHERE dni = ?";
+    private static final String SELECT_BY_DNI_QUERY = "SELECT * FROM DEPENDIENTE d JOIN EMPLEADO e ON e.dni = d.dni WHERE d.dni = ?";
 
     /**
      * Constructor privado para evitar instanciación directa y asegurar el patrón Singleton.
@@ -182,5 +180,24 @@ public class DependienteDAO extends EmpleadoDAO {
             connection.rollback();
             throw e;
         }
+    }
+
+    /**
+     * Obtiene un dependiente a partir de su DNI almacenado en la base de datos.
+     *
+     * @param dni El DNI del dependiente que se desea obtener.
+     * @return Un objeto dependiente si se encuentra en la base de datos, o null si no existe.
+     * @throws SQLException Si ocurre un error en la base de datos.
+     */
+    public Dependiente getDependienteByDni(String dni) throws SQLException {
+        Dependiente dependiente = null;
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_DNI_QUERY)) {
+            statement.setString(1, dni);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                dependiente = resultSetToDependiente(resultSet);
+            }
+        }
+        return dependiente;
     }
 }

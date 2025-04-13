@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProveedorMenu {
+public class MenuProveedor {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProveedorDAO proveedorDAO = ProveedorDAO.getInstance();

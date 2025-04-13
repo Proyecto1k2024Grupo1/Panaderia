@@ -156,25 +156,11 @@ public class CompraDAO {
         Compra compra = new Compra(); // Crea una nueva instancia de Compra
         compra.setNumCompra(rs.getInt("numCompra")); // Establece el número de compra
         compra.setFecha(rs.getDate("fecha").toLocalDate()); // Establece la fecha de la compra
-
-        Cliente cliente = new Cliente();
-        cliente.setIdCliente(rs.getInt("idCliente")); // Establece el id del cliente asociado a la compra
-        compra.setCliente(cliente); // Asocia el cliente a la compra
-
-        Dependiente dependiente = new Dependiente();
-        dependiente.setDni(rs.getString("dniDependiente")); // Establece el dni del dependiente asociado
-        compra.setDependiente(dependiente); // Asocia el dependiente a la compra
-
+        compra.setCliente(ClienteDAO.getInstance().getClienteById(rs.getInt("idCliente")));
+        compra.setDependiente(DependienteDAO.getInstance().getDependienteByDni("dniDependiente"));
         compra.setDescuentoDependiente(rs.getDouble("descuentoDependiente")); // Establece el descuento del dependiente
         compra.setFechaDependiente(rs.getDate("fechaDependiente").toLocalDate()); // Establece la fecha del dependiente
-
-        String dniRepartidor = rs.getString("dniRepartidor");
-        if (dniRepartidor != null) { // Si el dni del repartidor no es nulo, crea y asocia el repartidor
-            Repartidor repartidor = new Repartidor();
-            repartidor.setDni(dniRepartidor); // Establece el dni del repartidor
-            compra.setRepartidor(repartidor); // Asocia el repartidor a la compra
-        }
-
+        compra.setRepartidor(RepartidorDAO.getInstance().getRepartidorByDni("dniRepartidor"));
         compra.setFechaRepartidor(rs.getDate("fechaRepartidor").toLocalDate()); // Establece la fecha del repartidor
         compra.setHoraRepartidor(rs.getTime("horaRepartidor").toLocalTime()); // Establece la hora del repartidor
 

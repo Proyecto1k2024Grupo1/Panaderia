@@ -66,8 +66,10 @@ public class Compra {
      */
     public double calcularTotal() {
         double total = 0;
-        for (LineaDeTicket linea : lineas) {
-            total += linea.getPrecio(); // Suma el precio de cada línea
+        if(lineas != null) {
+            for (LineaDeTicket linea : lineas) {
+                total += linea.getPrecio(); // Suma el precio de cada línea
+            }
         }
         return total; // Devuelve el total de la compra
     }

@@ -61,7 +61,6 @@ public class MenuCliente {
 
     // Método para agregar un cliente
     private static void agregarCliente(Scanner scanner) throws SQLException {
-        int idCliente = obtenerIdCliente(scanner);
         System.out.print("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine();
 
@@ -78,7 +77,7 @@ public class MenuCliente {
         List<String> telefonos = ingresarTelefonos(scanner);
 
         // Crear cliente y agregarlo a la base de datos
-        Cliente cliente = new Cliente(idCliente, direccion, nombre, apellido1, apellido2, telefonos);
+        Cliente cliente = new Cliente(0, direccion, nombre, apellido1, apellido2, telefonos);
         try {
             clienteDAO.insertCliente(cliente);
             System.out.println("Cliente agregado exitosamente.");
@@ -94,6 +93,8 @@ public class MenuCliente {
             System.out.println("No hay clientes registrados.");
         } else {
             for (Cliente cliente : clientes) {
+                System.out.println("-------------");
+                System.out.println(cliente.getIdCliente());
                 System.out.println(cliente.obtenerNombreCompleto() + " - " + cliente.getDireccion());
                 System.out.println("Teléfonos: " + String.join(", ", cliente.getTelefonos()));
             }
@@ -157,26 +158,7 @@ public class MenuCliente {
         }
     }
 
-    // Método para ingresar un ID de cliente de manera validada
-    private static int obtenerIdCliente(Scanner scanner) {
-        int idCliente;
-        while (true) {
-            System.out.print("Ingrese el ID del cliente: ");
-            if (scanner.hasNextInt()) {
-                idCliente = scanner.nextInt();
-                if (idCliente > 0) {
-                    scanner.nextLine();  // Limpiar el buffer
-                    break;
-                } else {
-                    System.out.println("El ID debe ser un número positivo.");
-                }
-            } else {
-                System.out.println("Por favor ingrese un número válido.");
-                scanner.next();  // Consumir la entrada incorrecta
-            }
-        }
-        return idCliente;
-    }
+
 
     // Método para ingresar una lista de teléfonos
     private static List<String> ingresarTelefonos(Scanner scanner) {

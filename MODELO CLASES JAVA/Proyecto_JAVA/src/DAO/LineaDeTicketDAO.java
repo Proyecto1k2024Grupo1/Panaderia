@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Compra;
 import Model.LineaDeTicket;
 import Model.Producto;
 
@@ -107,11 +108,12 @@ public class LineaDeTicketDAO {
      */
     private LineaDeTicket resultSetToLineaDeTicket(ResultSet resultSet) throws SQLException {
         return new LineaDeTicket(
-                resultSet.getInt("numCompra"),
-                resultSet.getInt("numLinea"),
-                resultSet.getInt("codProducto"),
-                resultSet.getInt("cantidad")
-        );
+                new Compra(resultSet.getInt("numCompra")),
+                new Producto(resultSet.getInt("codProducto")),
+                resultSet.getInt("cantidad"),
+                resultSet.getInt("numLinea")
+
+                );
     }
 
     /**

@@ -26,6 +26,10 @@ public class Producto {
         this.precio = precio;
     }
 
+    public Producto(int codProducto) {
+        this.codigo = codProducto;
+    }
+
     /**
      * Devuelve el código único del producto.
      *

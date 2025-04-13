@@ -28,11 +28,11 @@ public class LineaDeTicket {
      * @param producto El producto comprado.
      * @param cantidad La cantidad de productos comprados.
      */
-    public LineaDeTicket(Compra compra, Producto producto, int cantidad) {
+    public LineaDeTicket(Compra compra, Producto producto, int cantidad, int numLinea) {
         this.compra = compra;
         this.producto = producto;
         this.cantidad = cantidad;
-        this.numLinea = compra.getNumLineasActuales() + 1; // El número de línea es el número de líneas actuales + 1
+        this.numLinea = numLinea;
         compra.setNumLineasActuales(compra.getNumLineasActuales() + 1); // Incrementamos el número de líneas en la compra
     }
 

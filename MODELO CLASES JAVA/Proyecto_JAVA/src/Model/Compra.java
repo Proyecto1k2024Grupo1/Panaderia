@@ -38,6 +38,11 @@ public class Compra {
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
     }
 
+    public Compra(int numCompra) {
+        lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
+        numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
+    }
+
     /**
      * Registra una nueva línea en la compra.
      * Incrementa el número de líneas actuales de la compra.

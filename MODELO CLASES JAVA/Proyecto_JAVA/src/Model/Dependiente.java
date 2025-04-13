@@ -83,4 +83,11 @@ public class Dependiente extends Empleado {
      */
     void aplicarDescuento(Compra compra, double descuento) {
     }
+
+    @Override
+    public String toString() {
+        return "Dependiente{" +
+                "horario='" + horario + '\'' +
+                '}';
+    }
 }

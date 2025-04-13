@@ -57,11 +57,6 @@ public class RepartidorDAO extends EmpleadoDAO {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
              PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)) {
 
-            // Inserción en la tabla REPARTIDOR
-            statement.setString(1, repartidor.getDni());
-            statement.setString(2, repartidor.getMatricula());
-            statement.executeUpdate();
-
             // Inserción en la tabla EMPLEADO
             statement2.setString(1, repartidor.getDni());
             statement2.setDouble(2, repartidor.getSalario());
@@ -69,6 +64,11 @@ public class RepartidorDAO extends EmpleadoDAO {
             statement2.setString(4, repartidor.getNombre());
             statement2.setString(5, repartidor.getEncargado() != null ? repartidor.getEncargado().getDni() : null);
             statement2.executeUpdate();
+
+            // Inserción en la tabla REPARTIDOR
+            statement.setString(1, repartidor.getDni());
+            statement.setString(2, repartidor.getMatricula());
+            statement.executeUpdate();
 
             connection.commit(); // Si ambas inserciones fueron exitosas, realiza la confirmación
         } catch (SQLException e) {
@@ -101,7 +101,7 @@ public class RepartidorDAO extends EmpleadoDAO {
      */
     private Repartidor resultSetToRepartidor(ResultSet resultSet) throws SQLException {
         // Obtener el dni del supervisor (si existe)
-        String dniSupervisor = resultSet.getString("dni_supervisor");
+        String dniSupervisor = resultSet.getString("encargado");
 
         // Crear un objeto Repartidor
         Repartidor repartidor = new Repartidor(
@@ -109,7 +109,7 @@ public class RepartidorDAO extends EmpleadoDAO {
                 resultSet.getDouble("salario"),
                 resultSet.getDate("fnac").toLocalDate(),
                 resultSet.getString("nombre"),
-                resultSet.getString("horario")
+                resultSet.getString("matricula")
         );
 
         // Si el dniSupervisor no es null, asignamos el supervisor al repartidor

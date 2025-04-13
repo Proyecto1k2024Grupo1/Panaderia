@@ -73,4 +73,11 @@ public class Repartidor extends Empleado {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+
+    @Override
+    public String toString() {
+        return "Repartidor{" +
+                "matricula='" + matricula + '\'' +
+                '}';
+    }
 }

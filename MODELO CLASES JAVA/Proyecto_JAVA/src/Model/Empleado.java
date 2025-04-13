@@ -131,4 +131,15 @@ public abstract class Empleado {
     public void setEncargado(Empleado encargado) {
         this.encargado = encargado;  // Establece el encargado del empleado
     }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "dni='" + dni + '\'' +
+                ", salario=" + salario +
+                ", fnac=" + fnac +
+                ", nombre='" + nombre + '\'' +
+                ", encargado=" + encargado +
+                '}';
+    }
 }

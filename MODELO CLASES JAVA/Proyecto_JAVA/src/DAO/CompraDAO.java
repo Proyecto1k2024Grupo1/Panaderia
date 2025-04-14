@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class CompraDAO {
     // Consultas SQL para insertar, seleccionar, actualizar y eliminar compras
-    private static final String INSERT_QUERY = "INSERT INTO COMPRA (fecha, idCliente) VALUES (CURDATE(), ?)";
+    private static final String INSERT_QUERY = "INSERT INTO COMPRA (fecha, idCliente, dniDependiente) VALUES (CURDATE(), ?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM COMPRA";
     private static final String UPDATE_QUERY = "UPDATE COMPRA SET idCliente = ? WHERE numCompra = ?";
     private static final String UPDATE_QUERY_DEPENDIENTE = "UPDATE COMPRA SET dniDependiente = ?, descuentoDependiente = ?, fechaDependiente = CURDATE() WHERE numCompra = ?";
@@ -58,14 +58,25 @@ public class CompraDAO {
      * @return
      * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
      */
-    public int insertCompra(Compra compra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
-            statement.setInt(1, compra.getCliente().getIdCliente()); // Asocia la compra con el cliente correspondiente
-            statement.executeUpdate(); // Ejecuta la inserción
-            ResultSet resultSet =  statement.getGeneratedKeys();
-            return resultSet.getInt(1);
+    // Método para insertar una compra
+    public void insertCompra(Compra compra) throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+            // Asume que 'fecha' es un LocalDate
+            statement.setInt(1, compra.getCliente().getIdCliente()); // Establece el idCliente
+            statement.setString(2, compra.getDependiente().getDni());  // Establece el dniDependiente
+
+            statement.executeUpdate();
+
+            // Obtener el ID generado para la compra insertada
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                int idCompra = rs.getInt(1);
+                compra.setNumCompra(idCompra);  // Establece el ID de la compra
+            }
         }
     }
+
 
     /**
      * Obtiene todas las compras registradas en la base de datos.
@@ -155,17 +166,30 @@ public class CompraDAO {
     private Compra resultSetToCompra(ResultSet rs) throws SQLException {
         Compra compra = new Compra(); // Crea una nueva instancia de Compra
         compra.setNumCompra(rs.getInt("numCompra")); // Establece el número de compra
-        compra.setFecha(rs.getDate("fecha").toLocalDate()); // Establece la fecha de la compra
+
+        // Verifica si la fecha es nula y asigna un valor por defecto si es así
+        Date fecha = rs.getDate("fecha");
+        compra.setFecha(fecha != null ? fecha.toLocalDate() : null); // Establece la fecha de la compra
+
         compra.setCliente(ClienteDAO.getInstance().getClienteById(rs.getInt("idCliente")));
-        compra.setDependiente(DependienteDAO.getInstance().getDependienteByDni("dniDependiente"));
+        compra.setDependiente(DependienteDAO.getInstance().getDependienteByDni(rs.getString("dniDependiente")));
         compra.setDescuentoDependiente(rs.getDouble("descuentoDependiente")); // Establece el descuento del dependiente
-        compra.setFechaDependiente(rs.getDate("fechaDependiente").toLocalDate()); // Establece la fecha del dependiente
-        compra.setRepartidor(RepartidorDAO.getInstance().getRepartidorByDni("dniRepartidor"));
-        compra.setFechaRepartidor(rs.getDate("fechaRepartidor").toLocalDate()); // Establece la fecha del repartidor
-        compra.setHoraRepartidor(rs.getTime("horaRepartidor").toLocalTime()); // Establece la hora del repartidor
+
+        // Verifica si la fechaDependiente es nula y asigna un valor por defecto si es así
+        Date fechaDependiente = rs.getDate("fechaDependiente");
+        compra.setFechaDependiente(fechaDependiente != null ? fechaDependiente.toLocalDate() : null); // Establece la fecha del dependiente
+
+        // Verifica si la fechaRepartidor es nula y asigna un valor por defecto si es así
+        Date fechaRepartidor = rs.getDate("fechaRepartidor");
+        compra.setFechaRepartidor(fechaRepartidor != null ? fechaRepartidor.toLocalDate() : null); // Establece la fecha del repartidor
+
+        // Si la horaRepartidor es nula, se asigna null o algún valor por defecto
+        Time horaRepartidor = rs.getTime("horaRepartidor");
+        compra.setHoraRepartidor(horaRepartidor != null ? horaRepartidor.toLocalTime() : null); // Establece la hora del repartidor
 
         return compra; // Devuelve el objeto Compra con todos los datos cargados
     }
+
     /**
      * Obtiene una compra específica por su número de compra.
      *

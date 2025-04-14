@@ -78,8 +78,8 @@ public class MenuCompra {
                     }
 
                     // Solicitar el dependiente
-                    System.out.print("Ingresa el ID del dependiente: ");
-                    while (!scanner.hasNextInt()) {
+                    System.out.print("Ingresa el DNI del dependiente: ");
+                    while (!scanner.hasNext()) {
                         System.out.println("Por favor, ingresa un número de dependiente válido.");
                         scanner.next();  // Descartar la entrada no válida
                     }

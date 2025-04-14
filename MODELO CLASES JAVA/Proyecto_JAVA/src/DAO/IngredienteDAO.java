@@ -37,9 +37,8 @@ public class IngredienteDAO {
 
     public void insertIngrediente(Ingrediente ingrediente) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
-            statement.setInt(1, ingrediente.getCodIngrediente());
-            statement.setString(2, ingrediente.getNombre());
-            statement.setString(3, ingrediente.getDescripcion());
+            statement.setString(1, ingrediente.getNombre());
+            statement.setString(2, ingrediente.getDescripcion());
             statement.executeUpdate();
         }
     }

@@ -181,25 +181,26 @@ public class MenuCompra {
                             System.out.println("Por favor, ingresa un número válido para la línea.");
                             scanner.next();  // Descartar la entrada no válida
                         }
-                        int lineaModificar = scanner.nextInt() - 1;  // Restamos 1 para usar el índice
+                        int lineaModificar = scanner.nextInt();  // Restamos 1 para usar el índice
                         scanner.nextLine();  // Consumir el salto de línea
                         if (lineaModificar >= 0 && lineaModificar < lineaDAO.getAllLineasDeTicketByNumCompra(numCompraModificar).size()) {
                             LineaDeTicket linea = lineaDAO.getAllLineasDeTicketByNumCompra(numCompraModificar).get(lineaModificar);
 
-                            System.out.println("Línea actual: " + linea.getProducto().getNombre() + ", Cantidad: " + linea.getCantidad() + ", Precio: " + linea.getPrecio());
+                            System.out.println("Línea actual: Producto: " + linea.getProducto().getNombre() + ", Cantidad: " + linea.getCantidad() + ", Precio: " + linea.getPrecio());
                             System.out.print("Nuevo nombre del producto (deja en blanco para no cambiarlo): ");
                             String nuevoNombre = scanner.nextLine();
                             if (!nuevoNombre.isEmpty()) {
-                                linea.getProducto().setNombre(nuevoNombre);
+                                linea.getProducto().setNombre(nuevoNombre);  // Cambiar el nombre del producto
                             }
 
                             System.out.print("Nueva cantidad (deja en blanco para no cambiarla): ");
                             String cantidadInput = scanner.nextLine();
                             if (!cantidadInput.isEmpty()) {
                                 int nuevaCantidad = Integer.parseInt(cantidadInput);
-                                linea.setCantidad(nuevaCantidad);
+                                linea.setCantidad(nuevaCantidad);  // Cambiar la cantidad
                             }
 
+                            // Guardar los cambios en la base de datos
                             lineaDAO.updateLineaDeTicket(linea);  // Actualizar la línea
                             System.out.println("Línea modificada con éxito.");
                         } else {
@@ -210,8 +211,9 @@ public class MenuCompra {
                     }
                     break;
 
+
                 case 4:
-                    // Borrar una línea en la compra
+                    // Borrar una línea de la compra
                     System.out.print("Ingresa el número de la compra: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, ingresa un número de compra válido.");
@@ -221,12 +223,12 @@ public class MenuCompra {
                     scanner.nextLine();  // Consumir el salto de línea
                     Compra compraBorrar = compraDAO.getCompraByNumCompra(numCompraBorrar);
                     if (compraBorrar != null) {
-                        System.out.print("Ingresa el número de la línea que deseas borrar: ");
+                        System.out.print("Ingresa el número de la línea que deseas borrar (1 a " + lineaDAO.getAllLineasDeTicketByNumCompra(numCompraBorrar).size() + "): ");
                         while (!scanner.hasNextInt()) {
                             System.out.println("Por favor, ingresa un número válido para la línea.");
                             scanner.next();  // Descartar la entrada no válida
                         }
-                        int lineaBorrar = scanner.nextInt() - 1;  // Restamos 1 para usar el índice
+                        int lineaBorrar = scanner.nextInt();  // Restamos 1 para usar el índice
                         scanner.nextLine();  // Consumir el salto de línea
                         if (lineaBorrar >= 0 && lineaBorrar < lineaDAO.getAllLineasDeTicketByNumCompra(numCompraBorrar).size()) {
                             LineaDeTicket linea = lineaDAO.getAllLineasDeTicketByNumCompra(numCompraBorrar).get(lineaBorrar);
@@ -239,19 +241,18 @@ public class MenuCompra {
                         System.out.println("Compra no encontrada.");
                     }
                     break;
-
                 case 5:
                     // Ver total de la compra
-                    System.out.print("Ingresa el número de la compra para ver el total: ");
+                    System.out.print("Ingresa el número de la compra: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, ingresa un número de compra válido.");
                         scanner.next();  // Descartar la entrada no válida
                     }
-                    int compraIdTotal = scanner.nextInt();
+                    int numCompraTotal = scanner.nextInt();
                     scanner.nextLine();  // Consumir el salto de línea
-                    Compra compraTotal = compraDAO.getCompraByNumCompra(compraIdTotal);
+                    Compra compraTotal = compraDAO.getCompraByNumCompra(numCompraTotal);
                     if (compraTotal != null) {
-                        System.out.println("Total de la compra " + compraIdTotal + ": " + compraTotal.calcularTotal());
+                        System.out.println("El total de la compra es: " + compraTotal.calcularTotal());
                     } else {
                         System.out.println("Compra no encontrada.");
                     }
@@ -259,22 +260,22 @@ public class MenuCompra {
 
                 case 6:
                     // Ver detalles de la compra
-                    System.out.print("Ingresa el número de la compra para ver los detalles: ");
+                    System.out.print("Ingresa el número de la compra: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, ingresa un número de compra válido.");
                         scanner.next();  // Descartar la entrada no válida
                     }
-                    int compraIdDetalle = scanner.nextInt();
+                    int numCompraDetalles = scanner.nextInt();
                     scanner.nextLine();  // Consumir el salto de línea
-                    Compra compraDetalle = compraDAO.getCompraByNumCompra(compraIdDetalle);
-                    if (compraDetalle != null) {
-                        System.out.println("\nDetalles de la compra " + compraIdDetalle + ":");
-                        for (LineaDeTicket linea : lineaDAO.getAllLineasDeTicketByNumCompra(compraIdDetalle)) {
-                                System.out.println("Producto: " + linea.getProducto().getNombre());
-                                System.out.println("Cantidad: " + linea.getCantidad());
-                                System.out.println("Precio: " + linea.getPrecio());
-                                System.out.println("---");
-
+                    Compra compraDetalles = compraDAO.getCompraByNumCompra(numCompraDetalles);
+                    if (compraDetalles != null) {
+                        System.out.println("Detalles de la compra:");
+                        System.out.println("Fecha de compra: " + compraDetalles.getFecha());
+                        System.out.println("Cliente: " + (compraDetalles.getCliente() != null ? compraDetalles.getCliente().getNombre() : "No asignado"));
+                        System.out.println("Dependiente: " + (compraDetalles.getDependiente() != null ? compraDetalles.getDependiente().getNombre() : "No asignado"));
+                        List<LineaDeTicket> lineasCompraDetalles = lineaDAO.getAllLineasDeTicketByNumCompra(numCompraDetalles);
+                        for (LineaDeTicket linea : lineasCompraDetalles) {
+                            System.out.println("Producto: " + linea.getProducto().getNombre() + ", Cantidad: " + linea.getCantidad() + ", Precio: " + linea.getPrecio());
                         }
                     } else {
                         System.out.println("Compra no encontrada.");
@@ -282,15 +283,16 @@ public class MenuCompra {
                     break;
 
                 case 7:
-                    // Salir del menú
                     salir = true;
                     System.out.println("¡Hasta luego!");
                     break;
 
                 default:
-                    System.out.println("Opción no válida. Intenta de nuevo.");
+                    System.out.println("Opción inválida. Inténtalo de nuevo.");
                     break;
             }
         }
+
+        scanner.close();
     }
 }

@@ -26,6 +26,8 @@ public class LineaDeTicketDAO {
     private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET codProducto = ?, cantidad = ? WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
     private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ?";
+    private static final String SELECT_BY_NUM_COMPRA_Y_NUM_LINEA_QUERY =
+            "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
 
     /**
      * Constructor privado para evitar la instanciación externa de esta clase.
@@ -191,4 +193,27 @@ public class LineaDeTicketDAO {
         }
         return lineas;
     }
+
+    /**
+     * Obtiene una línea de ticket específica basada en el número de compra y el número de línea.
+     *
+     * @param numCompra El número de compra que se usará para filtrar.
+     * @param numLinea El número de línea dentro de la compra.
+     * @return Un objeto LineaDeTicket que corresponde al número de compra y número de línea proporcionados.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL o no se encuentra la línea.
+     */
+    public LineaDeTicket getLineaByNumCompraYNumLinea(int numCompra, int numLinea) throws SQLException {
+        LineaDeTicket linea = null;
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_Y_NUM_LINEA_QUERY)) {
+            statement.setInt(1, numCompra);  // Establece el valor de numCompra
+            statement.setInt(2, numLinea);  // Establece el valor de numLinea
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                // Si se encuentra la línea, la convierte a un objeto LineaDeTicket
+                linea = resultSetToLineaDeTicket(resultSet);
+            }
+        }
+        return linea;  // Retorna null si no se encuentra la línea
+    }
+
 }

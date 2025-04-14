@@ -4,6 +4,7 @@ import Model.Propio;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Clase DAO para gestionar las operaciones CRUD de las compras en la base de datos.
  * Implementa métodos para insertar, actualizar, eliminar y obtener compras.

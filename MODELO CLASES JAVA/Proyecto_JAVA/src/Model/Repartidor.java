@@ -6,6 +6,11 @@ import java.time.LocalDate;
  * Representa a un repartidor de la panadería.
  * Hereda de la clase Empleado e incluye información adicional como la matrícula
  * del vehículo utilizado para las entregas.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Repartidor extends Empleado {
 

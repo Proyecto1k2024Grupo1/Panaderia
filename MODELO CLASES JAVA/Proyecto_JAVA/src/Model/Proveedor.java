@@ -6,6 +6,11 @@ import java.util.List;
 /**
  * Representa a un proveedor externo que suministra productos ajenos e ingredientes
  * a la panadería.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Proveedor {
 

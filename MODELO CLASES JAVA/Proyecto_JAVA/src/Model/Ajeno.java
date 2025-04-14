@@ -6,7 +6,13 @@ import java.util.List;
 /**
  * Representa un producto de tipo "Ajeno" que extiende la clase Producto.
  * Un producto ajeno tiene un nombre, tipo, precio y una lista de proveedores que lo suministran.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
+
 public class Ajeno extends Producto {
 
     // Lista de proveedores del producto ajeno

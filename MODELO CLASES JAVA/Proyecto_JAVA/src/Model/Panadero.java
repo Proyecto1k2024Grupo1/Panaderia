@@ -6,6 +6,11 @@ import java.time.LocalDate;
  * Clase que representa a un panadero, que es un tipo de empleado en la panadería.
  * Los panaderos tienen la responsabilidad de preparar productos específicos y
  * se pueden asignar horarios de trabajo. Además, un panadero puede tener un supervisor.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Panadero extends Empleado {
 

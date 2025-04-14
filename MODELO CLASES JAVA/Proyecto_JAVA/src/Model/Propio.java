@@ -7,6 +7,11 @@ import java.util.List;
  * Representa un producto elaborado por panaderos de la panadería.
  * Hereda de la clase Producto e incluye una lista de panaderos (proveedores internos)
  * y los ingredientes utilizados para su elaboración.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Propio extends Producto {
 

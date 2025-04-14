@@ -5,6 +5,11 @@ import java.time.LocalDate;
 /**
  * Clase abstracta que representa a un empleado. Los empleados tienen un DNI, salario, fecha de nacimiento, nombre y pueden tener un encargado.
  * Esta clase también permite calcular la edad del empleado y asignar un encargado.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public abstract class Empleado {
 

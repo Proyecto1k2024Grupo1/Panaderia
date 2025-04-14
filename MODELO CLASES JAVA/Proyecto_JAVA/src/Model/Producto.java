@@ -4,6 +4,11 @@ package Model;
  * Clase que representa un producto en el sistema.
  * Un producto tiene un código único, un nombre, un tipo y un precio.
  * Además, se pueden calcular impuestos sobre el precio y aplicar descuentos.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
  */
 public class Producto {
     int codigo;     // Código único del producto

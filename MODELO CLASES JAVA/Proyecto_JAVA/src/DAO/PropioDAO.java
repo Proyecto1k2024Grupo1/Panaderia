@@ -4,6 +4,16 @@ import Model.Propio;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Clase DAO para gestionar las operaciones CRUD de las compras en la base de datos.
+ * Implementa métodos para insertar, actualizar, eliminar y obtener compras.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @date 10/04/2025
+ */
 
 public class PropioDAO extends ProductoDAO {
 

@@ -6,6 +6,11 @@ import java.util.List;
 /**
  * Clase que representa un ingrediente. Cada ingrediente tiene un código único, nombre, descripción
  * y una lista de proveedores que suministran ese ingrediente.
+ *  @author Vanesa
+ *  @author Silvia
+ *  @author Jessica
+ *  @version 1.0
+ *  @date 10/04/2025
  */
 public class Ingrediente {
 

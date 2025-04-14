@@ -15,7 +15,7 @@ import java.util.List;
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 
 public class DependienteDAO extends EmpleadoDAO {

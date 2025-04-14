@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 
 public class RepartidorDAO extends EmpleadoDAO {

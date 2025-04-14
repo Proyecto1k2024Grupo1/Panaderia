@@ -2,6 +2,11 @@ package Menu;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+/**
+ * @author Vanesa, Silvia, Jessica
+ * @version 1.1
+ * @date 10/04/2025
+ */
 
 public class MenuEmpleado {
 

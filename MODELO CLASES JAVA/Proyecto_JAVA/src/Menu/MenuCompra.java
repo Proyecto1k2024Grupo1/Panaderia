@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ * @version 1.1
+ * @date 10/04/2025
+ */
 public class MenuCompra {
 
     public static void main(String[] args) throws SQLException {

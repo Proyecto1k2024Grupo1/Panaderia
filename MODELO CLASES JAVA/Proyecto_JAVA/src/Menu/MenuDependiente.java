@@ -6,6 +6,12 @@ import Model.Dependiente;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * @author Vanesa, Silvia, Jessica
+ * @version 1.1
+ * @date 10/04/2025
+ */
+
 public class MenuDependiente {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DependienteDAO dependienteDAO = DependienteDAO.getInstance();

@@ -12,11 +12,12 @@ import java.util.List;
  * Clase que representa una compra realizada por un cliente.
  * Contiene información sobre el cliente, el dependiente que atendió la compra,
  * el repartidor que realizó la entrega, y las líneas de la compra.
+ *
  * @author Vanesa
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 public class Compra {
 
@@ -35,23 +36,43 @@ public class Compra {
     /**
      * Constructor de la clase Compra.
      * Inicializa la lista de líneas de la compra y el contador de líneas actuales.
+     *
+     * @param dniCliente DNI del cliente que realizó la compra.
+     * @param dniDependiente DNI del dependiente que atendió la compra.
+     * @param dniRepartidor DNI del repartidor que realizó la entrega.
      */
     public Compra(String dniCliente, String dniDependiente, String dniRepartidor) {
         lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
     }
 
+    /**
+     * Constructor de la clase Compra con el número de compra.
+     * Inicializa la lista de líneas de la compra y el contador de líneas actuales.
+     *
+     * @param numCompra Número único de la compra.
+     */
     public Compra(int numCompra) {
         lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
     }
 
+    /**
+     * Constructor vacío de la clase Compra.
+     */
     public Compra() {
 
     }
 
-
-
+    /**
+     * Constructor de la clase Compra con todos los parámetros necesarios.
+     *
+     * @param fecha Fecha de la compra.
+     * @param numCompra Número único de la compra.
+     * @param cliente Cliente que realizó la compra.
+     * @param dependiente Dependiente que atendió la compra.
+     * @param lineas Lista de líneas de la compra.
+     */
     public Compra(LocalDate fecha, int numCompra, Cliente cliente, Dependiente dependiente, List<LineaDeTicket> lineas) {
         this.fecha = fecha;
         this.numCompra = numCompra;
@@ -285,6 +306,4 @@ public class Compra {
     public void setNumLineasActuales(int numLineasActuales) {
         this.numLineasActuales = numLineasActuales;
     }
-
-
 }

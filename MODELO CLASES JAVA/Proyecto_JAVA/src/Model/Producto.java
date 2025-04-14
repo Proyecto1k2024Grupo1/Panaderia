@@ -4,11 +4,12 @@ package Model;
  * Clase que representa un producto en el sistema.
  * Un producto tiene un código único, un nombre, un tipo y un precio.
  * Además, se pueden calcular impuestos sobre el precio y aplicar descuentos.
+ *
  * @author Vanesa
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 public class Producto {
     int codigo;     // Código único del producto
@@ -33,6 +34,7 @@ public class Producto {
 
     /**
      * Constructor por idProducto
+     *
      * @param codProducto que se le pasa por parámetro.
      */
     public Producto(int codProducto) {
@@ -41,12 +43,12 @@ public class Producto {
 
     /**
      * Constructor por nombre del Producto
+     *
      * @param nombreProducto que se le pasa por parámetro.
      */
     public Producto(String nombreProducto) {
-        this.nombre=nombreProducto;
+        this.nombre = nombreProducto;
     }
-
 
     /**
      * Devuelve el código único del producto.

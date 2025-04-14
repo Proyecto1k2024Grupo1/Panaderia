@@ -1,7 +1,5 @@
 package DAO;
 
-
-
 import Model.Repartidor;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import java.util.List;
  * @version 1.1
  * @since 10/04/2025
  */
-
 public class RepartidorDAO extends EmpleadoDAO {
 
     private static RepartidorDAO instance;

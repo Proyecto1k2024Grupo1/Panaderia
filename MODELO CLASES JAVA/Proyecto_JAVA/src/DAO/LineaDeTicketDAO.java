@@ -10,6 +10,11 @@ import java.util.List;
  * Clase DAO para gestionar las operaciones CRUD de las líneas de ticket en la base de datos.
  * Implementa métodos para insertar, actualizar, eliminar y obtener líneas de ticket.
  *
+ * <p>Utiliza conexión a base de datos a través de {@link DBConnection} y accede a objetos
+ * {@link LineaDeTicket}, {@link Compra}, {@link Producto}, {@link Propio} y {@link Ajeno}.
+ *
+ * <p>Sigue el patrón Singleton para asegurar una única instancia de esta clase.
+ *
  * @author Vanesa
  * @author Silvia
  * @author Jessica
@@ -75,48 +80,43 @@ public class LineaDeTicketDAO {
         }
     }
 
-
     /**
      * Convierte un objeto ResultSet en una instancia de LineaDeTicket.
      *
+     * <p>Primero intenta obtener el producto como un objeto de tipo {@link Propio} desde {@link PropioDAO}.
+     * Si no se encuentra, intenta obtenerlo como {@link Ajeno} desde {@link AjenoDAO}.
+     * Lanza una excepción si no se encuentra el producto.
+     *
      * @param resultSet El ResultSet obtenido de la consulta SQL.
      * @return Una instancia de LineaDeTicket con los datos del ResultSet.
-     * @throws SQLException Si ocurre un error al obtener los datos del ResultSet.
+     * @throws SQLException Si ocurre un error al obtener los datos del ResultSet o si el producto no existe.
      */
     private LineaDeTicket resultSetToLineaDeTicket(ResultSet resultSet) throws SQLException {
-
-        // Obtener el código del producto desde el ResultSet
         int codProducto = resultSet.getInt("codProducto");
-        Producto producto = null;  // Inicializamos el producto como null
+        Producto producto = null;
 
         try {
-            // Intentamos obtener el producto como Propio
             Propio p = PropioDAO.getInstance().getPropioByCodigo(codProducto);
             if (p != null) {
-                // Si encontramos el producto en la tabla PROPIO, asignamos el objeto
                 producto = p;
             }
         } catch (SQLException e) {
-            // Si ocurre un error al intentar obtener un producto propio, lo ignoramos (o lo manejamos de otra forma)
+            // Ignorado intencionalmente
         }
 
         try {
-            // Intentamos obtener el producto como Ajeno
             Ajeno a = AjenoDAO.getInstance().getAjenoByCodigo(codProducto);
             if (a != null) {
-                // Si encontramos el producto en la tabla AJENO, asignamos el objeto
                 producto = a;
             }
         } catch (SQLException e) {
-            // Si ocurre un error al intentar obtener un producto ajeno, lo ignoramos (o lo manejamos de otra forma)
+            // Ignorado intencionalmente
         }
 
-        // Si no se encontró ningún producto, lanzar una excepción o manejarlo según sea necesario
         if (producto == null) {
             throw new SQLException("No se encontró el producto con código " + codProducto);
         }
 
-        // Devolver la línea de ticket con el producto adecuado
         return new LineaDeTicket(
                 new Compra(resultSet.getInt("numCompra")),
                 producto,
@@ -124,7 +124,6 @@ public class LineaDeTicketDAO {
                 resultSet.getInt("numLinea")
         );
     }
-
 
     /**
      * Actualiza los datos de una línea de ticket en la base de datos.
@@ -144,10 +143,10 @@ public class LineaDeTicketDAO {
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            connection.rollback();  // Hacer rollback en caso de error
+            connection.rollback();
             throw e;
         } finally {
-            connection.setAutoCommit(true);  // Restaurar auto-commit
+            connection.setAutoCommit(true);
         }
     }
 
@@ -168,10 +167,10 @@ public class LineaDeTicketDAO {
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            connection.rollback();  // Hacer rollback en caso de error
+            connection.rollback();
             throw e;
         } finally {
-            connection.setAutoCommit(true);  // Restaurar auto-commit
+            connection.setAutoCommit(true);
         }
     }
 
@@ -185,7 +184,7 @@ public class LineaDeTicketDAO {
     public List<LineaDeTicket> getAllLineasDeTicketByNumCompra(int numCompra) throws SQLException {
         List<LineaDeTicket> lineas = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_QUERY)) {
-            statement.setInt(1, numCompra);  // Establece el valor del parámetro numCompra en la consulta
+            statement.setInt(1, numCompra);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 lineas.add(resultSetToLineaDeTicket(resultSet));
@@ -199,21 +198,21 @@ public class LineaDeTicketDAO {
      *
      * @param numCompra El número de compra que se usará para filtrar.
      * @param numLinea El número de línea dentro de la compra.
-     * @return Un objeto LineaDeTicket que corresponde al número de compra y número de línea proporcionados.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL o no se encuentra la línea.
+     * @return Un objeto LineaDeTicket que corresponde al número de compra y número de línea proporcionados,
+     *         o {@code null} si no se encuentra.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
      */
     public LineaDeTicket getLineaByNumCompraYNumLinea(int numCompra, int numLinea) throws SQLException {
         LineaDeTicket linea = null;
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_Y_NUM_LINEA_QUERY)) {
-            statement.setInt(1, numCompra);  // Establece el valor de numCompra
-            statement.setInt(2, numLinea);  // Establece el valor de numLinea
+            statement.setInt(1, numCompra);
+            statement.setInt(2, numLinea);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                // Si se encuentra la línea, la convierte a un objeto LineaDeTicket
                 linea = resultSetToLineaDeTicket(resultSet);
             }
         }
-        return linea;  // Retorna null si no se encuentra la línea
+        return linea;
     }
 
 }

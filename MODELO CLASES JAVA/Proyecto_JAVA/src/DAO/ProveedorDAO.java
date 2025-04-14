@@ -1,7 +1,5 @@
 package DAO;
 
-
-
 import Model.Proveedor;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.List;
  * @version 1.0
  * @since 10/04/2025
  */
-
 public class ProveedorDAO {
 
     private static ProveedorDAO instance;

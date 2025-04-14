@@ -5,6 +5,11 @@ import java.time.LocalDate;
 /**
  * Representa a un dependiente, que es un tipo de empleado con un horario específico.
  * Los dependientes pueden atender a los clientes y aplicar descuentos en las compras.
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @since 10/04/2025
  */
 public class Dependiente extends Empleado {
 

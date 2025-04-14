@@ -63,7 +63,7 @@ public class MenuPanadero {
 
         panaderoDAO.insertPanadero(panadero);
 
-        System.out.println("✅ Panadero añadido correctamente.");
+        System.out.println("Panadero añadido correctamente.");
     }
 
     private static void mostrarPanaderos() throws SQLException {
@@ -93,7 +93,7 @@ public class MenuPanadero {
         Panadero panadero = panaderoDAO.getPanaderoByDni(dni);
 
         if (panadero == null) {
-            System.out.println("❌ Panadero no encontrado.");
+            System.out.println("Panadero no encontrado.");
             return;
         }
 
@@ -116,7 +116,7 @@ public class MenuPanadero {
         }
 
         panaderoDAO.updatePanadero(panadero);
-        System.out.println("✅ Panadero modificado correctamente.");
+        System.out.println("Panadero modificado correctamente.");
     }
 
     private static void eliminarPanadero(Scanner scanner) throws SQLException {
@@ -128,11 +128,11 @@ public class MenuPanadero {
         Panadero panadero = panaderoDAO.getPanaderoByDni(dni);
 
         if (panadero == null) {
-            System.out.println("❌ Panadero no encontrado.");
+            System.out.println("Panadero no encontrado.");
             return;
         }
 
         panaderoDAO.deletePanaderoByDni(dni);
-        System.out.println("✅ Panadero eliminado correctamente.");
+        System.out.println("Panadero eliminado correctamente.");
     }
 }

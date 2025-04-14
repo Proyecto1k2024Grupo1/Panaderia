@@ -52,4 +52,14 @@ public class Ajeno extends Producto {
         return nombre;
     }
 
+    @Override
+    public String toString() {
+        return "Ajeno{" +
+                "proveedor=" + proveedor +
+                ", codigo=" + codigo +
+                ", nombre='" + nombre + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", precio=" + precio +
+                '}';
+    }
 }

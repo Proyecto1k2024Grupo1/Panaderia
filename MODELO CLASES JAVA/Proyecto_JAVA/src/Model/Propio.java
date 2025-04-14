@@ -63,4 +63,16 @@ public class Propio extends Producto {
     public void setIngredientes(List<Ingrediente> ingredientes) {
         this.ingredientes = ingredientes;
     }
+
+    @Override
+    public String toString() {
+        return "Propio{" +
+                "proveedor=" + proveedor +
+                ", ingredientes=" + ingredientes +
+                ", codigo=" + codigo +
+                ", nombre='" + nombre + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", precio=" + precio +
+                '}';
+    }
 }

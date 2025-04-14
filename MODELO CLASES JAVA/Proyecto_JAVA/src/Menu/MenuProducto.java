@@ -83,7 +83,7 @@ public class MenuProducto {
             }
 
             System.out.println("------ Productos Ajenos ------");
-            for (Ajeno a : ajenoDAO.getAllAjeno()) {
+            for (Ajeno a : ajenoDAO.getAllAjenos()) {
                 System.out.println(a);
             }
         }
@@ -171,7 +171,7 @@ public class MenuProducto {
                 return;
             }
 
-            ajenoDAO.deletePropioByCodigo(id);
+            ajenoDAO.deleteAjenoByCodigo(id);
             System.out.println("Producto ajeno eliminado.");
         }
 

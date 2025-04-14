@@ -1,17 +1,5 @@
 package DAO;
 
-/**
- * Clase que maneja las operaciones de acceso a datos para los productos propios en la base de datos.
- * Esta clase extiende de ProductoDAO, proporcionando implementaciones específicas para insertar, actualizar,
- * eliminar y obtener productos propios. Utiliza consultas SQL predefinidas para interactuar con la tabla PROPIO.
- *
- * @author Vanesa
- * @author Silvia
- * @author Jessica
- * @version 1.0
- * @date 10/04/2025
- */
-
 import Model.Propio;
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +12,7 @@ public class PropioDAO extends ProductoDAO {
 
     // Consultas SQL predefinidas para la tabla PROPIO
     private static final String INSERT_QUERY = "INSERT INTO PROPIO (codigo) VALUES (?)";
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM PROPIO";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM PROPIO p JOIN PRODUCTO pr ON p.codigo = pr.codigo";
     private static final String UPDATE_QUERY = "UPDATE PROPIO SET codigo = ? WHERE codigo = ?";
     private static final String DELETE_QUERY = "DELETE FROM PROPIO WHERE codigo = ?";
     private static final String SELECT_BY_ID_QUERY =
@@ -32,7 +20,6 @@ public class PropioDAO extends ProductoDAO {
                     "FROM PRODUCTO p " +
                     "JOIN PROPIO pr ON p.codigo = pr.codigo " +
                     "WHERE p.codigo = ?";
-
 
     /**
      * Constructor privado para evitar instanciación directa.
@@ -62,8 +49,8 @@ public class PropioDAO extends ProductoDAO {
     public void insertPropio(Propio propio) throws SQLException {
         connection.setAutoCommit(false);
 
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
-             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER)) {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement statement2 = connection.prepareStatement(INSERT_QUERY_SUPER, Statement.RETURN_GENERATED_KEYS)) {
 
             // Inserta el producto en la tabla de productos generales.
             statement2.setString(1, propio.getNombre());
@@ -74,7 +61,8 @@ public class PropioDAO extends ProductoDAO {
             // Recupera el código generado automáticamente y lo inserta en la tabla PROPIO.
             ResultSet resultSet2 = statement2.getGeneratedKeys();
             if (resultSet2.next()) {
-                statement.setInt(1, resultSet2.getInt(1));
+                int generatedCode = resultSet2.getInt(1);  // Aquí obtienes el código generado
+                statement.setInt(1, generatedCode);  // Usa ese código para la tabla PROPIO
                 statement.executeUpdate();
             }
 
@@ -131,10 +119,10 @@ public class PropioDAO extends ProductoDAO {
              PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)) {
 
             // Actualiza el producto en la tabla de productos generales.
-            statement2.setInt(1, propio.getCodigo());
-            statement2.setString(2, propio.getNombre());
-            statement2.setString(3, propio.getTipo());
-            statement2.setDouble(4, propio.getPrecio());
+            statement2.setString(1, propio.getNombre());
+            statement2.setString(2, propio.getTipo());
+            statement2.setDouble(3, propio.getPrecio());
+            statement2.setInt(4, propio.getCodigo());
             statement2.executeUpdate();
 
             // Actualiza el producto en la tabla PROPIO.
@@ -178,6 +166,7 @@ public class PropioDAO extends ProductoDAO {
             connection.setAutoCommit(true); // Restablece la auto-commit
         }
     }
+
     /**
      * Consulta un producto propio en la base de datos a partir de su código.
      * @param codigo El identificador único del producto.

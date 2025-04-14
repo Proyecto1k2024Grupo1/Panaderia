@@ -11,9 +11,9 @@ import java.util.List;
  * Proporciona métodos para insertar, actualizar, eliminar y recuperar clientes.
  * La clase gestiona las operaciones relacionadas con los clientes y sus números de teléfono en la base de datos.
  *
- * @author Vanesa
- * @author Silvia
- * @author Jessica
+ * Patrón: Singleton
+ *
+ * Autor: Vanesa, Silvia, Jessica
  * @version 1.0
  * @since 10/04/2025
  */
@@ -26,25 +26,23 @@ public class ClienteDAO {
     private static final String INSERT_QUERY = "INSERT INTO CLIENTE (direccion, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
     private static final String INSERT_TELEFONO_QUERY = "INSERT INTO TELEFONO (idCliente, numTelefono) VALUES (?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM CLIENTE";
-    private static final String SELECT_CLIENTE_BY_ID_QUERY = "SELECT * FROM CLIENTE WHERE idCliente = ?"; // Query para obtener cliente por ID
+    private static final String SELECT_CLIENTE_BY_ID_QUERY = "SELECT * FROM CLIENTE WHERE idCliente = ?";
     private static final String UPDATE_QUERY = "UPDATE CLIENTE SET direccion = ?, nombre = ?, apellido1 = ?, apellido2 = ? WHERE idCliente = ?";
     private static final String DELETE_QUERY = "DELETE FROM CLIENTE WHERE idCliente = ?";
     private static final String DELETE_TELEFONOS_QUERY = "DELETE FROM TELEFONO WHERE idCliente = ?";
     private static final String SELECT_TELEFONOS_CLIENTE = "SELECT numTelefono FROM TELEFONO WHERE idCliente = ?";
 
     /**
-     * Constructor privado para inicializar la conexión a la base de datos.
-     * Solo se puede acceder a través del método getInstance().
+     * Constructor privado para seguir el patrón Singleton.
+     * Inicializa la conexión a la base de datos.
      */
     private ClienteDAO() {
         this.connection = DBConnection.getConnection();
     }
 
     /**
-     * Obtiene la única instancia del ClienteDAO (Patrón Singleton).
-     * Este patrón asegura que solo haya una instancia de ClienteDAO en la aplicación.
-     *
-     * @return La instancia de ClienteDAO.
+     * Método estático para obtener una única instancia de ClienteDAO.
+     * @return la única instancia de ClienteDAO.
      */
     public static synchronized ClienteDAO getInstance() {
         if (instance == null) {
@@ -54,18 +52,16 @@ public class ClienteDAO {
     }
 
     /**
-     * Inserta un cliente y sus teléfonos en la base de datos.
-     * Primero se inserta el cliente y luego los teléfonos asociados a ese cliente.
-     * Utiliza transacciones para garantizar la consistencia de los datos.
+     * Inserta un nuevo cliente y sus teléfonos en la base de datos.
+     * Utiliza transacciones para asegurar consistencia.
      *
-     * @param cliente El objeto cliente que se desea insertar.
-     * @throws SQLException Si ocurre un error al insertar el cliente o los teléfonos.
+     * @param cliente Cliente a insertar.
+     * @throws SQLException si ocurre un error en la inserción.
      */
     public void insertCliente(Cliente cliente) throws SQLException {
-        connection.setAutoCommit(false); // Iniciar transacción manual
+        connection.setAutoCommit(false);
 
         try (PreparedStatement clienteStmt = connection.prepareStatement(INSERT_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            // Establecer los datos del cliente
             clienteStmt.setString(1, cliente.getDireccion());
             clienteStmt.setString(2, cliente.getNombre());
             clienteStmt.setString(3, cliente.getApellido1());
@@ -73,17 +69,15 @@ public class ClienteDAO {
 
             clienteStmt.executeUpdate();
 
-            // Obtener ID del cliente
             ResultSet rs = clienteStmt.getGeneratedKeys();
             if (rs.next()) {
                 int idCliente = rs.getInt(1);
-                // Insertar los teléfonos asociados
                 insertTelefonos(idCliente, cliente.getTelefonos());
             }
 
-            connection.commit(); // Confirmar transacción
+            connection.commit();
         } catch (SQLException e) {
-            connection.rollback(); // Revertir si falla
+            connection.rollback();
             throw e;
         } finally {
             connection.setAutoCommit(true);
@@ -91,30 +85,28 @@ public class ClienteDAO {
     }
 
     /**
-     * Inserta los teléfonos asociados a un cliente en la base de datos.
-     * Utiliza un batch para insertar todos los teléfonos de forma eficiente.
+     * Inserta una lista de teléfonos para un cliente dado.
      *
-     * @param idCliente El ID del cliente.
-     * @param telefonos Lista de números de teléfono a asociar al cliente.
-     * @throws SQLException Si ocurre un error al insertar los teléfonos.
+     * @param idCliente ID del cliente al que se asocian los teléfonos.
+     * @param telefonos Lista de números de teléfono.
+     * @throws SQLException si ocurre un error al insertar.
      */
     private void insertTelefonos(int idCliente, List<String> telefonos) throws SQLException {
         try (PreparedStatement telefonoStmt = connection.prepareStatement(INSERT_TELEFONO_QUERY)) {
             for (String telefono : telefonos) {
                 telefonoStmt.setInt(1, idCliente);
                 telefonoStmt.setString(2, telefono);
-                telefonoStmt.addBatch(); // Añadir a lote
+                telefonoStmt.addBatch();
             }
-            telefonoStmt.executeBatch(); // Ejecutar el lote
+            telefonoStmt.executeBatch();
         }
     }
 
     /**
-     * Recupera todos los clientes, incluyendo sus teléfonos asociados.
-     * Utiliza una consulta SQL para obtener todos los clientes y luego recupera sus teléfonos.
+     * Recupera todos los clientes registrados junto con sus teléfonos.
      *
-     * @return Una lista de objetos Cliente, cada uno con sus teléfonos asociados.
-     * @throws SQLException Si ocurre un error al recuperar los clientes o los teléfonos.
+     * @return Lista de clientes con sus datos completos.
+     * @throws SQLException si ocurre un error al acceder a los datos.
      */
     public List<Cliente> getAllClientes() throws SQLException {
         List<Cliente> clientes = new ArrayList<>();
@@ -124,7 +116,7 @@ public class ClienteDAO {
 
             while (resultSet.next()) {
                 Cliente cliente = resultSetToCliente(resultSet);
-                cliente.setTelefonos(getTelefonosCliente(cliente.getIdCliente())); // Obtener teléfonos
+                cliente.setTelefonos(getTelefonosCliente(cliente.getIdCliente()));
                 clientes.add(cliente);
             }
         }
@@ -133,12 +125,11 @@ public class ClienteDAO {
     }
 
     /**
-     * Recupera un cliente por su ID, incluyendo sus teléfonos asociados.
-     * Utiliza una consulta SQL para obtener el cliente por ID y luego recupera sus teléfonos.
+     * Recupera un cliente por su ID, incluyendo sus teléfonos.
      *
-     * @param idCliente El ID del cliente a recuperar.
-     * @return El objeto Cliente con sus teléfonos asociados, o null si no se encuentra.
-     * @throws SQLException Si ocurre un error al recuperar el cliente o sus teléfonos.
+     * @param idCliente ID del cliente a recuperar.
+     * @return Cliente con todos sus datos o null si no existe.
+     * @throws SQLException si ocurre un error durante la operación.
      */
     public Cliente getClienteById(int idCliente) throws SQLException {
         Cliente cliente = null;
@@ -148,23 +139,20 @@ public class ClienteDAO {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                // Convertir el ResultSet a objeto Cliente
                 cliente = resultSetToCliente(resultSet);
-                // Obtener los teléfonos asociados al cliente
                 cliente.setTelefonos(getTelefonosCliente(idCliente));
             }
         }
 
-        return cliente; // Retorna el cliente si lo encuentra, o null si no
+        return cliente;
     }
 
     /**
-     * Recupera los teléfonos asociados a un cliente.
-     * Utiliza una consulta SQL para obtener todos los teléfonos del cliente.
+     * Recupera la lista de teléfonos asociada a un cliente específico.
      *
-     * @param idCliente El ID del cliente cuyos teléfonos se desean recuperar.
-     * @return Una lista de números de teléfono asociados al cliente.
-     * @throws SQLException Si ocurre un error al recuperar los teléfonos.
+     * @param idCliente ID del cliente.
+     * @return Lista de números de teléfono.
+     * @throws SQLException si ocurre un error en la consulta.
      */
     private List<String> getTelefonosCliente(int idCliente) throws SQLException {
         List<String> telefonos = new ArrayList<>();
@@ -183,11 +171,10 @@ public class ClienteDAO {
 
     /**
      * Convierte un ResultSet en un objeto Cliente.
-     * Este método mapea los valores del ResultSet a un objeto Cliente.
      *
-     * @param resultSet El ResultSet que contiene los datos del cliente.
-     * @return El objeto Cliente correspondiente.
-     * @throws SQLException Si ocurre un error al convertir el ResultSet.
+     * @param resultSet Conjunto de resultados de una consulta.
+     * @return Objeto Cliente.
+     * @throws SQLException si ocurre un error al acceder al ResultSet.
      */
     private Cliente resultSetToCliente(ResultSet resultSet) throws SQLException {
         return new Cliente(
@@ -200,11 +187,11 @@ public class ClienteDAO {
     }
 
     /**
-     * Actualiza los datos de un cliente en la base de datos.
-     * Primero actualiza los datos básicos del cliente y luego actualiza sus teléfonos.
+     * Actualiza los datos de un cliente y reemplaza sus teléfonos.
+     * Utiliza transacciones para mantener la integridad de los datos.
      *
-     * @param cliente El objeto cliente con los datos actualizados.
-     * @throws SQLException Si ocurre un error al actualizar el cliente o los teléfonos.
+     * @param cliente Cliente con los datos actualizados.
+     * @throws SQLException si ocurre un error durante la operación.
      */
     public void updateCliente(Cliente cliente) throws SQLException {
         connection.setAutoCommit(false);
@@ -218,10 +205,7 @@ public class ClienteDAO {
 
             statement.executeUpdate();
 
-            // Eliminar teléfonos existentes
             deleteTelefonos(cliente.getIdCliente());
-
-            // Insertar los nuevos teléfonos
             insertTelefonos(cliente.getIdCliente(), cliente.getTelefonos());
 
             connection.commit();
@@ -234,10 +218,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Elimina los teléfonos asociados a un cliente de la base de datos.
+     * Elimina los teléfonos de un cliente según su ID.
      *
-     * @param idCliente El ID del cliente cuyos teléfonos se deben eliminar.
-     * @throws SQLException Si ocurre un error al eliminar los teléfonos.
+     * @param idCliente ID del cliente.
+     * @throws SQLException si ocurre un error al eliminar.
      */
     private void deleteTelefonos(int idCliente) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE_TELEFONOS_QUERY)) {
@@ -247,26 +231,25 @@ public class ClienteDAO {
     }
 
     /**
-     * Elimina un cliente y sus teléfonos asociados de la base de datos.
-     * Primero elimina los teléfonos asociados al cliente y luego elimina el cliente.
+     * Elimina un cliente y sus teléfonos de la base de datos.
      *
-     * @param id El ID del cliente a eliminar.
-     * @throws SQLException Si ocurre un error al eliminar el cliente o sus teléfonos.
+     * @param id ID del cliente a eliminar.
+     * @throws SQLException si ocurre un error en el proceso.
      */
     public void deleteClienteById(int id) throws SQLException {
         connection.setAutoCommit(false);
 
         try {
-            deleteTelefonos(id); // Eliminar teléfonos
+            deleteTelefonos(id);
 
             try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
             }
 
-            connection.commit(); // Confirmar transacción
+            connection.commit();
         } catch (SQLException e) {
-            connection.rollback(); // Revertir si ocurre un error
+            connection.rollback();
             throw e;
         } finally {
             connection.setAutoCommit(true);

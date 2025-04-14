@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Clase DAO para gestionar las operaciones CRUD de las compras en la base de datos.
  * Implementa métodos para insertar, actualizar, eliminar y obtener compras.
+ * Utiliza conexiones a través de la clase DBConnection y se apoya en otras DAOs para obtener entidades relacionadas.
  *
  * @author Vanesa
  * @author Silvia
@@ -17,20 +18,60 @@ import java.util.List;
  * @since 10/04/2025
  */
 public class CompraDAO {
+
+    /**
+     * Instancia de LineaDeTicketDAO usada para acceder a las líneas de ticket relacionadas.
+     */
     private static LineaDeTicketDAO lineaDeTicketDAO = LineaDeTicketDAO.getInstance();
+
+    /**
+     * Instancia única de CompraDAO (patrón Singleton).
+     */
     private static CompraDAO instance;
+
+    /**
+     * Conexión a la base de datos.
+     */
     private Connection connection;
 
+    /**
+     * Consulta SQL para insertar una compra.
+     */
     private static final String INSERT_QUERY = "INSERT INTO COMPRA (numCompra, fecha, idCliente, dniDependiente) VALUES (?, ?, ?, ?)";
+
+    /**
+     * Consulta SQL para obtener todas las compras.
+     */
     private static final String SELECT_ALL_QUERY = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA";
+
+    /**
+     * Consulta SQL para actualizar una compra.
+     */
     private static final String UPDATE_QUERY = "UPDATE COMPRA SET fecha = ?, idCliente = ?, dniDependiente = ? WHERE numCompra = ?";
+
+    /**
+     * Consulta SQL para eliminar una compra.
+     */
     private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
+
+    /**
+     * Consulta SQL para obtener una compra por su número.
+     */
     private static final String SELECT_BY_NUM_COMPRA = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA WHERE numCompra = ?";
 
+    /**
+     * Constructor privado del patrón Singleton.
+     * Inicializa la conexión a la base de datos.
+     */
     private CompraDAO() {
         this.connection = DBConnection.getConnection();
     }
 
+    /**
+     * Devuelve la instancia única de CompraDAO.
+     *
+     * @return Instancia de CompraDAO.
+     */
     public static synchronized CompraDAO getInstance() {
         if (instance == null) {
             instance = new CompraDAO();
@@ -42,54 +83,45 @@ public class CompraDAO {
      * Inserta una nueva compra en la base de datos.
      *
      * @param compra La compra que se desea insertar.
+     * @return El número de compra generado si la operación fue exitosa.
      * @throws SQLException Si ocurre un error en la base de datos durante la operación.
      */
     public int insertCompra(Compra compra) throws SQLException {
-        // Desactivar autocommit para la transacción
         connection.setAutoCommit(false);
-
-        // Declarar la variable para el numCompra generado
         int numCompraGenerado = -1;
 
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, compra.getNumCompra());
 
-            // Manejar fecha nula
             if (compra.getFecha() != null) {
-                statement.setDate(2, Date.valueOf(compra.getFecha()));  // Ajuste para el tipo de dato fecha
+                statement.setDate(2, Date.valueOf(compra.getFecha()));
             } else {
-                statement.setNull(2, Types.DATE);  // Establecer como NULL si la fecha es nula
+                statement.setNull(2, Types.DATE);
             }
 
             statement.setInt(3, compra.getCliente().getIdCliente());
             statement.setString(4, compra.getDependiente().getDni());
 
-            // Ejecutar la inserción
             int affectedRows = statement.executeUpdate();
 
-            // Verificar si se generaron claves
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        // Obtener el numCompra generado
                         numCompraGenerado = generatedKeys.getInt(1);
                     }
                 }
             }
 
-            // Confirmar la transacción
             connection.commit();
         } catch (SQLException e) {
-            connection.rollback();  // Hacer rollback en caso de error
+            connection.rollback();
             throw e;
         } finally {
-            connection.setAutoCommit(true);  // Restaurar auto-commit
+            connection.setAutoCommit(true);
         }
 
-        // Devolver el numCompra generado
         return numCompraGenerado;
     }
-
 
     /**
      * Obtiene todas las compras almacenadas en la base de datos.
@@ -122,14 +154,14 @@ public class CompraDAO {
         Date fecha = resultSet.getDate("fecha");
 
         List<LineaDeTicket> l = LineaDeTicketDAO.getInstance().getAllLineasDeTicketByNumCompra(numCompra);
-        return new Compra(fecha != null ? fecha.toLocalDate() : null, numCompra, cliente, dependiente, l);  // Manejar null en la fecha
+        return new Compra(fecha != null ? fecha.toLocalDate() : null, numCompra, cliente, dependiente, l);
     }
 
     /**
      * Obtiene una compra específica mediante su número de compra.
      *
      * @param numCompra El número de compra a buscar.
-     * @return La compra correspondiente al número proporcionado.
+     * @return La compra correspondiente al número proporcionado, o null si no existe.
      * @throws SQLException Si ocurre un error en la base de datos.
      */
     public Compra getCompraByNumCompra(int numCompra) throws SQLException {
@@ -153,12 +185,10 @@ public class CompraDAO {
     public void updateCompra(Compra compra) throws SQLException {
         connection.setAutoCommit(false);
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
-            // Manejar fecha nula
             if (compra.getFecha() != null) {
                 statement.setDate(1, Date.valueOf(compra.getFecha()));
             } else {
-                statement.setNull(1, Types.DATE);  // Establecer como NULL si la fecha es nula
+                statement.setNull(1, Types.DATE);
             }
 
             statement.setInt(2, compra.getCliente().getIdCliente());

@@ -36,6 +36,7 @@ public class MenuPrincipal {
                 System.out.println("6. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = scanner.nextInt();
+                scanner.nextLine(); // Limpiar buffer
 
                 switch (opcion) {
                     case 1:

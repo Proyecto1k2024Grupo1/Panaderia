@@ -6,11 +6,12 @@ import java.util.List;
 /**
  * Representa un cliente con información personal como nombre, apellidos, dirección y teléfonos.
  * También permite registrar compras y actualizar la dirección del cliente.
+ *
  * @author Vanesa
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 public class Cliente {
 
@@ -96,50 +97,110 @@ public class Cliente {
 
     // Métodos getters y setters
 
+    /**
+     * Obtiene el identificador único del cliente.
+     *
+     * @return El identificador del cliente.
+     */
     public int getIdCliente() {
         return idCliente;
     }
 
+    /**
+     * Establece el identificador único del cliente.
+     *
+     * @param idCliente El identificador del cliente.
+     */
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 
+    /**
+     * Obtiene la dirección del cliente.
+     *
+     * @return La dirección del cliente.
+     */
     public String getDireccion() {
         return direccion;
     }
 
+    /**
+     * Establece la dirección del cliente.
+     *
+     * @param direccion La dirección del cliente.
+     */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
+    /**
+     * Obtiene el nombre del cliente.
+     *
+     * @return El nombre del cliente.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del cliente.
+     *
+     * @param nombre El nombre del cliente.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene el primer apellido del cliente.
+     *
+     * @return El primer apellido del cliente.
+     */
     public String getApellido1() {
         return apellido1;
     }
 
+    /**
+     * Establece el primer apellido del cliente.
+     *
+     * @param apellido1 El primer apellido del cliente.
+     */
     public void setApellido1(String apellido1) {
         this.apellido1 = apellido1;
     }
 
+    /**
+     * Obtiene el segundo apellido del cliente.
+     *
+     * @return El segundo apellido del cliente.
+     */
     public String getApellido2() {
         return apellido2;
     }
 
+    /**
+     * Establece el segundo apellido del cliente.
+     *
+     * @param apellido2 El segundo apellido del cliente.
+     */
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
 
+    /**
+     * Obtiene la lista de teléfonos asociados al cliente.
+     *
+     * @return Lista de teléfonos asociados al cliente.
+     */
     public List<String> getTelefonos() {
         return telefonos;
     }
 
+    /**
+     * Establece la lista de teléfonos asociados al cliente.
+     *
+     * @param telefonos Lista de teléfonos asociados al cliente.
+     */
     public void setTelefonos(List<String> telefonos) {
         this.telefonos = telefonos;
     }

@@ -1,5 +1,12 @@
 package DAO;
 
+
+
+import Model.Proveedor;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Clase que maneja las operaciones de acceso a datos para los proveedores en la base de datos.
  * Esta clase proporciona implementaciones para insertar, actualizar, eliminar y obtener proveedores.
@@ -11,11 +18,6 @@ package DAO;
  * @version 1.0
  * @date 10/04/2025
  */
-
-import Model.Proveedor;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProveedorDAO {
 

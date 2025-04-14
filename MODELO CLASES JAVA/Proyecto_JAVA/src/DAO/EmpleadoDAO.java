@@ -1,10 +1,11 @@
 package DAO;
 
+import java.sql.Connection;
+
 /**
+ * Clase DAO (Data Access Object) para gestionar los productos ajenos en la base de datos.
  * @author Vanesa, Silvia, Jessica
  */
-
-import java.sql.Connection;
 
 public abstract class EmpleadoDAO {
 

@@ -5,6 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Clase DAO (Data Access Object) para gestionar los productos ajenos en la base de datos.
+ */
+
 public class AjenoDAO extends ProductoDAO {
 
     private static AjenoDAO instance;

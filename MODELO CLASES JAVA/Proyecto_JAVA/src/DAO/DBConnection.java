@@ -1,12 +1,16 @@
 package DAO;
 
-/**
- * @author Vanesa, Silvia, Jessica
- */
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+/**
+ * Clase para realizar la conexión.
+ *
+ * @author Vanesa, Silvia, Jessica
+ */
 
 public class DBConnection {
     // URL de conexión a la base de datos MySQL

@@ -1,5 +1,12 @@
 package DAO;
 
+
+
+import Model.Dependiente;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Esta clase maneja las operaciones de acceso a la base de datos relacionadas con los dependientes,
  * hereda de EmpleadoDAO para aprovechar la funcionalidad común con los empleados.
@@ -10,11 +17,6 @@ package DAO;
  * @version 1.0
  * @date 10/04/2025
  */
-
-import Model.Dependiente;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DependienteDAO extends EmpleadoDAO {
     private static DependienteDAO instance;

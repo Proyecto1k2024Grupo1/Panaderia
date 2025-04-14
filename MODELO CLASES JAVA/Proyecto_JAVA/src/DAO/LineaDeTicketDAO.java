@@ -1,13 +1,8 @@
 package DAO;
 
-import Model.Compra;
-import Model.LineaDeTicket;
-import Model.Producto;
+import Model.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +23,9 @@ public class LineaDeTicketDAO {
 
     // Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO LINEA_DE_TICKET (numCompra, numLinea, codProducto, cantidad) VALUES (?, ?, ?, ?)";
-    private static final String SELECT_ALL_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET";  // Mejor especificar columnas
     private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET codProducto = ?, cantidad = ? WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
+    private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ?";
 
     /**
      * Constructor privado para evitar la instanciación externa de esta clase.
@@ -55,8 +50,6 @@ public class LineaDeTicketDAO {
 
     /**
      * Inserta una nueva línea de ticket en la base de datos.
-     * Este método ejecuta una transacción que se confirma si la inserción es exitosa,
-     * y se revierte en caso de error.
      *
      * @param linea La línea de ticket a insertar.
      * @throws SQLException Si ocurre un error en la base de datos durante la operación.
@@ -74,52 +67,65 @@ public class LineaDeTicketDAO {
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();  // Hacer rollback en caso de error
-            throw e;  // Re-lanzar la excepción para manejarla en la capa superior
+            throw e;
         } finally {
             connection.setAutoCommit(true);  // Restaurar auto-commit
         }
     }
 
-    /**
-     * Obtiene todas las líneas de ticket almacenadas en la base de datos.
-     * Este método ejecuta una consulta SELECT que obtiene todas las líneas de ticket.
-     *
-     * @return Una lista de objetos LineaDeTicket representando todas las líneas de ticket en la base de datos.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
-     */
-    public List<LineaDeTicket> getAllLineasDeTicket() throws SQLException {
-        List<LineaDeTicket> lineas = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                lineas.add(resultSetToLineaDeTicket(resultSet));
-            }
-        }
-        return lineas;
-    }
 
     /**
      * Convierte un objeto ResultSet en una instancia de LineaDeTicket.
-     * Este método mapea cada columna del ResultSet a los atributos del objeto LineaDeTicket.
      *
      * @param resultSet El ResultSet obtenido de la consulta SQL.
      * @return Una instancia de LineaDeTicket con los datos del ResultSet.
      * @throws SQLException Si ocurre un error al obtener los datos del ResultSet.
      */
     private LineaDeTicket resultSetToLineaDeTicket(ResultSet resultSet) throws SQLException {
+
+        // Obtener el código del producto desde el ResultSet
+        int codProducto = resultSet.getInt("codProducto");
+        Producto producto = null;  // Inicializamos el producto como null
+
+        try {
+            // Intentamos obtener el producto como Propio
+            Propio p = PropioDAO.getInstance().getPropioByCodigo(codProducto);
+            if (p != null) {
+                // Si encontramos el producto en la tabla PROPIO, asignamos el objeto
+                producto = p;
+            }
+        } catch (SQLException e) {
+            // Si ocurre un error al intentar obtener un producto propio, lo ignoramos (o lo manejamos de otra forma)
+        }
+
+        try {
+            // Intentamos obtener el producto como Ajeno
+            Ajeno a = AjenoDAO.getInstance().getAjenoByCodigo(codProducto);
+            if (a != null) {
+                // Si encontramos el producto en la tabla AJENO, asignamos el objeto
+                producto = a;
+            }
+        } catch (SQLException e) {
+            // Si ocurre un error al intentar obtener un producto ajeno, lo ignoramos (o lo manejamos de otra forma)
+        }
+
+        // Si no se encontró ningún producto, lanzar una excepción o manejarlo según sea necesario
+        if (producto == null) {
+            throw new SQLException("No se encontró el producto con código " + codProducto);
+        }
+
+        // Devolver la línea de ticket con el producto adecuado
         return new LineaDeTicket(
                 new Compra(resultSet.getInt("numCompra")),
-                new Producto(resultSet.getInt("codProducto")),
+                producto,
                 resultSet.getInt("cantidad"),
                 resultSet.getInt("numLinea")
-
-                );
+        );
     }
+
 
     /**
      * Actualiza los datos de una línea de ticket en la base de datos.
-     * Este método ejecuta una transacción para actualizar la línea de ticket. Si ocurre un error,
-     * la transacción se revierte.
      *
      * @param linea La línea de ticket con los nuevos datos a actualizar.
      * @throws SQLException Si ocurre un error en la base de datos durante la operación.
@@ -137,7 +143,7 @@ public class LineaDeTicketDAO {
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();  // Hacer rollback en caso de error
-            throw e;  // Re-lanzar la excepción para manejo posterior
+            throw e;
         } finally {
             connection.setAutoCommit(true);  // Restaurar auto-commit
         }
@@ -145,8 +151,6 @@ public class LineaDeTicketDAO {
 
     /**
      * Elimina una línea de ticket de la base de datos mediante los identificadores numCompra y numLinea.
-     * Este método ejecuta una transacción para eliminar la línea de ticket. Si ocurre un error,
-     * la transacción se revierte.
      *
      * @param numCompra El identificador único de la compra a la que pertenece la línea de ticket.
      * @param numLinea El identificador único de la línea dentro de la compra.
@@ -163,9 +167,28 @@ public class LineaDeTicketDAO {
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();  // Hacer rollback en caso de error
-            throw e;  // Re-lanzar la excepción para manejo posterior
+            throw e;
         } finally {
             connection.setAutoCommit(true);  // Restaurar auto-commit
         }
+    }
+
+    /**
+     * Obtiene todas las líneas de ticket para un número de compra específico.
+     *
+     * @param numCompra El número de compra que se usará para filtrar las líneas de ticket.
+     * @return Una lista de objetos LineaDeTicket representando todas las líneas de ticket para ese número de compra.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     */
+    public List<LineaDeTicket> getAllLineasDeTicketByNumCompra(int numCompra) throws SQLException {
+        List<LineaDeTicket> lineas = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_QUERY)) {
+            statement.setInt(1, numCompra);  // Establece el valor del parámetro numCompra en la consulta
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                lineas.add(resultSetToLineaDeTicket(resultSet));
+            }
+        }
+        return lineas;
     }
 }

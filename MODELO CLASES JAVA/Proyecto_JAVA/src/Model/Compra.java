@@ -1,5 +1,8 @@
 package Model;
 
+import DAO.LineaDeTicketDAO;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -47,6 +50,15 @@ public class Compra {
 
     }
 
+
+
+    public Compra(LocalDate fecha, int numCompra, Cliente cliente, Dependiente dependiente, List<LineaDeTicket> lineas) {
+        this.fecha = fecha;
+        this.numCompra = numCompra;
+        this.cliente = cliente;
+        this.dependiente = dependiente;
+        this.lineas = lineas;
+    }
 
     /**
      * Registra una nueva línea en la compra.
@@ -273,4 +285,6 @@ public class Compra {
     public void setNumLineasActuales(int numLineasActuales) {
         this.numLineasActuales = numLineasActuales;
     }
+
+
 }

@@ -1,213 +1,197 @@
 package DAO;
 
-import Model.Cliente;
-import Model.Compra;
-import Model.Dependiente;
-import Model.Repartidor;
+import Model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase CompraDAO que maneja las operaciones de acceso a datos (DAO) para la entidad Compra.
- * Implementa el patrón Singleton para garantizar que solo haya una instancia de la clase.
+ * Clase DAO para gestionar las operaciones CRUD de las compras en la base de datos.
+ * Implementa métodos para insertar, actualizar, eliminar y obtener compras.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
  * @version 1.0
  * @date 10/04/2025
  */
 public class CompraDAO {
-    // Consultas SQL para insertar, seleccionar, actualizar y eliminar compras
-    private static final String INSERT_QUERY = "INSERT INTO COMPRA (fecha, idCliente, dniDependiente) VALUES (CURDATE(), ?, ?)";
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM COMPRA";
-    private static final String UPDATE_QUERY = "UPDATE COMPRA SET idCliente = ? WHERE numCompra = ?";
-    private static final String UPDATE_QUERY_DEPENDIENTE = "UPDATE COMPRA SET dniDependiente = ?, descuentoDependiente = ?, fechaDependiente = CURDATE() WHERE numCompra = ?";
-    private static final String UPDATE_QUERY_REPARTIDOR = "UPDATE COMPRA SET dniRepartidor = ?, fechaRepartidor = CURDATE(), horaRepartidor = CURTIME() WHERE numCompra = ?";
-    private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
-    private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT * FROM COMPRA WHERE numCompra = ?";
-
-
-    // Instancia única de CompraDAO (patrón Singleton)
+    private static LineaDeTicketDAO lineaDeTicketDAO = LineaDeTicketDAO.getInstance();
     private static CompraDAO instance;
     private Connection connection;
 
-    /**
-     * Constructor privado para evitar la creación directa de instancias.
-     * Obtiene la conexión a la base de datos a través de DBConnection.
-     */
-    public CompraDAO() {
-        this.connection = DBConnection.getConnection(); // Obtiene la conexión a la base de datos
+    private static final String INSERT_QUERY = "INSERT INTO COMPRA (numCompra, fecha, idCliente, dniDependiente) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_ALL_QUERY = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA";
+    private static final String UPDATE_QUERY = "UPDATE COMPRA SET fecha = ?, idCliente = ?, dniDependiente = ? WHERE numCompra = ?";
+    private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
+    private static final String SELECT_BY_NUM_COMPRA = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA WHERE numCompra = ?";
+
+    private CompraDAO() {
+        this.connection = DBConnection.getConnection();
     }
 
-    /**
-     * Devuelve la instancia única de CompraDAO.
-     * Si aún no se ha creado, se inicializa la instancia.
-     *
-     * @return La instancia única de CompraDAO.
-     */
-    public static CompraDAO getInstance() {
+    public static synchronized CompraDAO getInstance() {
         if (instance == null) {
-            instance = new CompraDAO(); // Si no existe, se crea una nueva instancia
+            instance = new CompraDAO();
         }
-        return instance; // Devuelve la instancia única
+        return instance;
     }
 
     /**
      * Inserta una nueva compra en la base de datos.
      *
-     * @param compra Objeto Compra que contiene la información de la compra a insertar.
-     * @return
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     * @param compra La compra que se desea insertar.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
      */
-    // Método para insertar una compra
-    public void insertCompra(Compra compra) throws SQLException {
+    public int insertCompra(Compra compra) throws SQLException {
+        // Desactivar autocommit para la transacción
+        connection.setAutoCommit(false);
+
+        // Declarar la variable para el numCompra generado
+        int numCompraGenerado = -1;
 
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-            // Asume que 'fecha' es un LocalDate
-            statement.setInt(1, compra.getCliente().getIdCliente()); // Establece el idCliente
-            statement.setString(2, compra.getDependiente().getDni());  // Establece el dniDependiente
+            statement.setInt(1, compra.getNumCompra());
 
-            statement.executeUpdate();
-
-            // Obtener el ID generado para la compra insertada
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                int idCompra = rs.getInt(1);
-                compra.setNumCompra(idCompra);  // Establece el ID de la compra
+            // Manejar fecha nula
+            if (compra.getFecha() != null) {
+                statement.setDate(2, Date.valueOf(compra.getFecha()));  // Ajuste para el tipo de dato fecha
+            } else {
+                statement.setNull(2, Types.DATE);  // Establecer como NULL si la fecha es nula
             }
+
+            statement.setInt(3, compra.getCliente().getIdCliente());
+            statement.setString(4, compra.getDependiente().getDni());
+
+            // Ejecutar la inserción
+            int affectedRows = statement.executeUpdate();
+
+            // Verificar si se generaron claves
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Obtener el numCompra generado
+                        numCompraGenerado = generatedKeys.getInt(1);
+                    }
+                }
+            }
+
+            // Confirmar la transacción
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();  // Hacer rollback en caso de error
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);  // Restaurar auto-commit
         }
+
+        // Devolver el numCompra generado
+        return numCompraGenerado;
     }
 
 
     /**
-     * Obtiene todas las compras registradas en la base de datos.
+     * Obtiene todas las compras almacenadas en la base de datos.
      *
-     * @return Una lista de objetos Compra que representan todas las compras en la base de datos.
+     * @return Una lista de objetos Compra.
      * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
      */
-    public List<Compra> getAllCompra() throws SQLException {
+    public List<Compra> getAllCompras() throws SQLException {
         List<Compra> compras = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet resultSet = statement.executeQuery(); // Ejecuta la consulta para obtener todas las compras
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                compras.add(resultSetToCompra(resultSet)); // Convierte cada fila del ResultSet en un objeto Compra
+                compras.add(resultSetToCompra(resultSet));
             }
         }
-        return compras; // Devuelve la lista de todas las compras
+        return compras;
     }
 
     /**
-     * Actualiza el cliente asociado a una compra en la base de datos.
+     * Convierte un ResultSet a un objeto Compra.
      *
-     * @param numCompra El número de la compra a actualizar.
-     * @param idCliente El nuevo id del cliente a asociar con la compra.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     * @param resultSet El ResultSet que contiene los datos de la compra.
+     * @return Un objeto Compra con los datos del ResultSet.
+     * @throws SQLException Si ocurre un error al procesar el ResultSet.
      */
-    public void updateCompraCliente(int numCompra, int idCliente) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-            statement.setInt(1, idCliente); // Establece el nuevo idCliente
-            statement.setInt(2, numCompra); // Establece el número de compra que se quiere actualizar
-            statement.executeUpdate(); // Ejecuta la actualización
-        }
+    private Compra resultSetToCompra(ResultSet resultSet) throws SQLException {
+        Cliente cliente = ClienteDAO.getInstance().getClienteById(resultSet.getInt("idCliente"));
+        Dependiente dependiente = DependienteDAO.getInstance().getDependienteByDni(resultSet.getString("dniDependiente"));
+        int numCompra = resultSet.getInt("numCompra");
+        Date fecha = resultSet.getDate("fecha");
+
+        List<LineaDeTicket> l = LineaDeTicketDAO.getInstance().getAllLineasDeTicketByNumCompra(numCompra);
+        return new Compra(fecha != null ? fecha.toLocalDate() : null, numCompra, cliente, dependiente, l);  // Manejar null en la fecha
     }
 
     /**
-     * Actualiza los datos del dependiente de una compra (dni y descuento).
+     * Obtiene una compra específica mediante su número de compra.
      *
-     * @param numCompra El número de la compra a actualizar.
-     * @param dni El dni del dependiente.
-     * @param descuento El descuento aplicado por el dependiente.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     * @param numCompra El número de compra a buscar.
+     * @return La compra correspondiente al número proporcionado.
+     * @throws SQLException Si ocurre un error en la base de datos.
      */
-    public void updateCompraDependiente(int numCompra, String dni, double descuento) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_DEPENDIENTE)) {
-            statement.setString(1, dni); // Establece el dni del dependiente
-            statement.setDouble(2, descuento); // Establece el descuento aplicado por el dependiente
-            statement.setInt(3, numCompra); // Establece el número de compra que se quiere actualizar
-            statement.executeUpdate(); // Ejecuta la actualización
-        }
-    }
-
-    /**
-     * Actualiza los datos del repartidor de una compra (dni y hora).
-     *
-     * @param numCompra El número de la compra a actualizar.
-     * @param dniRepartidor El dni del repartidor.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
-     */
-    public void updateCompraRepartidor(int numCompra, String dniRepartidor) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_REPARTIDOR)) {
-            statement.setString(1, dniRepartidor); // Establece el dni del repartidor
-            statement.setInt(2, numCompra); // Establece el número de compra que se quiere actualizar
-            statement.executeUpdate(); // Ejecuta la actualización
-        }
-    }
-
-    /**
-     * Elimina una compra de la base de datos.
-     *
-     * @param numCompra El número de la compra a eliminar.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
-     */
-    public void deleteCompraByNum(int numCompra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-            statement.setInt(1, numCompra); // Establece el número de compra a eliminar
-            statement.executeUpdate(); // Ejecuta la eliminación
-        }
-    }
-
-    /**
-     * Convierte un ResultSet en un objeto Compra.
-     * Este método se utiliza para convertir los resultados de una consulta SELECT en objetos Java.
-     *
-     * @param rs El ResultSet con los datos obtenidos de la consulta SQL.
-     * @return Un objeto Compra con los datos extraídos del ResultSet.
-     * @throws SQLException Si ocurre un error al extraer los datos del ResultSet.
-     */
-    private Compra resultSetToCompra(ResultSet rs) throws SQLException {
-        Compra compra = new Compra(); // Crea una nueva instancia de Compra
-        compra.setNumCompra(rs.getInt("numCompra")); // Establece el número de compra
-
-        // Verifica si la fecha es nula y asigna un valor por defecto si es así
-        Date fecha = rs.getDate("fecha");
-        compra.setFecha(fecha != null ? fecha.toLocalDate() : null); // Establece la fecha de la compra
-
-        compra.setCliente(ClienteDAO.getInstance().getClienteById(rs.getInt("idCliente")));
-        compra.setDependiente(DependienteDAO.getInstance().getDependienteByDni(rs.getString("dniDependiente")));
-        compra.setDescuentoDependiente(rs.getDouble("descuentoDependiente")); // Establece el descuento del dependiente
-
-        // Verifica si la fechaDependiente es nula y asigna un valor por defecto si es así
-        Date fechaDependiente = rs.getDate("fechaDependiente");
-        compra.setFechaDependiente(fechaDependiente != null ? fechaDependiente.toLocalDate() : null); // Establece la fecha del dependiente
-
-        // Verifica si la fechaRepartidor es nula y asigna un valor por defecto si es así
-        Date fechaRepartidor = rs.getDate("fechaRepartidor");
-        compra.setFechaRepartidor(fechaRepartidor != null ? fechaRepartidor.toLocalDate() : null); // Establece la fecha del repartidor
-
-        // Si la horaRepartidor es nula, se asigna null o algún valor por defecto
-        Time horaRepartidor = rs.getTime("horaRepartidor");
-        compra.setHoraRepartidor(horaRepartidor != null ? horaRepartidor.toLocalTime() : null); // Establece la hora del repartidor
-
-        return compra; // Devuelve el objeto Compra con todos los datos cargados
-    }
-
-    /**
-     * Obtiene una compra específica por su número de compra.
-     *
-     * @param numCompra El número de la compra a obtener.
-     * @return Un objeto Compra correspondiente al número de compra proporcionado.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
-     */
-    public Compra obtenerCompraPorNumCompra(int numCompra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_QUERY)) {
-            statement.setInt(1, numCompra); // Establece el número de compra
-            ResultSet resultSet = statement.executeQuery(); // Ejecuta la consulta para obtener la compra
-
+    public Compra getCompraByNumCompra(int numCompra) throws SQLException {
+        Compra compra = null;
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA)) {
+            statement.setInt(1, numCompra);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSetToCompra(resultSet); // Convierte el resultado en un objeto Compra
-            } else {
-                return null; // Si no se encuentra la compra, devuelve null
+                compra = resultSetToCompra(resultSet);
             }
+        }
+        return compra;
+    }
+
+    /**
+     * Actualiza una compra existente en la base de datos.
+     *
+     * @param compra La compra con los datos actualizados.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
+     */
+    public void updateCompra(Compra compra) throws SQLException {
+        connection.setAutoCommit(false);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+
+            // Manejar fecha nula
+            if (compra.getFecha() != null) {
+                statement.setDate(1, Date.valueOf(compra.getFecha()));
+            } else {
+                statement.setNull(1, Types.DATE);  // Establecer como NULL si la fecha es nula
+            }
+
+            statement.setInt(2, compra.getCliente().getIdCliente());
+            statement.setString(3, compra.getDependiente().getDni());
+            statement.setInt(4, compra.getNumCompra());
+
+            statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
+    /**
+     * Elimina una compra de la base de datos por su número de compra.
+     *
+     * @param numCompra El número de compra a eliminar.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta de eliminación.
+     */
+    public void deleteCompra(int numCompra) throws SQLException {
+        connection.setAutoCommit(false);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+            statement.setInt(1, numCompra);
+            statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
 }

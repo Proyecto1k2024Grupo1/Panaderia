@@ -12,8 +12,10 @@
 * Conjunto: Compra, Línea de ticket, Empleado, Producto
 # Reparto de tablas para Menu
 
-Emplado, Producto, Compra conjunto
-Cliente Silvia. Ingrediente Vanesa, Proveedor Jessica
+* Conjunto: Emplado, Producto, Compra 
+* Cliente Silvia
+* Ingrediente Vanesa
+* Proveedor Jessica
 
 
 

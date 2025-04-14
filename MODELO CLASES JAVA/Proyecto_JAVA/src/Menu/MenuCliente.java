@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Clase principal que muestra un menú interactivo en consola para gestionar laos clientes.
+ * Utiliza DAOs para interactuar con la base de datos.
+ *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025

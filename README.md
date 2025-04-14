@@ -12,12 +12,10 @@
 * Conjunto: Compra, Línea de ticket, Empleado, Producto
 # Reparto de tablas para Menu
 
-* Conjunto: Emplado, Producto, Compra 
-* Cliente Silvia
-* Ingrediente Vanesa
-* Proveedor Jessica
-
-
+* Conjunto: Empleado, Producto, Compra 
+* S: Cliente
+* V: Ingrediente 
+* J: Proveedor 
 
 
 [Programación](https://github.com/Proyecto1k2024Grupo1/Panaderia/tree/main/MODELO%20CLASES%20JAVA/Proyecto_JAVA/src)

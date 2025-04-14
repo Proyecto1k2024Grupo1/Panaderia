@@ -1,158 +1,133 @@
 package Menu;
 
-
 import Model.Panadero;
 import DAO.PanaderoDAO;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuPanadero {
 
-    private static PanaderoDAO panaderoDAO = PanaderoDAO.getInstance();
+    private static final PanaderoDAO panaderoDAO = PanaderoDAO.getInstance();
 
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
-            // Mostrar el menú
-            System.out.println("********* Menú Panadero *********");
-            System.out.println("1. Agregar panadero");
+            System.out.println("\n********* MENÚ PANADERO *********");
+            System.out.println("1. Añadir panadero");
             System.out.println("2. Mostrar panaderos");
             System.out.println("3. Modificar panadero");
             System.out.println("4. Eliminar panadero");
             System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine();  // Limpiar el buffer
+            scanner.nextLine(); // Limpiar buffer
 
             switch (opcion) {
-                case 1:
-                    agregarPanadero(scanner);
-                    break;
-                case 2:
-                    try {
-                        mostrarPanaderos();
-                    } catch (SQLException e) {
-                        System.out.println("Error al mostrar los panaderos: " + e.getMessage());
-                    }
-                    break;
-                case 3:
-                    try {
-                        modificarPanadero(scanner);
-                    } catch (SQLException e) {
-                        System.out.println("Error al modificar el panadero: " + e.getMessage());
-                    }
-                    break;
-                case 4:
-                    eliminarPanadero(scanner);
-                    break;
-                case 5:
-                    System.out.println("¡Hasta luego!");
-                    break;
-                default:
-                    System.out.println("Opción inválida, intente de nuevo.");
+                case 1 -> anadirPanadero(scanner);
+                case 2 -> mostrarPanaderos();
+                case 3 -> modificarPanadero(scanner);
+                case 4 -> eliminarPanadero(scanner);
+                case 5 -> System.out.println("Saliendo del menú panadero...");
+                default -> System.out.println("Opción inválida. Intente de nuevo.");
             }
-
         } while (opcion != 5);
     }
 
-    // Método para agregar un panadero
-    private static void agregarPanadero(Scanner scanner) throws SQLException {
-        System.out.print("Ingrese el DNI del panadero: ");
+    private static void anadirPanadero(Scanner scanner) throws SQLException {
+        System.out.println("\n--- Añadir panadero ---");
+
+        System.out.print("DNI: ");
         String dni = scanner.nextLine();
 
-        System.out.print("Ingrese el nombre del panadero: ");
+        System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        System.out.print("Ingrese el salario del panadero: ");
+        System.out.print("Salario: ");
         double salario = scanner.nextDouble();
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine();
 
-        System.out.print("Ingrese la fecha de nacimiento del panadero (YYYY-MM-DD): ");
+        System.out.print("Fecha de nacimiento (YYYY-MM-DD): ");
         String fechaNacimiento = scanner.nextLine();
 
-        System.out.print("Ingrese el DNI del encargado: ");
-        String dniEncargado = scanner.nextLine();
+        Panadero panadero = new Panadero(dni, salario, LocalDate.parse(fechaNacimiento), nombre);
 
-        // Crear un objeto panadero y agregarlo a la base de datos
-        Panadero panadero = new Panadero(dni, salario, java.time.LocalDate.parse(fechaNacimiento), nombre);
-        // Necesitas obtener el encargado desde su DNI, asumiendo que existe un método para esto
-        // panadero.setEncargado(new Empleado(dniEncargado));
+        panaderoDAO.insertPanadero(panadero);
 
-        try {
-            panaderoDAO.insertPanadero(panadero);
-            System.out.println("Panadero agregado exitosamente.");
-        } catch (SQLException e) {
-            System.out.println("Error al agregar el panadero: " + e.getMessage());
-        }
+        System.out.println("✅ Panadero añadido correctamente.");
     }
 
-    // Método para mostrar todos los panaderos
     private static void mostrarPanaderos() throws SQLException {
+        System.out.println("\n--- Lista de panaderos ---");
+
         List<Panadero> panaderos = panaderoDAO.getAllPanaderos();
+
         if (panaderos.isEmpty()) {
             System.out.println("No hay panaderos registrados.");
         } else {
-            for (Panadero panadero : panaderos) {
-                System.out.println(panadero.getNombre() + " - DNI: " + panadero.getDni());
-                System.out.println("Salario: " + panadero.getSalario() + " | Fecha de nacimiento: " + panadero.getFnac());
+            for (Panadero p : panaderos) {
+                System.out.println("-----------------------------");
+                System.out.println("DNI: " + p.getDni());
+                System.out.println("Nombre: " + p.getNombre());
+                System.out.println("Salario: " + p.getSalario());
+                System.out.println("Fecha de nacimiento: " + p.getFnac());
             }
         }
     }
 
-    // Método para modificar un panadero
     private static void modificarPanadero(Scanner scanner) throws SQLException {
+        System.out.println("\n--- Modificar panadero ---");
+
         System.out.print("Ingrese el DNI del panadero a modificar: ");
         String dni = scanner.nextLine();
 
-        // Verificar si el panadero existe
         Panadero panadero = panaderoDAO.getPanaderoByDni(dni);
+
         if (panadero == null) {
-            System.out.println("Panadero no encontrado.");
+            System.out.println("❌ Panadero no encontrado.");
             return;
         }
 
-        System.out.println("Panadero encontrado: " + panadero.getNombre());
-        System.out.print("Ingrese el nuevo salario del panadero (deje en blanco para no modificar): ");
-        String nuevoSalario = scanner.nextLine();
-        if (!nuevoSalario.isEmpty()) {
-            panadero.setSalario(Double.parseDouble(nuevoSalario));
+        System.out.print("Nuevo nombre (" + panadero.getNombre() + "): ");
+        String nombre = scanner.nextLine();
+        if (!nombre.isBlank()) {
+            panadero.setNombre(nombre);
         }
 
-        System.out.print("Ingrese la nueva fecha de nacimiento del panadero (YYYY-MM-DD): ");
-        String nuevaFecha = scanner.nextLine();
-        if (!nuevaFecha.isEmpty()) {
-            panadero.setFnac(java.time.LocalDate.parse(nuevaFecha));
+        System.out.print("Nuevo salario (" + panadero.getSalario() + "): ");
+        String salarioStr = scanner.nextLine();
+        if (!salarioStr.isBlank()) {
+            panadero.setSalario(Double.parseDouble(salarioStr));
         }
 
-        try {
-            panaderoDAO.updatePanadero(panadero);
-            System.out.println("Panadero modificado exitosamente.");
-        } catch (SQLException e) {
-            System.out.println("Error al modificar el panadero: " + e.getMessage());
+        System.out.print("Nueva fecha de nacimiento (" + panadero.getFnac() + "): ");
+        String fechaNacimiento = scanner.nextLine();
+        if (!fechaNacimiento.isBlank()) {
+            panadero.setFnac(LocalDate.parse(fechaNacimiento));
         }
+
+        panaderoDAO.updatePanadero(panadero);
+        System.out.println("✅ Panadero modificado correctamente.");
     }
 
-    // Método para eliminar un panadero
     private static void eliminarPanadero(Scanner scanner) throws SQLException {
+        System.out.println("\n--- Eliminar panadero ---");
+
         System.out.print("Ingrese el DNI del panadero a eliminar: ");
         String dni = scanner.nextLine();
 
-        // Verificar si el panadero existe antes de eliminar
         Panadero panadero = panaderoDAO.getPanaderoByDni(dni);
+
         if (panadero == null) {
-            System.out.println("Panadero no encontrado.");
+            System.out.println("❌ Panadero no encontrado.");
             return;
         }
 
-        try {
-            panaderoDAO.deletePanaderoByDni(dni);
-            System.out.println("Panadero eliminado exitosamente.");
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar el panadero: " + e.getMessage());
-        }
+        panaderoDAO.deletePanaderoByDni(dni);
+        System.out.println("✅ Panadero eliminado correctamente.");
     }
 }

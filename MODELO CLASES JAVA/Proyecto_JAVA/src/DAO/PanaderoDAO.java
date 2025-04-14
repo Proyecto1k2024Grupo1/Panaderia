@@ -24,7 +24,6 @@ public class PanaderoDAO extends EmpleadoDAO {
     // Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO PANADERO (dni) VALUES (?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM PANADERO p JOIN EMPLEADO e ON e.dni = p.dni";
-    static final String UPDATE_QUERY = "UPDATE PANADERO SET dni = ? WHERE dni = ?";
     private static final String DELETE_QUERY = "DELETE FROM PANADERO WHERE dni = ?";
     private static final String SELECT_BY_DNI_QUERY = "SELECT * FROM PANADERO p JOIN EMPLEADO e ON e.dni = p.dni WHERE p.dni = ?";  // Consulta SQL final para obtener por DNI
 
@@ -147,16 +146,13 @@ public class PanaderoDAO extends EmpleadoDAO {
      */
     public void updatePanadero(Panadero panadero) throws SQLException {
         connection.setAutoCommit(false);
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+        try (
              PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)) {
-
-            statement.setString(1, panadero.getDni());
-            statement.executeUpdate();
 
             statement2.setDouble(1, panadero.getSalario());
             statement2.setDate(2, Date.valueOf(panadero.getFnac()));
             statement2.setString(3, panadero.getNombre());
-            statement2.setString(4, panadero.getEncargado().getDni());
+            statement2.setString(4, panadero.getEncargado() != null ? panadero.getEncargado().getDni() : null);
             statement2.setString(5, panadero.getDni());
             statement2.executeUpdate();
 

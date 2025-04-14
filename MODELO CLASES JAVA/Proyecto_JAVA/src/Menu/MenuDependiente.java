@@ -3,22 +3,26 @@ package Menu;
 import java.util.Scanner;
 import DAO.DependienteDAO;
 import Model.Dependiente;
+import java.sql.SQLException;
+import java.util.List;
 
 public class MenuDependiente {
-    private static Scanner scanner = new Scanner(System.in);
-    private static DependienteDAO dependienteDAO = DependienteDAO.getInstance();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final DependienteDAO dependienteDAO = DependienteDAO.getInstance();
 
     public static void main(String[] args) {
-        while (true) {
-            System.out.println("Menú de opciones:");
+        int opcion;
+        do {
+            System.out.println("\n----- Menú Dependiente -----");
             System.out.println("1. Insertar dependiente");
             System.out.println("2. Actualizar dependiente");
             System.out.println("3. Eliminar dependiente");
-            System.out.println("4. Ver dependientes");
+            System.out.println("4. Ver todos los dependientes");
             System.out.println("5. Salir");
             System.out.print("Selecciona una opción: ");
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar el buffer
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar buffer
 
             switch (opcion) {
                 case 1:
@@ -31,15 +35,15 @@ public class MenuDependiente {
                     eliminarDependiente();
                     break;
                 case 4:
-                    verDependientes();
+                    verTodosDependientes();
                     break;
                 case 5:
-                    System.out.println("Saliendo...");
-                    return;
+                    System.out.println("Saliendo del menú...");
+                    break;
                 default:
-                    System.out.println("Opción no válida. Intenta de nuevo.");
+                    System.out.println("Opción no válida. Inténtalo de nuevo.");
             }
-        }
+        } while (opcion != 5);
     }
 
     private static void insertarDependiente() {
@@ -49,22 +53,24 @@ public class MenuDependiente {
 
             System.out.print("Introduce el salario: ");
             double salario = scanner.nextDouble();
-            scanner.nextLine(); // Limpiar el buffer
-
-            System.out.print("Introduce la fecha de nacimiento (YYYY-MM-DD): ");
-            String fnac = scanner.nextLine();
+            scanner.nextLine(); // Limpiar buffer
 
             System.out.print("Introduce el nombre: ");
             String nombre = scanner.nextLine();
 
+            System.out.print("Introduce la fecha de nacimiento (yyyy-mm-dd): ");
+            String fnac = scanner.nextLine();
+
             System.out.print("Introduce el horario: ");
-            String horario = scanner.nextLine(); // Pide el horario
+            String horario = scanner.nextLine();
 
             Dependiente dependiente = new Dependiente(dni, salario, java.time.LocalDate.parse(fnac), nombre, horario);
             dependienteDAO.insertDependiente(dependiente);
             System.out.println("Dependiente insertado correctamente.");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error al insertar dependiente: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error en los datos proporcionados: " + e.getMessage());
         }
     }
 
@@ -73,34 +79,44 @@ public class MenuDependiente {
             System.out.print("Introduce el DNI del dependiente a actualizar: ");
             String dni = scanner.nextLine();
 
-            Dependiente dependiente = dependienteDAO.getDependienteByDni(dni);
-            if (dependiente == null) {
-                System.out.println("No se encontró el dependiente con el DNI proporcionado.");
+            List<Dependiente> dependientes = dependienteDAO.getAllDependiente();
+            Dependiente dependienteEncontrado = null;
+            for (Dependiente d : dependientes) {
+                if (d.getDni().equals(dni)) {
+                    dependienteEncontrado = d;
+                    break;
+                }
+            }
+
+            if (dependienteEncontrado == null) {
+                System.out.println("Dependiente no encontrado.");
                 return;
             }
 
             System.out.print("Introduce el nuevo salario: ");
             double salario = scanner.nextDouble();
-            scanner.nextLine(); // Limpiar el buffer
-
-            System.out.print("Introduce la nueva fecha de nacimiento (YYYY-MM-DD): ");
-            String fnac = scanner.nextLine();
+            scanner.nextLine();
 
             System.out.print("Introduce el nuevo nombre: ");
             String nombre = scanner.nextLine();
 
+            System.out.print("Introduce la nueva fecha de nacimiento (yyyy-mm-dd): ");
+            String fnac = scanner.nextLine();
+
             System.out.print("Introduce el nuevo horario: ");
-            String horario = scanner.nextLine(); // Pide el nuevo horario
+            String horario = scanner.nextLine();
 
-            dependiente.setSalario(salario);
-            dependiente.setFnac(java.time.LocalDate.parse(fnac));
-            dependiente.setNombre(nombre);
-            dependiente.setHorario(horario);  // Actualiza el horario
+            dependienteEncontrado.setSalario(salario);
+            dependienteEncontrado.setNombre(nombre);
+            dependienteEncontrado.setFnac(java.time.LocalDate.parse(fnac));
+            dependienteEncontrado.setHorario(horario);
 
-            dependienteDAO.updateDependiente(dependiente);
+            dependienteDAO.updateDependiente(dependienteEncontrado);
             System.out.println("Dependiente actualizado correctamente.");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error al actualizar dependiente: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error en los datos proporcionados: " + e.getMessage());
         }
     }
 
@@ -111,23 +127,23 @@ public class MenuDependiente {
 
             dependienteDAO.deleteDependienteByDni(dni);
             System.out.println("Dependiente eliminado correctamente.");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error al eliminar dependiente: " + e.getMessage());
         }
     }
 
-    private static void verDependientes() {
+    private static void verTodosDependientes() {
         try {
-            System.out.println("Dependientes registrados:");
-            var dependientes = dependienteDAO.getAllDependiente();
+            List<Dependiente> dependientes = dependienteDAO.getAllDependiente();
             if (dependientes.isEmpty()) {
                 System.out.println("No hay dependientes registrados.");
             } else {
-                for (Dependiente dependiente : dependientes) {
-                    System.out.println(dependiente);
+                System.out.println("\nLista de dependientes:");
+                for (Dependiente d : dependientes) {
+                    System.out.println("DNI: " + d.getDni() + ", Nombre: " + d.getNombre() + ", Salario: " + d.getSalario() + ", Horario: " + d.getHorario());
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error al obtener dependientes: " + e.getMessage());
         }
     }

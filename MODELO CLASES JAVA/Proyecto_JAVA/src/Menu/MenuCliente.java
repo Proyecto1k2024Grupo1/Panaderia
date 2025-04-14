@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 public class MenuCliente {
 
@@ -23,7 +23,6 @@ public class MenuCliente {
 
     /**
      * Método principal que muestra el menú y gestiona las operaciones del usuario.
-     *
      * @param args Argumentos de línea de comandos.
      * @throws SQLException Si ocurre un error de base de datos.
      */

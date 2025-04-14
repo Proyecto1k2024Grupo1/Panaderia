@@ -10,9 +10,8 @@ import java.util.Scanner;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class MenuPrincipal {
 
     /**
@@ -22,46 +21,47 @@ public class MenuPrincipal {
      * @param args Argumentos de línea de comandos (no utilizados).
      * @throws SQLException Si ocurre algún error en la comunicación con la base de datos.
      */
-        public static void main(String[] args) throws SQLException {
-            Scanner scanner = new Scanner(System.in);
-            int opcion = 0;
+    public static void main(String[] args) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        int opcion = 0;
 
-            while (opcion != 6) {
-                System.out.println("\n--- MENÚ PRINCIPAL ---");
-                System.out.println("1. Cliente");
-                System.out.println("2. Compra");
-                System.out.println("3. Empleado");
-                System.out.println("4. Producto");
-                System.out.println("5. Proveedor");
-                System.out.println("6. Salir");
-                System.out.print("Seleccione una opción: ");
-                opcion = scanner.nextInt();
+        while (opcion != 6) {
+            // Mostrar las opciones del menú principal
+            System.out.println("\n--- MENÚ PRINCIPAL ---");
+            System.out.println("1. Cliente");
+            System.out.println("2. Compra");
+            System.out.println("3. Empleado");
+            System.out.println("4. Producto");
+            System.out.println("5. Proveedor");
+            System.out.println("6. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
 
-                switch (opcion) {
-                    case 1:
-                        MenuCliente.main(null);
-                        break;
-                    case 2:
-                        MenuCompra.main(null);
-                        break;
-                    case 3:
-                        MenuEmpleado.main(null);
-                        break;
-                    case 4:
-                        MenuProducto.main(null);
-                        break;
-                    case 5:
-                        MenuProveedor.main(null);
-                        break;
-                    case 6:
-                        System.out.println("Saliendo del sistema...");
-                        break;
-                    default:
-                        System.out.println("Opción inválida. Intente de nuevo.");
-                }
+            // Redirigir al submenú correspondiente
+            switch (opcion) {
+                case 1:
+                    MenuCliente.main(null); // Ir al menú de clientes
+                    break;
+                case 2:
+                    MenuCompra.main(null); // Ir al menú de compras
+                    break;
+                case 3:
+                    MenuEmpleado.main(null); // Ir al menú de empleados
+                    break;
+                case 4:
+                    MenuProducto.main(null); // Ir al menú de productos
+                    break;
+                case 5:
+                    MenuProveedor.main(null); // Ir al menú de proveedores
+                    break;
+                case 6:
+                    System.out.println("Saliendo del sistema..."); // Salida del programa
+                    break;
+                default:
+                    System.out.println("Opción inválida. Intente de nuevo."); // Validación
             }
-
-            scanner.close();
         }
-    }
 
+        scanner.close(); // Cerrar el scanner al finalizar
+    }
+}

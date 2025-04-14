@@ -13,12 +13,14 @@ import java.util.Scanner;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class MenuRepartidor {
 
+    /** Scanner para la entrada de datos del usuario por consola */
     private static final Scanner scanner = new Scanner(System.in);
+
+    /** Instancia del DAO utilizada para acceder y modificar datos de repartidores */
     private static final RepartidorDAO repartidorDAO = RepartidorDAO.getInstance();
 
     /**

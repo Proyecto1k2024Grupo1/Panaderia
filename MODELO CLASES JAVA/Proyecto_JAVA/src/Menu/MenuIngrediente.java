@@ -6,17 +6,22 @@ import Model.Ingrediente;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+
 /**
  * Clase que proporciona un menú interactivo para gestionar ingredientes.
  * Permite insertar, visualizar, actualizar y eliminar ingredientes almacenados en la base de datos.
+ * Utiliza la clase IngredienteDAO para acceder a los datos persistentes.
+ *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class MenuIngrediente {
 
+    /** Escáner para entrada de datos del usuario */
     private static final Scanner scanner = new Scanner(System.in);
+
+    /** Instancia del DAO para gestionar ingredientes */
     private static final IngredienteDAO ingredienteDAO = IngredienteDAO.getInstance();
 
     /**

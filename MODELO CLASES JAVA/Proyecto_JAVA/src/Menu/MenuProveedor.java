@@ -13,12 +13,14 @@ import java.util.Scanner;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class MenuProveedor {
 
+    /** Scanner para capturar la entrada del usuario */
     private static final Scanner scanner = new Scanner(System.in);
+
+    /** Instancia del DAO para gestionar operaciones con proveedores */
     private static final ProveedorDAO proveedorDAO = ProveedorDAO.getInstance();
 
     /**

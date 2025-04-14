@@ -7,17 +7,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
 /**
  * Clase que proporciona un menú interactivo para la gestión de panaderos.
  * Permite añadir, mostrar, modificar y eliminar panaderos registrados en el sistema.
+ * Utiliza PanaderoDAO para la interacción con la base de datos.
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class MenuPanadero {
 
+    /** Instancia del DAO para operaciones con panaderos */
     private static final PanaderoDAO panaderoDAO = PanaderoDAO.getInstance();
 
     /**

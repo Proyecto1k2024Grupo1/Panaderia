@@ -31,10 +31,18 @@ public class Producto {
         this.precio = precio;
     }
 
+    /**
+     * Constructor por idProducto
+     * @param codProducto que se le pasa por parámetro.
+     */
     public Producto(int codProducto) {
         this.codigo = codProducto;
     }
 
+    /**
+     * Constructor por nombre del Producto
+     * @param nombreProducto que se le pasa por parámetro.
+     */
     public Producto(String nombreProducto) {
         this.nombre=nombreProducto;
     }

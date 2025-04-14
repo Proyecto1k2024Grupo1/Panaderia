@@ -25,3 +25,4 @@
 ## [Lenguajes de marcas](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/XML%20y%20JSON/Intro.md)
 
 ## [Interfaz de usuario](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/Interfaz/Pantallas.png)
+## [Documentación](https://github.com/Proyecto1k2024Grupo1/Panaderia/blob/main/MODELO%20CLASES%20JAVA/docs/index.html)

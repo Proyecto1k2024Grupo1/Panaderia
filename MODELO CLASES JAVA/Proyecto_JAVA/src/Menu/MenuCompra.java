@@ -9,12 +9,21 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Clase principal que muestra un menú interactivo en consola para gestionar las compras.
+ * Permite visualizar, crear, modificar y eliminar líneas de compra, así como ver detalles y total de compras.
+ * Utiliza DAOs para interactuar con la base de datos.
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
  */
 public class MenuCompra {
 
+    /**
+     * Método principal que lanza el menú de gestión de compras.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     * @throws SQLException Si ocurre un error al acceder a la base de datos.
+     */
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;

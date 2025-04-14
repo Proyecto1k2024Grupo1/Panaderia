@@ -4,6 +4,10 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
+ * Clase que representa el menú principal del sistema.
+ * Desde este menú se puede acceder a los distintos módulos: Cliente, Compra, Empleado, Producto y Proveedor.
+ * Cada opción redirige al submenú correspondiente para gestionar esa sección del sistema.
+ *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
@@ -11,6 +15,13 @@ import java.util.Scanner;
 
 public class MenuPrincipal {
 
+    /**
+     * Método principal que lanza el menú principal del sistema.
+     * Permite al usuario navegar entre los distintos submenús según su elección.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     * @throws SQLException Si ocurre algún error en la comunicación con la base de datos.
+     */
         public static void main(String[] args) throws SQLException {
             Scanner scanner = new Scanner(System.in);
             int opcion = 0;

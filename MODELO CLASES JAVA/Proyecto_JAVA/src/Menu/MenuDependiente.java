@@ -7,15 +7,27 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * Clase que muestra un menú interactivo para gestionar los datos de los dependientes.
+ * Permite insertar, actualizar, eliminar y visualizar todos los dependientes registrados.
+ * Utiliza la clase DependienteDAO para la interacción con la base de datos.
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
  */
 
 public class MenuDependiente {
+    /** Escáner para leer entradas del usuario */
     private static final Scanner scanner = new Scanner(System.in);
+
+    /** Instancia del DAO para operar sobre dependientes */
     private static final DependienteDAO dependienteDAO = DependienteDAO.getInstance();
 
+    /**
+     * Método principal que ejecuta el menú de opciones para gestionar dependientes.
+     * Controla el flujo principal del programa según la opción seleccionada por el usuario.
+     *
+     * @param args Argumentos pasados por consola (no utilizados).
+     */
     public static void main(String[] args) {
         int opcion;
         do {
@@ -52,6 +64,10 @@ public class MenuDependiente {
         } while (opcion != 5);
     }
 
+    /**
+     * Inserta un nuevo dependiente solicitando los datos al usuario.
+     * Realiza validaciones básicas y maneja posibles errores durante la inserción.
+     */
     private static void insertarDependiente() {
         try {
             System.out.print("Introduce el DNI del dependiente: ");
@@ -80,6 +96,10 @@ public class MenuDependiente {
         }
     }
 
+    /**
+     * Actualiza los datos de un dependiente existente, identificándolo por su DNI.
+     * Solicita los nuevos valores al usuario.
+     */
     private static void actualizarDependiente() {
         try {
             System.out.print("Introduce el DNI del dependiente a actualizar: ");
@@ -126,6 +146,9 @@ public class MenuDependiente {
         }
     }
 
+    /**
+     * Elimina un dependiente de la base de datos a partir del DNI proporcionado por el usuario.
+     */
     private static void eliminarDependiente() {
         try {
             System.out.print("Introduce el DNI del dependiente a eliminar: ");
@@ -138,6 +161,10 @@ public class MenuDependiente {
         }
     }
 
+    /**
+     * Muestra una lista con todos los dependientes registrados en la base de datos.
+     * Imprime sus datos básicos por consola.
+     */
     private static void verTodosDependientes() {
         try {
             List<Dependiente> dependientes = dependienteDAO.getAllDependiente();

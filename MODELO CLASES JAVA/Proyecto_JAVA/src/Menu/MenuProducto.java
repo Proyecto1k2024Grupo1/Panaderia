@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
+ * Clase que proporciona un menú interactivo para la gestión de productos.
+ * Permite añadir, mostrar, modificar y eliminar productos propios y ajenos mediante el uso de DAOs.
+ *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
@@ -21,6 +24,13 @@ public class MenuProducto {
         private static PropioDAO propioDAO = PropioDAO.getInstance();
         private static AjenoDAO ajenoDAO = AjenoDAO.getInstance();
 
+      /**
+       * Método principal que lanza el menú de gestión de productos.
+       * Permite al usuario seleccionar operaciones CRUD sobre productos propios o ajenos.
+       *
+       * @param args Argumentos de línea de comandos (no utilizados).
+       * @throws SQLException Si ocurre un error durante la ejecución de las operaciones de base de datos.
+        */
         public static void main(String[] args) throws SQLException {
             Scanner scanner = new Scanner(System.in);
             int opcion;
@@ -53,6 +63,12 @@ public class MenuProducto {
             } while (opcion != 8);
         }
 
+       /**
+       * Agrega un nuevo producto propio a la base de datos.
+       *
+       * @param scanner Objeto Scanner para capturar entrada del usuario.
+       * @throws SQLException Si ocurre un error al insertar el producto.
+       */
         private static void agregarPropio(Scanner scanner) throws SQLException {
             System.out.print("Nombre: ");
             String nombre = scanner.nextLine();
@@ -68,7 +84,13 @@ public class MenuProducto {
             System.out.println("Producto propio agregado.");
         }
 
-        private static void agregarAjeno(Scanner scanner) throws SQLException {
+    /**
+     * Agrega un nuevo producto ajeno a la base de datos.
+     *
+     * @param scanner Objeto Scanner para capturar entrada del usuario.
+     * @throws SQLException Si ocurre un error al insertar el producto.
+     */
+    private static void agregarAjeno(Scanner scanner) throws SQLException {
             System.out.print("Nombre: ");
             String nombre = scanner.nextLine();
             System.out.print("Tipo: ");
@@ -82,7 +104,12 @@ public class MenuProducto {
             System.out.println("Producto ajeno agregado.");
         }
 
-        private static void mostrarTodos() throws SQLException {
+    /**
+     * Muestra todos los productos propios y ajenos registrados en el sistema.
+     * @throws SQLException Si ocurre un error al recuperar los datos.
+     * @throws SQLException
+     */
+    private static void mostrarTodos() throws SQLException {
             System.out.println("------ Productos Propios ------");
             for (Propio p : propioDAO.getAllPropio()) {
                 System.out.println(p);
@@ -94,7 +121,14 @@ public class MenuProducto {
             }
         }
 
-        private static void modificarPropio(Scanner scanner) throws SQLException {
+    /**
+     * Modifica un producto propio identificado por su ID.
+     * @param scanner Objeto Scanner para capturar entrada del usuario.
+     * @throws SQLException Si ocurre un error al actualizar el producto.
+     * @param scanner
+     * @throws SQLException
+     */
+    private static void modificarPropio(Scanner scanner) throws SQLException {
             System.out.print("ID del producto propio a modificar: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -123,7 +157,13 @@ public class MenuProducto {
             System.out.println("Producto propio modificado.");
         }
 
-        private static void modificarAjeno(Scanner scanner) throws SQLException {
+    /**
+     * Modifica un producto ajeno identificado por su ID.
+     *
+     * @param scanner Objeto Scanner para capturar entrada del usuario.
+     * @throws SQLException Si ocurre un error al actualizar el producto.
+     */
+    private static void modificarAjeno(Scanner scanner) throws SQLException {
             System.out.print("ID del producto ajeno a modificar: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -151,7 +191,13 @@ public class MenuProducto {
             System.out.println("Producto ajeno modificado.");
         }
 
-        private static void eliminarPropio(Scanner scanner) throws SQLException {
+    /**
+     * Elimina un producto propio de la base de datos a partir de su ID.
+     *
+     * @param scanner Objeto Scanner para capturar entrada del usuario.
+     * @throws SQLException Si ocurre un error al eliminar el producto.
+     */
+    private static void eliminarPropio(Scanner scanner) throws SQLException {
             System.out.print("ID del producto propio a eliminar: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -166,7 +212,13 @@ public class MenuProducto {
             System.out.println("Producto propio eliminado.");
         }
 
-        private static void eliminarAjeno(Scanner scanner) throws SQLException {
+    /**
+     * Elimina un producto ajeno de la base de datos a partir de su ID.
+     *
+     * @param scanner Objeto Scanner para capturar entrada del usuario.
+     * @throws SQLException Si ocurre un error al eliminar el producto.
+     */
+    private static void eliminarAjeno(Scanner scanner) throws SQLException {
             System.out.print("ID del producto ajeno a eliminar: ");
             int id = scanner.nextInt();
             scanner.nextLine();

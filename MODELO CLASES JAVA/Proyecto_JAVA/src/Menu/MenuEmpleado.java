@@ -3,6 +3,8 @@ package Menu;
 import java.sql.SQLException;
 import java.util.Scanner;
 /**
+ * Clase que representa el menú principal para gestionar los distintos tipos de empleados del sistema.
+ * Permite acceder a los submenús correspondientes a Repartidor, Panadero y Dependiente.
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
@@ -10,8 +12,16 @@ import java.util.Scanner;
 
 public class MenuEmpleado {
 
+    /** Scanner para la entrada de datos por consola */
     private static final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Método principal que ejecuta el menú de gestión de empleados.
+     * Permite al usuario acceder a submenús específicos o salir del sistema.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     * @throws SQLException Si ocurre un error en las operaciones con la base de datos.
+     */
     public static void main(String[] args) throws SQLException {
         int option;
         do {

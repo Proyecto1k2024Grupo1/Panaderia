@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 /**
+ * Clase que proporciona un menú interactivo para gestionar ingredientes.
+ * Permite insertar, visualizar, actualizar y eliminar ingredientes almacenados en la base de datos.
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
@@ -17,6 +19,10 @@ public class MenuIngrediente {
     private static final Scanner scanner = new Scanner(System.in);
     private static final IngredienteDAO ingredienteDAO = IngredienteDAO.getInstance();
 
+    /**
+     * Muestra el menú principal de gestión de ingredientes.
+     * Permite al usuario seleccionar entre las operaciones CRUD disponibles.
+     */
     public static void mostrarMenu() {
         boolean salir = false;
 
@@ -54,6 +60,10 @@ public class MenuIngrediente {
         }
     }
 
+    /**
+     * Inserta un nuevo ingrediente en la base de datos.
+     * Solicita al usuario el nombre y la descripción del ingrediente.
+     */
     private static void insertarIngrediente() {
         System.out.print("Ingrese el nombre del ingrediente: ");
         String nombre = scanner.nextLine();
@@ -69,6 +79,9 @@ public class MenuIngrediente {
         }
     }
 
+    /**
+     * Muestra por pantalla todos los ingredientes registrados en la base de datos.
+     */
     private static void mostrarTodosIngredientes() {
         try {
             List<Ingrediente> ingredientes = ingredienteDAO.getAllIngredientes();
@@ -87,6 +100,10 @@ public class MenuIngrediente {
         }
     }
 
+    /**
+     * Actualiza un ingrediente existente.
+     * Solicita el código del ingrediente a modificar y los nuevos datos.
+     */
     private static void actualizarIngrediente() {
         System.out.print("Ingrese el código del ingrediente a actualizar: ");
         int codIngrediente = scanner.nextInt();
@@ -106,6 +123,9 @@ public class MenuIngrediente {
         }
     }
 
+    /**
+     * Elimina un ingrediente de la base de datos a partir de su código.
+     */
     private static void eliminarIngrediente() {
         System.out.print("Ingrese el código del ingrediente a eliminar: ");
         int codIngrediente = scanner.nextInt();
@@ -119,6 +139,11 @@ public class MenuIngrediente {
         }
     }
 
+    /**
+     * Método principal que lanza el menú de ingredientes.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         mostrarMenu();
     }

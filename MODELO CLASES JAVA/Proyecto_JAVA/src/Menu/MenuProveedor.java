@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Clase que proporciona un menú interactivo para la gestión de proveedores.
+ * Permite insertar, visualizar, actualizar y eliminar proveedores mediante operaciones con la base de datos.
+ *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
  * @date 10/04/2025
@@ -18,6 +21,12 @@ public class MenuProveedor {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProveedorDAO proveedorDAO = ProveedorDAO.getInstance();
 
+    /**
+     * Método principal que ejecuta el menú de gestión de proveedores.
+     * Permite realizar operaciones CRUD sobre la entidad proveedor.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         while (true) {
             mostrarMenu();
@@ -45,6 +54,9 @@ public class MenuProveedor {
         }
     }
 
+    /**
+     * Muestra el menú de opciones disponibles para la gestión de proveedores.
+     */
     private static void mostrarMenu() {
         System.out.println("\n--- Menú de Proveedores ---");
         System.out.println("1. Insertar nuevo proveedor");
@@ -55,6 +67,10 @@ public class MenuProveedor {
         System.out.print("Selecciona una opción: ");
     }
 
+    /**
+     * Inserta un nuevo proveedor solicitando al usuario su nombre.
+     * El ID del proveedor es generado automáticamente por la base de datos.
+     */
     private static void insertarProveedor() {
         System.out.print("Ingrese el nombre del proveedor: ");
         String nombre = scanner.nextLine();
@@ -68,6 +84,9 @@ public class MenuProveedor {
         }
     }
 
+    /**
+     * Recupera y muestra todos los proveedores almacenados en la base de datos.
+     */
     private static void verProveedores() {
         try {
             List<Proveedor> proveedores = proveedorDAO.getAllProveedores();
@@ -84,6 +103,9 @@ public class MenuProveedor {
         }
     }
 
+    /**
+     * Actualiza el nombre de un proveedor existente, identificado por su ID.
+     */
     private static void actualizarProveedor() {
         System.out.print("Ingrese el ID del proveedor a actualizar: ");
         int id = scanner.nextInt();
@@ -100,6 +122,9 @@ public class MenuProveedor {
         }
     }
 
+    /**
+     * Elimina un proveedor de la base de datos utilizando su ID.
+     */
     private static void eliminarProveedor() {
         System.out.print("Ingrese el ID del proveedor a eliminar: ");
         int id = scanner.nextInt();

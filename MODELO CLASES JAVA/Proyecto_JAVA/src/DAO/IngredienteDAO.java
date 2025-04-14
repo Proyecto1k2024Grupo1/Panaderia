@@ -2,6 +2,15 @@ package DAO;
 
 import Model.Ingrediente;
 
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Clase DAO para gestionar las operaciones CRUD de los ingredientes en la base de datos.
  * Implementa el patrón Singleton para asegurar que solo haya una instancia activa.
@@ -13,13 +22,6 @@ import Model.Ingrediente;
  * @version 1.0
  * @since 10/04/2025
  */
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IngredienteDAO {
 

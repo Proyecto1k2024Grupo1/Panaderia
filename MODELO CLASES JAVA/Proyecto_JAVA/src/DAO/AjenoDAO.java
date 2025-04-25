@@ -5,16 +5,47 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase DAO (Data Access Object) para gestionar los productos ajenos en la base de datos.
+ * Extiende de {@link ProductoDAO} para reutilizar la lógica común de productos.
+ */
 public class AjenoDAO extends ProductoDAO {
 
+    /**
+     * Instancia única de la clase (patrón Singleton).
+     */
     private static AjenoDAO instance;
+
+    /**
+     * Conexión a la base de datos.
+     */
     private Connection connection;
 
     // Consultas SQL predefinidas para la tabla AJENO
+
+    /**
+     * Consulta SQL para insertar un producto ajeno.
+     */
     private static final String INSERT_QUERY = "INSERT INTO AJENO (codigo) VALUES (?)";
+
+    /**
+     * Consulta SQL para obtener todos los productos ajenos (unión con PRODUCTO).
+     */
     private static final String SELECT_ALL_QUERY = "SELECT * FROM AJENO a JOIN PRODUCTO pr ON a.codigo = pr.codigo";
+
+    /**
+     * Consulta SQL para actualizar un producto ajeno.
+     */
     private static final String UPDATE_QUERY = "UPDATE AJENO SET codigo = ? WHERE codigo = ?";
+
+    /**
+     * Consulta SQL para eliminar un producto ajeno.
+     */
     private static final String DELETE_QUERY = "DELETE FROM AJENO WHERE codigo = ?";
+
+    /**
+     * Consulta SQL para obtener un producto ajeno por su código.
+     */
     private static final String SELECT_BY_ID_QUERY =
             "SELECT p.codigo, p.nombre, p.tipo, p.precio " +
                     "FROM PRODUCTO p " +
@@ -31,6 +62,7 @@ public class AjenoDAO extends ProductoDAO {
 
     /**
      * Método estático para obtener la instancia única de AjenoDAO (patrón Singleton).
+     *
      * @return La única instancia de AjenoDAO.
      */
     public static synchronized AjenoDAO getInstance() {
@@ -43,6 +75,7 @@ public class AjenoDAO extends ProductoDAO {
     /**
      * Inserta un nuevo producto ajeno en la base de datos.
      * Utiliza transacciones para garantizar la consistencia de los datos.
+     *
      * @param ajeno Objeto Ajeno que contiene los datos del producto a insertar.
      * @throws SQLException Si ocurre un error al insertar en la base de datos.
      */
@@ -61,22 +94,23 @@ public class AjenoDAO extends ProductoDAO {
             // Recupera el código generado automáticamente y lo inserta en la tabla AJENO.
             ResultSet resultSet2 = statement2.getGeneratedKeys();
             if (resultSet2.next()) {
-                int generatedCode = resultSet2.getInt(1);  // Aquí obtienes el código generado
-                statement.setInt(1, generatedCode);  // Usa ese código para la tabla AJENO
+                int generatedCode = resultSet2.getInt(1);
+                statement.setInt(1, generatedCode);
                 statement.executeUpdate();
             }
 
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
-            throw e; // Vuelve a lanzar la excepción para que el controlador la maneje
+            throw e;
         } finally {
-            connection.setAutoCommit(true); // Restablece la auto-commit
+            connection.setAutoCommit(true);
         }
     }
 
     /**
      * Obtiene todos los productos ajenos almacenados en la base de datos.
+     *
      * @return Lista de objetos Ajeno representando todos los productos ajenos.
      * @throws SQLException Si ocurre un error al recuperar los datos.
      */
@@ -93,6 +127,7 @@ public class AjenoDAO extends ProductoDAO {
 
     /**
      * Convierte un ResultSet en un objeto Ajeno.
+     *
      * @param resultSet El resultado de la consulta SQL.
      * @return Un objeto Ajeno que contiene los datos del producto.
      * @throws SQLException Si ocurre un error al extraer los datos del ResultSet.
@@ -109,6 +144,7 @@ public class AjenoDAO extends ProductoDAO {
     /**
      * Actualiza los datos de un producto ajeno en la base de datos.
      * Utiliza transacciones para garantizar la consistencia de los datos.
+     *
      * @param ajeno El objeto Ajeno con los nuevos datos a actualizar.
      * @throws SQLException Si ocurre un error al actualizar los datos en la base de datos.
      */
@@ -133,14 +169,15 @@ public class AjenoDAO extends ProductoDAO {
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
-            throw e; // Vuelve a lanzar la excepción para que el controlador la maneje
+            throw e;
         } finally {
-            connection.setAutoCommit(true); // Restablece la auto-commit
+            connection.setAutoCommit(true);
         }
     }
 
     /**
      * Elimina un producto ajeno de la base de datos utilizando su código.
+     *
      * @param codigo El identificador único del producto ajeno a eliminar.
      * @throws SQLException Si ocurre un error al eliminar los datos en la base de datos.
      */
@@ -161,14 +198,15 @@ public class AjenoDAO extends ProductoDAO {
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
-            throw e; // Vuelve a lanzar la excepción para que el controlador la maneje
+            throw e;
         } finally {
-            connection.setAutoCommit(true); // Restablece la auto-commit
+            connection.setAutoCommit(true);
         }
     }
 
     /**
      * Consulta un producto ajeno en la base de datos a partir de su código.
+     *
      * @param codigo El identificador único del producto.
      * @return Un objeto Ajeno con los datos del producto, o null si no se encuentra.
      * @throws SQLException Si ocurre un error al consultar los datos.

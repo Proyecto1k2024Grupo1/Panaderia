@@ -6,11 +6,12 @@ package Model;
  * la cantidad de productos y el número de línea dentro del ticket de compra.
  * Esta clase también permite calcular el subtotal de la línea, así como
  * gestionar la relación con la compra y el producto correspondiente.
+ *
  * @author Vanesa
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
 public class LineaDeTicket {
     private Compra compra;    // La compra a la que pertenece esta línea de ticket
@@ -27,6 +28,7 @@ public class LineaDeTicket {
      * @param compra   La compra a la que pertenece esta línea de ticket.
      * @param producto El producto comprado.
      * @param cantidad La cantidad de productos comprados.
+     * @param numLinea El número de línea dentro del ticket.
      */
     public LineaDeTicket(Compra compra, Producto producto, int cantidad, int numLinea) {
         this.compra = compra;
@@ -66,31 +68,68 @@ public class LineaDeTicket {
         return numLinea;  // Devuelve el número de línea calculado
     }
 
+    /**
+     * Devuelve el precio total de la línea de ticket.
+     * El precio se calcula multiplicando el precio unitario del producto por la cantidad comprada.
+     *
+     * @return El precio total de la línea de ticket.
+     */
     public double getPrecio() {
-        return producto.getPrecio()*cantidad;  // Devuelve el precio del producto multiplicado por la cantidad
+        return producto.getPrecio() * cantidad;  // Devuelve el precio del producto multiplicado por la cantidad
     }
 
     // Getters y setters
+
+    /**
+     * Obtiene la compra asociada a esta línea de ticket.
+     *
+     * @return La compra asociada.
+     */
     public Compra getCompra() {
         return compra;
     }
 
+    /**
+     * Establece la compra asociada a esta línea de ticket.
+     *
+     * @param compra La compra a asociar.
+     */
     public void setCompra(Compra compra) {
         this.compra = compra;
     }
 
+    /**
+     * Obtiene el producto asociado a esta línea de ticket.
+     *
+     * @return El producto asociado.
+     */
     public Producto getProducto() {
         return producto;
     }
 
+    /**
+     * Establece el producto asociado a esta línea de ticket.
+     *
+     * @param producto El producto a asociar.
+     */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
+    /**
+     * Obtiene la cantidad del producto en esta línea de ticket.
+     *
+     * @return La cantidad de productos.
+     */
     public int getCantidad() {
         return cantidad;
     }
 
+    /**
+     * Establece la cantidad de productos en esta línea de ticket.
+     *
+     * @param cantidad La cantidad de productos a establecer.
+     */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }

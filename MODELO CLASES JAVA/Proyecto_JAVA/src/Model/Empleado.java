@@ -5,6 +5,12 @@ import java.time.LocalDate;
 /**
  * Clase abstracta que representa a un empleado. Los empleados tienen un DNI, salario, fecha de nacimiento, nombre y pueden tener un encargado.
  * Esta clase también permite calcular la edad del empleado y asignar un encargado.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @since 10/04/2025
  */
 public abstract class Empleado {
 
@@ -92,46 +98,101 @@ public abstract class Empleado {
 
     // Métodos getter y setter para cada atributo
 
+    /**
+     * Obtiene el nombre del empleado.
+     *
+     * @return El nombre del empleado.
+     */
     public String getNombre() {
         return nombre;  // Devuelve el nombre del empleado
     }
 
+    /**
+     * Establece el nombre del empleado.
+     *
+     * @param nombre El nombre del empleado a establecer.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;  // Establece el nombre del empleado
     }
 
+    /**
+     * Obtiene la fecha de nacimiento del empleado.
+     *
+     * @return La fecha de nacimiento del empleado.
+     */
     public LocalDate getFnac() {
         return fnac;  // Devuelve la fecha de nacimiento del empleado
     }
 
+    /**
+     * Establece la fecha de nacimiento del empleado.
+     *
+     * @param fnac La fecha de nacimiento del empleado a establecer.
+     */
     public void setFnac(LocalDate fnac) {
         this.fnac = fnac;  // Establece la fecha de nacimiento del empleado
     }
 
+    /**
+     * Obtiene el salario del empleado.
+     *
+     * @return El salario del empleado.
+     */
     public double getSalario() {
         return salario;  // Devuelve el salario del empleado
     }
 
+    /**
+     * Establece el salario del empleado.
+     *
+     * @param salario El salario del empleado a establecer.
+     */
     public void setSalario(double salario) {
         this.salario = salario;  // Establece el salario del empleado
     }
 
+    /**
+     * Obtiene el DNI del empleado.
+     *
+     * @return El DNI del empleado.
+     */
     public String getDni() {
         return dni;  // Devuelve el DNI del empleado
     }
 
+    /**
+     * Establece el DNI del empleado.
+     *
+     * @param dni El DNI del empleado a establecer.
+     */
     public void setDni(String dni) {
         this.dni = dni;  // Establece el DNI del empleado
     }
 
+    /**
+     * Obtiene el encargado de este empleado.
+     *
+     * @return El empleado encargado de este empleado.
+     */
     public Empleado getEncargado() {
         return encargado;  // Devuelve el encargado de este empleado
     }
 
+    /**
+     * Establece el encargado de este empleado.
+     *
+     * @param encargado El encargado del empleado a establecer.
+     */
     public void setEncargado(Empleado encargado) {
         this.encargado = encargado;  // Establece el encargado del empleado
     }
 
+    /**
+     * Representa al empleado como una cadena de texto.
+     *
+     * @return Una representación en forma de cadena del empleado.
+     */
     @Override
     public String toString() {
         return "Empleado{" +

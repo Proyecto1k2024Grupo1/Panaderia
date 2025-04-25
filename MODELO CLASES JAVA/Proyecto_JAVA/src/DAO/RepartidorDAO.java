@@ -1,5 +1,10 @@
 package DAO;
 
+import Model.Repartidor;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Clase que maneja las operaciones de acceso a datos para los repartidores en la base de datos.
  * Esta clase extiende EmpleadoDAO para compartir funcionalidades comunes entre empleados y repartidores.
@@ -7,14 +12,8 @@ package DAO;
  *
  * @author Vanesa, Silvia, Jessica
  * @version 1.1
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
-import Model.Repartidor;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class RepartidorDAO extends EmpleadoDAO {
 
     private static RepartidorDAO instance;

@@ -6,6 +6,12 @@ import java.util.List;
 /**
  * Representa un producto de tipo "Ajeno" que extiende la clase Producto.
  * Un producto ajeno tiene un nombre, tipo, precio y una lista de proveedores que lo suministran.
+ *
+ * @author Vanesa
+ * @author Silvia
+ * @author Jessica
+ * @version 1.0
+ * @since 10/04/2025
  */
 public class Ajeno extends Producto {
 
@@ -52,6 +58,11 @@ public class Ajeno extends Producto {
         return nombre;
     }
 
+    /**
+     * Devuelve una representación en forma de cadena de texto del objeto Ajeno.
+     *
+     * @return Una cadena que representa el objeto Ajeno.
+     */
     @Override
     public String toString() {
         return "Ajeno{" +

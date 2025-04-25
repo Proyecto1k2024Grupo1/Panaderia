@@ -8,10 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase principal que muestra un menú interactivo en consola para gestionar laos clientes.
+ * Utiliza DAOs para interactuar con la base de datos.
+ *
+ * @author Vanesa, Silvia, Jessica
+ * @version 1.1
+ * @since 10/04/2025
+ */
 public class MenuCliente {
 
+    /** Instancia del DAO para acceso a los datos de clientes */
     private static ClienteDAO clienteDAO = ClienteDAO.getInstance();
 
+    /**
+     * Método principal que muestra el menú y gestiona las operaciones del usuario.
+     * @param args Argumentos de línea de comandos.
+     * @throws SQLException Si ocurre un error de base de datos.
+     */
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         int opcion;
@@ -59,7 +73,12 @@ public class MenuCliente {
         } while (opcion != 5);
     }
 
-    // Método para agregar un cliente
+    /**
+     * Permite al usuario agregar un nuevo cliente introduciendo sus datos.
+     *
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @throws SQLException Si ocurre un error al insertar el cliente.
+     */
     private static void agregarCliente(Scanner scanner) throws SQLException {
         System.out.print("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine();
@@ -86,7 +105,11 @@ public class MenuCliente {
         }
     }
 
-    // Método para mostrar todos los clientes
+    /**
+     * Muestra la lista de todos los clientes registrados en la base de datos.
+     *
+     * @throws SQLException Si ocurre un error al recuperar los datos.
+     */
     private static void mostrarClientes() throws SQLException {
         List<Cliente> clientes = clienteDAO.getAllClientes();
         if (clientes.isEmpty()) {
@@ -101,7 +124,12 @@ public class MenuCliente {
         }
     }
 
-    // Método para modificar un cliente
+    /**
+     * Permite modificar los datos de un cliente existente.
+     *
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @throws SQLException Si ocurre un error al actualizar los datos del cliente.
+     */
     private static void modificarCliente(Scanner scanner) throws SQLException {
         System.out.print("Ingrese el ID del cliente a modificar: ");
         int idCliente = scanner.nextInt();
@@ -137,7 +165,12 @@ public class MenuCliente {
         }
     }
 
-    // Método para eliminar un cliente
+    /**
+     * Permite eliminar un cliente existente a partir de su ID.
+     *
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @throws SQLException Si ocurre un error al eliminar el cliente.
+     */
     private static void eliminarCliente(Scanner scanner) throws SQLException {
         System.out.print("Ingrese el ID del cliente a eliminar: ");
         int idCliente = scanner.nextInt();
@@ -160,7 +193,12 @@ public class MenuCliente {
 
 
 
-    // Método para ingresar una lista de teléfonos
+    /**
+     * Permite al usuario ingresar múltiples teléfonos para un cliente.
+     *
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @return Lista de números de teléfono introducidos.
+     */
     private static List<String> ingresarTelefonos(Scanner scanner) {
         List<String> telefonos = new ArrayList<>();
         System.out.print("Ingrese el número de teléfono (o 'fin' para terminar): ");

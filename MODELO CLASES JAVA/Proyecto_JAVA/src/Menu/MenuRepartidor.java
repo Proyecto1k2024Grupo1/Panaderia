@@ -7,11 +7,27 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase que proporciona un menú interactivo para la gestión de repartidores.
+ * Permite insertar, actualizar, eliminar y visualizar repartidores registrados en el sistema.
+ *
+ * @author Vanesa, Silvia, Jessica
+ * @version 1.1
+ * @since 10/04/2025
+ */
 public class MenuRepartidor {
 
+    /** Scanner para la entrada de datos del usuario por consola */
     private static final Scanner scanner = new Scanner(System.in);
+
+    /** Instancia del DAO utilizada para acceder y modificar datos de repartidores */
     private static final RepartidorDAO repartidorDAO = RepartidorDAO.getInstance();
 
+    /**
+     * Método principal que lanza el menú interactivo de gestión de repartidores.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         int option;
         do {
@@ -48,6 +64,10 @@ public class MenuRepartidor {
         } while (option != 5);
     }
 
+    /**
+     * Inserta un nuevo repartidor solicitando los datos al usuario.
+     * Valida los datos y maneja posibles excepciones de entrada y base de datos.
+     */
     private static void insertarRepartidor() {
         try {
             System.out.print("Ingrese el DNI del repartidor: ");
@@ -75,6 +95,10 @@ public class MenuRepartidor {
         }
     }
 
+    /**
+     * Actualiza los datos de un repartidor existente identificado por su DNI.
+     * Solicita nuevos valores al usuario para actualizar el registro.
+     */
     private static void actualizarRepartidor() {
         try {
             System.out.print("Ingrese el DNI del repartidor a actualizar: ");
@@ -121,6 +145,10 @@ public class MenuRepartidor {
         }
     }
 
+    /**
+     * Elimina un repartidor identificado por su DNI.
+     * Solicita el DNI al usuario y realiza la eliminación.
+     */
     private static void eliminarRepartidor() {
         try {
             System.out.print("Ingrese el DNI del repartidor a eliminar: ");
@@ -134,6 +162,9 @@ public class MenuRepartidor {
         }
     }
 
+    /**
+     * Muestra una lista con todos los repartidores registrados en la base de datos.
+     */
     private static void verTodosRepartidores() {
         try {
             List<Repartidor> repartidores = repartidorDAO.getAllRepartidores();

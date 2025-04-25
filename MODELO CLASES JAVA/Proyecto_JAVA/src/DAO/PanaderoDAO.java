@@ -14,9 +14,8 @@ import java.util.List;
  * @author Silvia
  * @author Jessica
  * @version 1.0
- * @date 10/04/2025
+ * @since 10/04/2025
  */
-
 public class PanaderoDAO extends EmpleadoDAO {
     private static PanaderoDAO instance;
     private Connection connection;
@@ -147,7 +146,7 @@ public class PanaderoDAO extends EmpleadoDAO {
     public void updatePanadero(Panadero panadero) throws SQLException {
         connection.setAutoCommit(false);
         try (
-             PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)) {
+                PreparedStatement statement2 = connection.prepareStatement(UPDATE_QUERY_SUPER)) {
 
             statement2.setDouble(1, panadero.getSalario());
             statement2.setDate(2, Date.valueOf(panadero.getFnac()));

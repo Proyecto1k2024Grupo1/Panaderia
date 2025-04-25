@@ -27,8 +27,12 @@ public class Cliente {
      * Constructor vacío para la clase Cliente.
      * Se usa principalmente para crear instancias sin parámetros o para pruebas.
      */
-    public Cliente() {
-        this.telefonos = new ArrayList<>();
+    public Cliente() {this.telefonos = new ArrayList<>();
+    }
+
+    public Cliente(int idCliente, String nombre) {
+        this.idCliente = idCliente;
+        this.nombre = nombre;
     }
 
     /**

@@ -46,7 +46,10 @@ public abstract class Empleado {
     public Empleado(String dni) {
         this.dni = dni;
     }
-
+    public Empleado(String dni, String nombre){
+        this.dni = dni;
+        this.nombre = nombre;
+    }
     /**
      * Constructor que permite crear un empleado con todos los atributos, pero sin encargado.
      *

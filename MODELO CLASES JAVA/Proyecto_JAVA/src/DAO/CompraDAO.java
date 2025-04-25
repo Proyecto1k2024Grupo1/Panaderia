@@ -19,45 +19,51 @@ import java.util.List;
  */
 public class CompraDAO {
 
-    /**
-     * Instancia de LineaDeTicketDAO usada para acceder a las líneas de ticket relacionadas.
-     */
+
     private static LineaDeTicketDAO lineaDeTicketDAO = LineaDeTicketDAO.getInstance();
-
-    /**
-     * Instancia única de CompraDAO (patrón Singleton).
-     */
     private static CompraDAO instance;
-
-    /**
-     * Conexión a la base de datos.
-     */
     private Connection connection;
 
-    /**
-     * Consulta SQL para insertar una compra.
-     */
+    // Query
     private static final String INSERT_QUERY = "INSERT INTO COMPRA (numCompra, fecha, idCliente, dniDependiente) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_ALL_QUERY =
+            "SELECT " +
+                    "co.numCompra, " +
+                    "co.fecha, " +
+                    "cl.idCliente, " +
+                    "cl.nombre AS nombreCliente, " +
+                    "e.dni AS dniDependiente, " +
+                    "e.nombre AS nombreDependiente, " +
+                    "SUM(l.cantidad * p.precio) AS total " +
+                    "FROM COMPRA co " +
+                    "JOIN CLIENTE cl ON co.idCliente = cl.idCliente " +
+                    "JOIN EMPLEADO e ON e.dni = co.dniDependiente " +
+                    "JOIN LINEA_DE_TICKET l ON l.numCompra = co.numCompra " +
+                    "JOIN PRODUCTO p ON p.codigo = l.codProducto " +
+                    "GROUP BY co.numCompra, co.fecha, cl.idCliente, cl.nombre, e.dni, e.nombre";
 
-    /**
-     * Consulta SQL para obtener todas las compras.
-     */
-    private static final String SELECT_ALL_QUERY = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA";
 
-    /**
-     * Consulta SQL para actualizar una compra.
-     */
     private static final String UPDATE_QUERY = "UPDATE COMPRA SET fecha = ?, idCliente = ?, dniDependiente = ? WHERE numCompra = ?";
-
-    /**
-     * Consulta SQL para eliminar una compra.
-     */
     private static final String DELETE_QUERY = "DELETE FROM COMPRA WHERE numCompra = ?";
+    private static final String SELECT_BY_NUM_COMPRA =
+            "SELECT " +
+                    "co.numCompra, " +
+                    "co.fecha, " +
+                    "cl.idCliente, " +
+                    "cl.nombre AS nombreCliente, " +
+                    "e.dni AS dniDependiente, " +
+                    "e.nombre AS nombreDependiente, " +
+                    "SUM(l.cantidad * p.precio) AS total " +
+                    "FROM COMPRA co " +
+                    "JOIN CLIENTE cl ON co.idCliente = cl.idCliente " +
+                    "JOIN EMPLEADO e ON e.dni = co.dniDependiente " +
+                    "JOIN LINEA_DE_TICKET l ON l.numCompra = co.numCompra " +
+                    "JOIN PRODUCTO p ON p.codigo = l.codProducto " +
+                    "WHERE co.numCompra = ? " +
+                    "GROUP BY co.numCompra, co.fecha, cl.idCliente, cl.nombre, e.dni, e.nombre";
 
-    /**
-     * Consulta SQL para obtener una compra por su número.
-     */
-    private static final String SELECT_BY_NUM_COMPRA = "SELECT numCompra, fecha, idCliente, dniDependiente FROM COMPRA WHERE numCompra = ?";
+
+
 
     /**
      * Constructor privado del patrón Singleton.
@@ -148,13 +154,12 @@ public class CompraDAO {
      * @throws SQLException Si ocurre un error al procesar el ResultSet.
      */
     private Compra resultSetToCompra(ResultSet resultSet) throws SQLException {
-        Cliente cliente = ClienteDAO.getInstance().getClienteById(resultSet.getInt("idCliente"));
-        Dependiente dependiente = DependienteDAO.getInstance().getDependienteByDni(resultSet.getString("dniDependiente"));
+        Cliente cliente = new Cliente(resultSet.getInt("idCliente"), resultSet.getString("nombreCliente"));
+        Dependiente dependiente = new Dependiente(resultSet.getString("dniDependiente"),resultSet.getString("nombreDependiente"));
         int numCompra = resultSet.getInt("numCompra");
         Date fecha = resultSet.getDate("fecha");
-
-        List<LineaDeTicket> l = LineaDeTicketDAO.getInstance().getAllLineasDeTicketByNumCompra(numCompra);
-        return new Compra(fecha != null ? fecha.toLocalDate() : null, numCompra, cliente, dependiente, l);
+        double total = resultSet.getDouble("total");
+        return new Compra(fecha != null ? fecha.toLocalDate() : null, numCompra, cliente, dependiente,total);
     }
 
     /**

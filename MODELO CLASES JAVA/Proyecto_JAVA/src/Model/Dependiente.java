@@ -37,6 +37,8 @@ public class Dependiente extends Empleado {
 
     }
 
+
+
     /**
      * Constructor que permite crear un dependiente con un DNI, pero sin la información completa.
      * Este constructor puede ser útil en ciertas situaciones donde solo se necesita el DNI.
@@ -44,7 +46,13 @@ public class Dependiente extends Empleado {
      * @param dni Documento Nacional de Identidad del dependiente.
      */
     public Dependiente(String dni) {
+        super(dni);
     }
+
+public Dependiente(String dni,String nombre){
+        super(dni,nombre);
+}
+
 
     /**
      * Constructor alternativo que permite crear un dependiente con información adicional.

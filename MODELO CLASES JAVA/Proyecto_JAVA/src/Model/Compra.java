@@ -25,26 +25,18 @@ public class Compra {
     private LocalDate fecha; // Fecha de la compra
     private Cliente cliente; // Cliente que realizó la compra
     private Dependiente dependiente; // Dependiente que atendió la compra
+    private double total;
+    //Opcionales
     private double descuentoDependiente; // Descuento otorgado por el dependiente
     private LocalDate fechaDependiente; // Fecha en la que se aplicó el descuento
     private Repartidor repartidor; // Repartidor que entregó la compra
     private LocalDate fechaRepartidor; // Fecha en que el repartidor realizó la entrega
     private LocalTime horaRepartidor; // Hora en que el repartidor realizó la entrega
+
     private List<LineaDeTicket> lineas; // Lista de líneas que componen la compra
     private int numLineasActuales; // Número de líneas registradas en la compra
 
-    /**
-     * Constructor de la clase Compra.
-     * Inicializa la lista de líneas de la compra y el contador de líneas actuales.
-     *
-     * @param dniCliente DNI del cliente que realizó la compra.
-     * @param dniDependiente DNI del dependiente que atendió la compra.
-     * @param dniRepartidor DNI del repartidor que realizó la entrega.
-     */
-    public Compra(String dniCliente, String dniDependiente, String dniRepartidor) {
-        lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
-        numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
-    }
+
 
     /**
      * Constructor de la clase Compra con el número de compra.
@@ -71,14 +63,15 @@ public class Compra {
      * @param numCompra Número único de la compra.
      * @param cliente Cliente que realizó la compra.
      * @param dependiente Dependiente que atendió la compra.
-     * @param lineas Lista de líneas de la compra.
      */
-    public Compra(LocalDate fecha, int numCompra, Cliente cliente, Dependiente dependiente, List<LineaDeTicket> lineas) {
+    public Compra(LocalDate fecha, int numCompra, Cliente cliente, Dependiente dependiente, double total) {
         this.fecha = fecha;
         this.numCompra = numCompra;
         this.cliente = cliente;
         this.dependiente = dependiente;
-        this.lineas = lineas;
+        this.total = total;
+        this.lineas = new ArrayList<>();
+        numLineasActuales = 0;
     }
 
     /**
@@ -92,20 +85,6 @@ public class Compra {
         numLineasActuales++; // Incrementa el número de líneas actuales
     }
 
-    /**
-     * Calcula el total de la compra sumando los precios de todas las líneas.
-     *
-     * @return El total de la compra.
-     */
-    public double calcularTotal() {
-        double total = 0;
-        if(lineas != null) {
-            for (LineaDeTicket linea : lineas) {
-                total += linea.getPrecio(); // Suma el precio de cada línea
-            }
-        }
-        return total; // Devuelve el total de la compra
-    }
 
     // Getters y setters
 
@@ -305,5 +284,13 @@ public class Compra {
      */
     public void setNumLineasActuales(int numLineasActuales) {
         this.numLineasActuales = numLineasActuales;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

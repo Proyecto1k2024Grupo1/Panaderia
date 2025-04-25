@@ -50,7 +50,7 @@ public class MenuCompra {
                             System.out.println("Cliente: " + (c.getCliente() != null ? c.getCliente().getNombre() : "No asignado"));
                             System.out.println("Dependiente: " + (c.getDependiente() != null ? c.getDependiente().getNombre() : "No asignado"));
                             System.out.println("Repartidor: " + (c.getRepartidor() != null ? c.getRepartidor().getNombre() : "No asignado"));
-                            System.out.println("Total: " + c.calcularTotal());
+                            System.out.println("Total: " + c.getTotal());
                             System.out.println("---");
                         }
                     }
@@ -252,7 +252,7 @@ public class MenuCompra {
                     scanner.nextLine();  // Consumir el salto de línea
                     Compra compraTotal = compraDAO.getCompraByNumCompra(numCompraTotal);
                     if (compraTotal != null) {
-                        System.out.println("El total de la compra es: " + compraTotal.calcularTotal());
+                        System.out.println("El total de la compra es: " + compraTotal.getTotal());
                     } else {
                         System.out.println("Compra no encontrada.");
                     }

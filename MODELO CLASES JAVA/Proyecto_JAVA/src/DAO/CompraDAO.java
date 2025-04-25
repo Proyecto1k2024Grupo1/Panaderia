@@ -174,18 +174,25 @@ public class CompraDAO {
             connection.setAutoCommit(true);
         }
     }
-
     /**
      * Elimina una compra de la base de datos por su número de compra.
+     * Primero elimina las líneas de ticket asociadas a la compra para mantener la integridad referencial.
      *
      * @param numCompra El número de compra a eliminar.
      * @throws SQLException Si ocurre un error al ejecutar la consulta de eliminación.
      */
     public void deleteCompra(int numCompra) throws SQLException {
         connection.setAutoCommit(false);
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-            statement.setInt(1, numCompra);
-            statement.executeUpdate();
+        try {
+            // Primero eliminamos las líneas de ticket asociadas
+            lineaDeTicketDAO.deleteAllLineasDeCompra(numCompra);
+
+            // Luego eliminamos la compra
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+                statement.setInt(1, numCompra);
+                statement.executeUpdate();
+            }
+
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
@@ -194,4 +201,5 @@ public class CompraDAO {
             connection.setAutoCommit(true);
         }
     }
+
 }

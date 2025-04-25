@@ -25,6 +25,7 @@ public class LineaDeTicketDAO {
     private static final String INSERT_QUERY = "INSERT INTO LINEA_DE_TICKET (numCompra, numLinea, codProducto, cantidad) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET codProducto = ?, cantidad = ? WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
+    private static final String DELETE_QUERY_ALL = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ?";
     private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ?";
     private static final String SELECT_BY_NUM_COMPRA_Y_NUM_LINEA_QUERY =
             "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
@@ -215,5 +216,29 @@ public class LineaDeTicketDAO {
         }
         return linea;  // Retorna null si no se encuentra la línea
     }
+    /**
+     * Elimina todas las líneas de ticket asociadas a una compra específica.
+     *
+     * @param numCompra El número de compra del que se eliminarán todas las líneas.
+     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
+     */
+    public void deleteAllLineasDeCompra(int numCompra) throws SQLException {
+        connection.setAutoCommit(false);
+
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY_ALL)) {
+            statement.setInt(1, numCompra);
+
+            int filasAfectadas = statement.executeUpdate();
+            System.out.println("Se eliminaron " + filasAfectadas + " líneas de la compra #" + numCompra);
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();  // Hacer rollback en caso de error
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);  // Restaurar auto-commit
+        }
+    }
+
 
 }

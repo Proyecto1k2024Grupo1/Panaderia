@@ -5,11 +5,11 @@ import java.util.Scanner;
 
 /**
  * Clase que representa el menú principal del sistema.
- * Desde este menú se puede acceder a los distintos módulos: Cliente, Compra, Empleado, Producto y Proveedor.
+ * Desde este menú se puede acceder a los distintos módulos: Cliente, Compra, Empleado, Producto, Proveedor e Ingrediente.
  * Cada opción redirige al submenú correspondiente para gestionar esa sección del sistema.
  *
  * @author Vanesa, Silvia, Jessica
- * @version 1.1
+ * @version 1.2
  * @since 10/04/2025
  */
 public class MenuPrincipal {
@@ -25,7 +25,7 @@ public class MenuPrincipal {
         Scanner scanner = new Scanner(System.in);
         int opcion = 0;
 
-        while (opcion != 6) {
+        while (opcion != 7) {
             // Mostrar las opciones del menú principal
             System.out.println("\n--- MENÚ PRINCIPAL ---");
             System.out.println("1. Cliente");
@@ -33,7 +33,8 @@ public class MenuPrincipal {
             System.out.println("3. Empleado");
             System.out.println("4. Producto");
             System.out.println("5. Proveedor");
-            System.out.println("6. Salir");
+            System.out.println("6. Ingrediente");
+            System.out.println("7. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
 
@@ -55,6 +56,9 @@ public class MenuPrincipal {
                     MenuProveedor.main(null); // Ir al menú de proveedores
                     break;
                 case 6:
+                    MenuIngrediente.main(null); // Ir al menú de ingredientes
+                    break;
+                case 7:
                     System.out.println("Saliendo del sistema..."); // Salida del programa
                     break;
                 default:

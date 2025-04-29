@@ -47,6 +47,7 @@ public class Compra {
     public Compra(int numCompra) {
         lineas = new ArrayList<>(); // Inicializa la lista de líneas de la compra
         numLineasActuales = 0; // Inicializa el número de líneas actuales a 0
+        this.numCompra = numCompra;
     }
 
     /**
@@ -103,6 +104,7 @@ public class Compra {
      * @param numCompra El número de la compra a establecer.
      */
     public void setNumCompra(int numCompra) {
+
         this.numCompra = numCompra;
     }
 

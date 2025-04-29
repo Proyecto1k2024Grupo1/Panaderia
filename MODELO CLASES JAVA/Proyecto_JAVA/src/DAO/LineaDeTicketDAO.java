@@ -28,7 +28,7 @@ public class LineaDeTicketDAO {
 
     // Consultas SQL predefinidas
     private static final String INSERT_QUERY = "INSERT INTO LINEA_DE_TICKET (numCompra, numLinea, codProducto, cantidad) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET codProducto = ?, cantidad = ? WHERE numCompra = ? AND numLinea = ?";
+    private static final String UPDATE_QUERY = "UPDATE LINEA_DE_TICKET SET cantidad = ? WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ? AND numLinea = ?";
     private static final String DELETE_QUERY_ALL = "DELETE FROM LINEA_DE_TICKET WHERE numCompra = ?";
     private static final String SELECT_BY_NUM_COMPRA_QUERY = "SELECT numCompra, numLinea, codProducto, cantidad FROM LINEA_DE_TICKET WHERE numCompra = ?";
@@ -71,6 +71,7 @@ public class LineaDeTicketDAO {
             statement.setInt(3, linea.getProducto().getCodigo());
             statement.setInt(4, linea.getCantidad());
 
+
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -81,75 +82,91 @@ public class LineaDeTicketDAO {
         }
     }
 
-    /**
-     * Convierte un objeto ResultSet en una instancia de LineaDeTicket.
-     *
-     * <p>Primero intenta obtener el producto como un objeto de tipo {@link Propio} desde {@link PropioDAO}.
-     * Si no se encuentra, intenta obtenerlo como {@link Ajeno} desde {@link AjenoDAO}.
-     * Lanza una excepción si no se encuentra el producto.
-     *
-     * @param resultSet El ResultSet obtenido de la consulta SQL.
-     * @return Una instancia de LineaDeTicket con los datos del ResultSet.
-     * @throws SQLException Si ocurre un error al obtener los datos del ResultSet o si el producto no existe.
-     */
     private LineaDeTicket resultSetToLineaDeTicket(ResultSet resultSet) throws SQLException {
         int codProducto = resultSet.getInt("codProducto");
         Producto producto = null;
 
-        try {
-            Propio p = PropioDAO.getInstance().getPropioByCodigo(codProducto);
-            if (p != null) {
-                producto = p;
-            }
-        } catch (SQLException e) {
-            // Ignorado intencionalmente
+        // Intentamos obtener el producto como Propio
+        Propio p = PropioDAO.getInstance().getPropioByCodigo(codProducto);
+        if (p != null) {
+            producto = p;
         }
 
-        try {
+        // Si no se encuentra como Propio, intentamos obtenerlo como Ajeno
+        if (producto == null) {
             Ajeno a = AjenoDAO.getInstance().getAjenoByCodigo(codProducto);
             if (a != null) {
                 producto = a;
             }
-        } catch (SQLException e) {
-            // Ignorado intencionalmente
         }
 
+        // Si el producto sigue siendo null, lanzamos una excepción
         if (producto == null) {
             throw new SQLException("No se encontró el producto con código " + codProducto);
         }
 
-        return new LineaDeTicket(
-                new Compra(resultSet.getInt("numCompra")),
+        // Crear y devolver el objeto LineaDeTicket
+
+
+        int numCompra = resultSet.getInt("numCompra");
+
+        LineaDeTicket a = new LineaDeTicket(
+                new Compra(numCompra),
                 producto,
                 resultSet.getInt("cantidad"),
                 resultSet.getInt("numLinea")
         );
+        return a;
     }
 
-    /**
-     * Actualiza los datos de una línea de ticket en la base de datos.
-     *
-     * @param linea La línea de ticket con los nuevos datos a actualizar.
-     * @throws SQLException Si ocurre un error en la base de datos durante la operación.
-     */
+
     public void updateLineaDeTicket(LineaDeTicket linea) throws SQLException {
+        // Desactivar autocommit para manejar la transacción manualmente
         connection.setAutoCommit(false);
 
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-            statement.setInt(1, linea.getProducto().getCodigo());
-            statement.setInt(2, linea.getCantidad());
-            statement.setInt(3, linea.getNumCompra());
-            statement.setInt(4, linea.getNumLinea());
+            // Establecer los parámetros de la consulta con los nuevos valores
+            statement.setInt(1, linea.getCantidad());  // Actualizar la cantidad
+            statement.setInt(2, linea.getNumCompra()); // Identificar la compra
+            statement.setInt(3, linea.getNumLinea());  // Identificar la línea del ticket
 
-            statement.executeUpdate();
+            // Verificar el valor de la cantidad antes de ejecutar la actualización
+            System.out.println("Actualizando línea: numCompra = " + linea.getNumCompra() + ", numLinea = " + linea.getNumLinea());
+            System.out.println("Nueva cantidad: " + linea.getCantidad());
+
+            // Obtener la línea antes de la actualización para ver qué cantidad tiene
+            LineaDeTicket lineaRecuperada = getLineaByNumCompraYNumLinea(linea.getNumCompra(), linea.getNumLinea());
+            if (lineaRecuperada != null) {
+                System.out.println("Línea antes de actualizar:");
+                System.out.println("Cantidad recuperada: " + lineaRecuperada.getCantidad());
+            } else {
+                System.out.println("No se encontró la línea antes de actualizar.");
+            }
+
+            // Ejecutar la actualización
+            int rowsAffected = statement.executeUpdate();
+            System.out.println("Filas afectadas: " + rowsAffected);
+
+            // Comprobar si realmente se actualizó alguna fila
+            if (rowsAffected > 0) {
+                System.out.println("Actualización exitosa: " + rowsAffected + " filas afectadas.");
+            } else {
+                System.out.println("No se actualizó ninguna fila. Verifica si los datos coinciden.");
+            }
+
+            // Confirmar la transacción si la actualización fue exitosa
             connection.commit();
         } catch (SQLException e) {
+            // En caso de error, revertir la transacción
             connection.rollback();
-            throw e;
+            System.out.println("Error al actualizar la línea de ticket: " + e.getMessage());
+            throw e; // Re-throw para que el error sea manejado más arriba
         } finally {
+            // Restaurar el autocommit a true para las próximas operaciones
             connection.setAutoCommit(true);
         }
     }
+
 
     /**
      * Elimina una línea de ticket de la base de datos mediante los identificadores numCompra y numLinea.
@@ -194,27 +211,28 @@ public class LineaDeTicketDAO {
         return lineas;
     }
 
-    /**
-     * Obtiene una línea de ticket específica basada en el número de compra y el número de línea.
-     *
-     * @param numCompra El número de compra que se usará para filtrar.
-     * @param numLinea El número de línea dentro de la compra.
-     * @return Un objeto LineaDeTicket que corresponde al número de compra y número de línea proporcionados,
-     *         o {@code null} si no se encuentra.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
-     */
     public LineaDeTicket getLineaByNumCompraYNumLinea(int numCompra, int numLinea) throws SQLException {
         LineaDeTicket linea = null;
         try (PreparedStatement statement = connection.prepareStatement(SELECT_BY_NUM_COMPRA_Y_NUM_LINEA_QUERY)) {
             statement.setInt(1, numCompra);
             statement.setInt(2, numLinea);
+
+            // Imprimir los parámetros que se están pasando a la consulta
+            System.out.println("Ejecutando consulta con numCompra = " + numCompra + " y numLinea = " + numLinea);
+
             ResultSet resultSet = statement.executeQuery();
+
+            // Imprimir el contenido del ResultSet
+
             if (resultSet.next()) {
                 linea = resultSetToLineaDeTicket(resultSet);
+            } else {
+                System.out.println("No se encontró ninguna línea para los parámetros dados.");
             }
         }
         return linea;
     }
+
     /**
      * Elimina todas las líneas de ticket asociadas a una compra específica.
      *
@@ -238,6 +256,8 @@ public class LineaDeTicketDAO {
             connection.setAutoCommit(true);  // Restaurar auto-commit
         }
     }
+
+
 
 
 }

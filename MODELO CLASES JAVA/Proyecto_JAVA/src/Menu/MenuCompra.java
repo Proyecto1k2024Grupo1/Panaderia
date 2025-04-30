@@ -20,6 +20,9 @@ import java.util.Scanner;
  */
 public class MenuCompra {
 
+    static final CompraDAO compraDAO = CompraDAO.getInstance();
+    static final LineaDeTicketDAO lineaDAO = LineaDeTicketDAO.getInstance();
+
     /**
      * Método principal que ejecuta el menú de compras.
      * Permite al usuario interactuar con el sistema a través de la consola.
@@ -30,8 +33,7 @@ public class MenuCompra {
     public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
-        CompraDAO compraDAO = CompraDAO.getInstance();
-        LineaDeTicketDAO lineaDAO = LineaDeTicketDAO.getInstance();
+
         int opcion;
         Compra compra = new Compra();
 
@@ -73,7 +75,6 @@ public class MenuCompra {
                 case 4:
                     // Eliminar una compra
                     eliminarCompra(scanner, lineaDAO);
-                    // Falta un break aquí en el código original
                     break;
 
                 case 5:
@@ -92,7 +93,6 @@ public class MenuCompra {
                     break;
             }
         }
-        scanner.close();
     }
 
     /**

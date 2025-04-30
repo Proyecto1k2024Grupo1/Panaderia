@@ -3,6 +3,7 @@ package DAO;
 import Model.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class CompraDAO {
             if (compra.getFecha() != null) {
                 statement.setDate(2, Date.valueOf(compra.getFecha()));
             } else {
-                statement.setNull(2, Types.DATE);
+                statement.setDate(2, Date.valueOf(LocalDate.now()));
             }
 
             statement.setInt(3, compra.getCliente().getIdCliente());
